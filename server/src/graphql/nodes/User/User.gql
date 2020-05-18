@@ -1,0 +1,57 @@
+type User {
+    username: String!
+    email: String!
+}
+
+# SIGN UP 
+# ------------------------------------
+input SignUpInput {
+    username: String!
+    email: String!
+}
+
+type SignUpData {
+    jwt: String!
+    user: User!
+}
+
+type SignUpError {
+    message: String!
+}
+
+type SignUpResponse {
+    data: SignUpData
+    error: SignUpError
+}
+
+# SIGN IN 
+# ------------------------------------
+input SignInInput {
+    username: String!
+    email: String!
+    password: String!
+}
+
+type SignInData {
+    jwt: String!
+    user: User!
+}
+
+type SignInError {
+    message: String!
+}
+
+type SignInResponse {
+    data: SignInData
+    error: SignInError
+}
+
+type Mutation {
+    signUp(input: SignUpInput): SignUpResponse
+    signIn(input: SignInInput): SignInResponse
+}
+
+type Query {
+    userById(_id: ID!): User
+    userByName(username: String!): User
+}

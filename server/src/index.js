@@ -1,3 +1,15 @@
-const { HTTP_PORT } = require("./config.js");
+const app = require("./app.js");
+const mongodb = require("./mongodb.js");
+const debug = require("./debug.js")("Application: ");
 
-console.log("Hello World 🍺", HTTP_PORT);
+async function main() {
+    debug("Starting");
+
+    await mongodb.connect();
+
+    await app.start();
+
+    debug("Started");
+}
+
+main();
