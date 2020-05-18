@@ -1,0 +1,33 @@
+{
+  "name": "project.md-server",
+  "version": "1.0.0",
+  "description": "📝 A Simple and Robust Markdown Inspired Project Management System",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "cross-env node -r dotenv/config ./src/index.js",
+    "dev": "cross-env nodemon -r dotenv/config ./src/index.js"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-prettier": "^3.1.2",
+    "nodemon": "^2.0.4",
+    "prettier": "^1.19.1",
+    "prettier-eslint": "^9.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danstarns/project.md.git"
+  },
+  "author": "danielstarns@hotmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danstarns/project.md/issues"
+  },
+  "homepage": "https://github.com/danstarns/project.md#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  }
+}
