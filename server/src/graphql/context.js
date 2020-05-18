@@ -7,7 +7,7 @@ async function context({ req, res }) {
         return { user: null, req, res };
     }
 
-    const [, jwt] = authorization.split("Token ");
+    const [, jwt] = authorization.split("Bearer ");
 
     const { sub } = await decodeJWT(jwt);
 
