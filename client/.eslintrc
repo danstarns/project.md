@@ -11,6 +11,15 @@
         "prettier"
     ],
     "rules": {
+        "import/extensions": [
+            0
+        ],
+        "react/destructuring-assignment": [
+            0
+        ],
+        "react/prop-types": [
+            0
+        ],
         "semi": 0,
         "react/jsx-filename-extension": [
             1,
