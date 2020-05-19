@@ -6,7 +6,7 @@ import { ApolloLink } from "apollo-link";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { createHttpLink } from "apollo-link-http";
 import { setContext } from "apollo-link-context";
-import { REACT_APP_API_URL, REACT_APP_JWT_KEY } from "../../config.js";
+import { REACT_APP_API_URL } from "../../config.js";
 
 const Context = React.createContext();
 
@@ -15,7 +15,7 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem(REACT_APP_JWT_KEY);
+  const token = localStorage.getItem("token");
 
   return {
     headers: {
@@ -29,12 +29,13 @@ const client = new ApolloClient({
   link: ApolloLink.from([
     onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors)
-        graphQLErrors.forEach(({ message, locations, path }) =>
-          console.log(
-            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-          )
-        );
+        graphQLErrors.forEach(({ message }) => {
+          if (message.includes("Unauthorized")) {
+            window.location.href = "/logout";
+          }
+        });
 
+      // eslint-disable-next-line no-console
       if (networkError) console.log(`[Network error]: ${networkError}`);
     }),
     authLink.concat(httpLink)

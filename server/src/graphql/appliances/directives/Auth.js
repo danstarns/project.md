@@ -18,13 +18,13 @@ class AuthDirective extends SchemaDirectiveVisitor {
             const { user } = context;
 
             if (!user && required) {
-                throw new AuthenticationError(`unauthorized`);
+                throw new AuthenticationError("Unauthorized");
             }
 
             const foundUser = await User.findById(user);
 
             if (!foundUser) {
-                throw new AuthenticationError(`unauthorized`);
+                throw new AuthenticationError("Unauthorized");
             }
 
             if (populate) {

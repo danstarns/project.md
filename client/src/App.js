@@ -2,7 +2,14 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import { AuthContext, GraphQL } from "./contexts/index.js";
-import { Home, NavBar, Dashboard, Login, SignUp } from "./components/index.js";
+import {
+  Home,
+  NavBar,
+  Dashboard,
+  Login,
+  SignUp,
+  Logout
+} from "./components/index.js";
 
 function App() {
   return (
@@ -14,6 +21,7 @@ function App() {
             <Switch>
               {/** COMMON */}
               <Route exact path="/" component={Home} />
+              <Route exact path="/logout" component={Logout} />
 
               {/** AUTH */}
               <Route exact path="/login" component={Login} />
