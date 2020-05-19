@@ -1,0 +1,41 @@
+type Project {
+    _id: ID!
+    name: String!
+    tagline: String
+    creator: User!
+    private: Boolean!
+    markdown: String
+    createdAt: String! # TODO SCALAR DATE
+    updatedAt: String! # TODO SCALAR DATE
+}
+
+
+# CREATE PROJECT
+# ------------------------------------
+input CreateProjectInput {
+    name: String!
+    tagline: String
+    private: Boolean!
+    markdown: String
+}
+
+type CreateProjectError {
+    message: String!
+}
+
+type CreateProjectData {
+    project: Project!
+}
+
+type CreateProjectResponse {
+    data: CreateProjectData
+    error: CreateProjectError
+}
+
+type Query {
+    project(id: ID!): Project
+}
+
+type Mutation {
+    createProject(input: CreateProjectInput): CreateProjectResponse
+}
