@@ -1,3 +1,3 @@
-import signUp from "./sign-up.js"
+import signUp from "./sign-up.js";
 
-export { signUp }
+export { signUp };

@@ -1,8 +1,8 @@
-import React from "react"
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
-import { Container } from "react-bootstrap"
-import { AuthContext, GraphQL } from "./contexts/index.js"
-import { Home, NavBar, Dashboard, Login, SignUp } from "./components/index.js"
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Container } from "react-bootstrap";
+import { AuthContext, GraphQL } from "./contexts/index.js";
+import { Home, NavBar, Dashboard, Login, SignUp } from "./components/index.js";
 
 function App() {
   return (
@@ -26,7 +26,7 @@ function App() {
         </Router>
       </AuthContext.Provider>
     </GraphQL.Provider>
-  )
+  );
 }
 
-export default App
+export default App;
