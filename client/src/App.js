@@ -21,6 +21,7 @@ function App() {
             <Switch>
               {/** COMMON */}
               <Route exact path="/" component={Home} />
+              <Route component={Home} />
               <Route exact path="/logout" component={Logout} />
 
               {/** AUTH */}
