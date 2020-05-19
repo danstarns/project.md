@@ -8,14 +8,14 @@ function App() {
   return (
     <GraphQL.Provider>
       <AuthContext.Provider>
-        <NavBar />
-        <Container>
-          <Router>
+        <Router>
+          <NavBar />
+          <Container>
             <Switch>
               <Route exact path="/" component={Home} />
             </Switch>
-          </Router>
-        </Container>
+          </Container>
+        </Router>
       </AuthContext.Provider>
     </GraphQL.Provider>
   )
