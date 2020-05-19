@@ -29,7 +29,6 @@ type SignUpResponse {
 # SIGN IN
 # ------------------------------------
 input SignInInput {
-    username: String!
     email: String!
     password: String!
 }

@@ -21,7 +21,6 @@ function App() {
             <Switch>
               {/** COMMON */}
               <Route exact path="/" component={Home} />
-              <Route component={Home} />
               <Route exact path="/logout" component={Logout} />
 
               {/** AUTH */}
@@ -30,6 +29,9 @@ function App() {
 
               {/** AUTHORIZED */}
               <Route exact path="/dashboard" component={Dashboard} />
+
+              {/** 404 */}
+              <Route component={Home} />
             </Switch>
           </Container>
         </Router>

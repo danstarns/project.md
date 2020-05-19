@@ -1,6 +1,6 @@
 /* eslint-disable prefer-const */
 import React, { useState, useContext } from "react";
-import { signUp, logout } from "./methods/index.js";
+import { signUp, logout, login } from "./methods/index.js";
 import * as GraphQL from "../GraphQL/index.js";
 import { REACT_APP_JWT_KEY } from "../../config.js";
 
@@ -17,7 +17,8 @@ function Provider(props) {
   [value, setValue] = useState({
     isLoggedIn: Boolean(localStorage.getItem(REACT_APP_JWT_KEY)),
     signUp: signUp({ client, setValue: setter }),
-    logout: logout({ setValue: setter })
+    logout: logout({ setValue: setter }),
+    login: login({ client, setValue: setter })
   });
 
   return <Context.Provider value={value}>{props.children}</Context.Provider>;

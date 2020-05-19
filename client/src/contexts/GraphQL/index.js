@@ -6,7 +6,7 @@ import { ApolloLink } from "apollo-link";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { createHttpLink } from "apollo-link-http";
 import { setContext } from "apollo-link-context";
-import { REACT_APP_API_URL } from "../../config.js";
+import { REACT_APP_API_URL, REACT_APP_JWT_KEY } from "../../config.js";
 
 const Context = React.createContext();
 
@@ -15,7 +15,7 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem(REACT_APP_JWT_KEY);
 
   return {
     headers: {
