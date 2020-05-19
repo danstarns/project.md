@@ -1,9 +1,9 @@
 import React, { useState } from "react"
 
-const Context = React.createContext()
+const Context = React.createContext({ isLoggedIn: false })
 
 function Provider(props) {
-  const { value, setValue } = useState({})
+  const [value, setValue] = useState({})
 
   return <Context.Provider value={value}>{props.children}</Context.Provider>
 }
