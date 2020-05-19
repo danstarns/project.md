@@ -1,16 +1,14 @@
 const jwt = require("jsonwebtoken");
-const { SECRET } = require("../config.js");
+const { JWT_SECRET } = require("../config.js");
 
 function decodeJWT(token) {
     return new Promise((resolve, reject) => {
-        jwt.verify(token, SECRET, (err, decoded) => {
+        jwt.verify(token, JWT_SECRET, (err, decoded) => {
             if (err) {
                 return reject(err);
             }
 
-            const {
-                data: { sub }
-            } = decoded;
+            const { sub } = decoded;
 
             return resolve({ sub });
         });

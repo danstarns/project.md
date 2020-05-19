@@ -1,4 +1,5 @@
 type User {
+    _id: ID!
     username: String!
     email: String!
 }
@@ -8,6 +9,7 @@ type User {
 input SignUpInput {
     username: String!
     email: String!
+    password: String!
 }
 
 type SignUpData {
@@ -24,7 +26,7 @@ type SignUpResponse {
     error: SignUpError
 }
 
-# SIGN IN 
+# SIGN IN
 # ------------------------------------
 input SignInInput {
     username: String!

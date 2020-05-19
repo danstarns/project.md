@@ -20,7 +20,7 @@
         "react/prop-types": [
             0
         ],
-        "semi": 0,
+        "semi": 1,
         "react/jsx-filename-extension": [
             1,
             {
@@ -33,7 +33,7 @@
         "prettier/prettier": [
             "error",
             {
-                "semi": false
+                "semi": true
             }
         ]
     }

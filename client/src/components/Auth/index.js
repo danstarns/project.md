@@ -1,4 +1,4 @@
-import Signup from "./Signup/Signup.js"
+import SignUp from "./SignUp/SignUp.js"
 import Login from "./Login/Login.js"
 
-export { Signup, Login }
+export { SignUp, Login }

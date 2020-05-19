@@ -1,45 +1,53 @@
-import React, { useState, useContext } from "react"
-import { Form, Button, Alert } from "react-bootstrap"
-import { AuthContext } from "../../../contexts/index.js"
+import React, { useState, useContext } from "react";
+import { Form, Button, Alert } from "react-bootstrap";
+import { AuthContext } from "../../../contexts/index.js";
 
-function Signup({ history }) {
-  const Auth = useContext(AuthContext.Context)
-  const [email, setEmail] = useState("")
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState(null)
+function SignUp({ history }) {
+  const Auth = useContext(AuthContext.Context);
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
 
   function updateEmail(event) {
-    setEmail(event.target.value)
+    setError(null);
+
+    setEmail(event.target.value);
   }
 
   function updateUsername(event) {
-    setUsername(event.target.value)
+    setError(null);
+
+    setUsername(event.target.value);
   }
 
   function updatePassword(event) {
-    setPassword(event.target.value)
+    setError(null);
+
+    setPassword(event.target.value);
   }
 
   async function submit(event) {
-    event.preventDefault()
+    setError(null);
+
+    event.preventDefault();
 
     try {
-      const result = await Auth.signup({ email, username, password })
+      await Auth.signUp({ email, username, password });
 
-      if (result.error) {
-        throw result.error
-      }
-
-      history.push("/dashboard")
+      history.push("/dashboard");
     } catch (e) {
-      setError(e.message)
+      setError(e.message);
     }
   }
 
   return (
     <>
+      <br />
+      <h1>SignUp</h1>
+      <br />
       {error && <Alert variant="warning">{error}</Alert>}
+      <br />
       <Form onSubmit={submit}>
         <Form.Group controlId="email">
           <Form.Label>Email address</Form.Label>
@@ -86,7 +94,7 @@ function Signup({ history }) {
         </Button>
       </Form>
     </>
-  )
+  );
 }
 
-export default Signup
+export default SignUp;

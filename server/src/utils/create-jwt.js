@@ -1,21 +1,15 @@
 const jwt = require("jsonwebtoken");
-const { SECRET } = require("../config.js");
+const { JWT_SECRET } = require("../config.js");
 
-function createJWT(user) {
+function createJWT(data) {
     return new Promise((resolve, reject) => {
-        jwt.sign(
-            {
-                data: { sub: user.id }
-            },
-            SECRET,
-            (err, token) => {
-                if (err) {
-                    return reject(err);
-                }
-
-                return resolve(token);
+        jwt.sign(data, JWT_SECRET, (err, token) => {
+            if (err) {
+                return reject(err);
             }
-        );
+
+            return resolve(token);
+        });
     });
 }
 

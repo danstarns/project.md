@@ -1,36 +1,40 @@
-import React, { useContext } from "react"
-import { Navbar, Nav } from "react-bootstrap"
-import { Link } from "react-router-dom"
-import { AuthContext } from "../../contexts/index.js"
+import React, { useContext } from "react";
+import { Navbar, Nav } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../contexts/index.js";
 
-const defaultLinks = [["Home", "/"]]
+const defaultLinks = [["Home", "/"]];
 
-const guestLinks = [...defaultLinks, ["Signup", "/signup"], ["Login", "/login"]]
+const guestLinks = [
+  ...defaultLinks,
+  ["Signup", "/signup"],
+  ["Login", "/login"]
+];
 
 const userLinks = [
   ...defaultLinks,
   ["My Account", "/account"],
   ["Dashboard", "/dashboard"],
   ["Logout", "/logout"]
-]
+];
 
 function linkMapper([display, link]) {
   return (
     <Nav.Link>
       <Link to={link}>{display}</Link>
     </Nav.Link>
-  )
+  );
 }
 
 function NavBar() {
-  const { isLoggedIn } = useContext(AuthContext.Context)
+  const { isLoggedIn } = useContext(AuthContext.Context);
 
-  let links
+  let links;
 
   if (isLoggedIn) {
-    links = userLinks.map(linkMapper)
+    links = userLinks.map(linkMapper);
   } else {
-    links = guestLinks.map(linkMapper)
+    links = guestLinks.map(linkMapper);
   }
 
   return (
@@ -43,7 +47,7 @@ function NavBar() {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">{links}</Navbar.Collapse>
     </Navbar>
-  )
+  );
 }
 
-export default NavBar
+export default NavBar;
