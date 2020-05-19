@@ -1,7 +1,5 @@
-const userById = require("./user-by-id.js");
-const userByName = require("./user-by-name.js");
+const me = require("./me.js");
 
 module.exports = {
-    userById,
-    userByName
+    me
 };

@@ -54,6 +54,5 @@ type Mutation {
 }
 
 type Query {
-    userById(_id: ID!): User
-    userByName(username: String!): User
+    me: User! @Auth(input: {required: true, populate: true})
 }
