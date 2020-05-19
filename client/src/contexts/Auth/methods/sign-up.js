@@ -9,11 +9,6 @@ const Mutation = gql`
       }
       data {
         jwt
-        user {
-          _id
-          username
-          email
-        }
       }
     }
   }
@@ -30,9 +25,9 @@ function signUp({ client, setValue }) {
       throw new Error(result.data.signUp.error.message);
     }
 
-    const { jwt, user } = result.data.signUp.data;
+    const { jwt } = result.data.signUp.data;
 
-    setValue(value => ({ ...value, isLoggedIn: true, jwt, user }));
+    setValue(value => ({ ...value, isLoggedIn: true }));
 
     localStorage.setItem(REACT_APP_JWT_KEY, jwt);
 
