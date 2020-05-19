@@ -2,7 +2,7 @@ import React from "react"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import { Container } from "react-bootstrap"
 import { AuthContext, GraphQL } from "./contexts/index.js"
-import { Home, NavBar, Dashboard } from "./components/index.js"
+import { Home, NavBar, Dashboard, Login, Signup } from "./components/index.js"
 
 function App() {
   return (
@@ -12,7 +12,14 @@ function App() {
           <NavBar />
           <Container>
             <Switch>
+              {/** COMMON */}
               <Route exact path="/" component={Home} />
+
+              {/** AUTH */}
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/signup" component={Signup} />
+
+              {/** AUTHORIZED */}
               <Route exact path="/dashboard" component={Dashboard} />
             </Switch>
           </Container>
