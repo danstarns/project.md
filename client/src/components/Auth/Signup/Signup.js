@@ -21,7 +21,7 @@ function Signup({ history }) {
     setPassword(event.target.value)
   }
 
-  async function Submit(event) {
+  async function submit(event) {
     event.preventDefault()
 
     try {
@@ -40,7 +40,7 @@ function Signup({ history }) {
   return (
     <>
       {error && <Alert variant="warning">{error}</Alert>}
-      <Form onSubmit={Submit}>
+      <Form onSubmit={submit}>
         <Form.Group controlId="email">
           <Form.Label>Email address</Form.Label>
 
