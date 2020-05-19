@@ -43,6 +43,7 @@ function Signup({ history }) {
       <Form onSubmit={Submit}>
         <Form.Group controlId="email">
           <Form.Label>Email address</Form.Label>
+
           <Form.Control
             type="email"
             placeholder="Enter email"
@@ -68,6 +69,7 @@ function Signup({ history }) {
 
         <Form.Group controlId="password">
           <Form.Label>Password</Form.Label>
+
           <Form.Control
             type="password"
             placeholder="Password"
