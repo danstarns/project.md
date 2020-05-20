@@ -7,6 +7,7 @@ import {
   NavBar,
   Dashboard,
   Projects,
+  CreateProject,
   Login,
   SignUp,
   Logout
@@ -31,6 +32,7 @@ function App() {
               {/** DASHBOARD */}
               <Route exact path="/dashboard" component={Dashboard} />
               <Route exact path="/projects" component={Projects} />
+              <Route exact path="/create-project" component={CreateProject} />
 
               {/** 404 */}
               <Route component={Home} />

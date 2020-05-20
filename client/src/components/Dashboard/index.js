@@ -1,4 +1,4 @@
 import Dashboard from "./Dashboard.js";
-import Projects from "./Projects/Projects.js";
+import { Projects, CreateProject } from "./Projects/index.js";
 
-export { Dashboard, Projects };
+export { Dashboard, Projects, CreateProject };
