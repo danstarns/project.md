@@ -1,10 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Form, Button, Alert, Row, Col, Card } from "react-bootstrap";
 import DatePicker from "react-date-picker";
 import moment from "moment";
+import gql from "graphql-tag";
 import Editor from "../../../Editor/index.js";
+import { GraphQL } from "../../../../contexts/index.js";
+
+function Mutation() {
+  return gql`
+    mutation createProject(
+      $name: String!
+      $tagline: String!
+      $private: Boolean!
+      $due: String!
+      $markdown: String!
+    ) {
+      createProject(
+        input: {
+          name: $name
+          tagline: $tagline
+          private: $private
+          due: $due
+          markdown: $markdown
+        }
+      ) {
+        error {
+          message
+        }
+        data {
+          project {
+            _id
+          }
+        }
+      }
+    }
+  `;
+}
 
 function CreateProject({ history }) {
+  const { client } = useContext(GraphQL.Context);
   const [name, setName] = useState("");
   const [tagline, setTagline] = useState("");
   const [_private, setPrivate] = useState(false);
@@ -59,15 +93,53 @@ function CreateProject({ history }) {
     setMarkdown(value);
   }
 
+  async function submit(event) {
+    event.preventDefault();
+
+    try {
+      setError(null);
+
+      const variables = {
+        name,
+        tagline,
+        private: _private,
+        due,
+        markdown
+      };
+
+      const response = await client.mutate({
+        mutation: Mutation(),
+        variables
+      });
+
+      const { createProject, error: gqlError } = response.data;
+
+      if (gqlError) {
+        throw new Error(gqlError.message);
+      }
+
+      const {
+        data: { project }
+      } = createProject;
+
+      // eslint-disable-next-line no-underscore-dangle
+      history.push(`/project/${project._id}`);
+    } catch (e) {
+      setError(e.message);
+    }
+  }
+
   return (
     <>
       {error && (
-        <Alert className="mt-3" variant="warning">
-          {error}
-        </Alert>
+        <>
+          <Alert className="mt-3" variant="warning">
+            {error}
+          </Alert>
+          <br />
+        </>
       )}
-      <br />
-      <Form>
+      <Form onSubmit={submit}>
         <Row>
           <Col xs={12} s={12} lg={12}>
             <Alert show className="mt-3" variant="success">
@@ -175,11 +247,20 @@ function CreateProject({ history }) {
           </Col>
         </Row>
 
-        <div className="mb-3">
-          <Editor onChange={updateMarkdown} markdown={markdown} />
-        </div>
+        <Editor onChange={updateMarkdown} markdown={markdown} />
 
-        <Button variant="primary" type="submit">
+        <hr />
+
+        {error && (
+          <>
+            <Alert className="mt-3" variant="warning">
+              {error}
+            </Alert>
+            <br />
+          </>
+        )}
+
+        <Button variant="primary" type="submit" block className="mt-3">
           Submit
         </Button>
       </Form>

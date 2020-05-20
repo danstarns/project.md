@@ -4,6 +4,7 @@ type Project {
     tagline: String
     creator: User!
     private: Boolean!
+    due: String!
     markdown: String!
     createdAt: String! # TODO SCALAR DATE
     updatedAt: String! # TODO SCALAR DATE
@@ -16,6 +17,7 @@ input CreateProjectInput {
     name: String!
     tagline: String
     private: Boolean!
+    due: String!
     markdown: String!
 }
 
@@ -37,5 +39,5 @@ type Query {
 }
 
 type Mutation {
-    createProject(input: CreateProjectInput): CreateProjectResponse
+    createProject(input: CreateProjectInput!): CreateProjectResponse
 }
