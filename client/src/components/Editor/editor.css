@@ -1,16 +1,13 @@
 .result-pane > div {
-    max-height: 120vh;
-    overflow: scroll;
     font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
     font-size: 16px;
     line-height: 2em;
 } 
-  
+
 .CodeMirror {
-    max-height: 120vh;
     height: auto;
     font-size: 16px;
-    line-height: 2em;
+    line-height: 1.5em;
 }
   
 pre {

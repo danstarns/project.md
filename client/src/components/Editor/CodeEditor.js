@@ -69,8 +69,7 @@ class CodeMirrorEditor extends React.Component {
       value: this.props.value,
       readOnly: this.props.readOnly,
       defaultValue: this.props.defaultValue,
-      onChange: this.props.onChange,
-      className: this.props.textAreaClassName
+      onChange: this.props.onChange
     });
 
     return React.createElement("div", null, editor);
