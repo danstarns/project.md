@@ -11,7 +11,7 @@ const Query = gql`
   }
 `;
 
-function Dashboard() {
+function Dashboard({ history }) {
   const { loading, error, data } = useQuery(Query);
 
   if (loading) return "Loading...";
@@ -34,7 +34,12 @@ function Dashboard() {
               calling extra attention to featured content or information.
             </p>
             <p>
-              <Button variant="primary">Enter</Button>
+              <Button
+                onClick={() => history.push("/projects")}
+                variant="primary"
+              >
+                Enter
+              </Button>
             </p>
           </Jumbotron>
         </Col>

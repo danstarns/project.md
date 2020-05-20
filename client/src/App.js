@@ -6,6 +6,7 @@ import {
   Home,
   NavBar,
   Dashboard,
+  Projects,
   Login,
   SignUp,
   Logout
@@ -21,14 +22,15 @@ function App() {
             <Switch>
               {/** COMMON */}
               <Route exact path="/" component={Home} />
-              <Route exact path="/logout" component={Logout} />
 
               {/** AUTH */}
               <Route exact path="/login" component={Login} />
               <Route exact path="/signup" component={SignUp} />
+              <Route exact path="/logout" component={Logout} />
 
-              {/** AUTHORIZED */}
+              {/** DASHBOARD */}
               <Route exact path="/dashboard" component={Dashboard} />
+              <Route exact path="/projects" component={Projects} />
 
               {/** 404 */}
               <Route component={Home} />
