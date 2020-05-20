@@ -131,15 +131,7 @@ function CreateProject({ history }) {
 
   return (
     <>
-      {error && (
-        <>
-          <Alert className="mt-3" variant="warning">
-            {error}
-          </Alert>
-          <br />
-        </>
-      )}
-      <Form onSubmit={submit}>
+      <Form onSubmit={submit} className="mt-3">
         <Row>
           <Col xs={12} s={12} lg={12}>
             <Alert show className="mt-3" variant="success">
@@ -260,7 +252,7 @@ function CreateProject({ history }) {
           </>
         )}
 
-        <Button variant="primary" type="submit" block className="mt-3">
+        <Button variant="primary" type="submit" block className="mt-3 mb-3">
           Submit
         </Button>
       </Form>

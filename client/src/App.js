@@ -7,6 +7,7 @@ import {
   NavBar,
   Dashboard,
   Projects,
+  Project,
   CreateProject,
   Login,
   SignUp,
@@ -33,6 +34,7 @@ function App() {
               <Route exact path="/dashboard" component={Dashboard} />
               <Route exact path="/projects" component={Projects} />
               <Route exact path="/create-project" component={CreateProject} />
+              <Route exact path="/project/:id" component={Project} />
 
               {/** 404 */}
               <Route component={Home} />
