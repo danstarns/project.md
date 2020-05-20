@@ -1,13 +1,12 @@
 const React = require("react");
 
-const { hljs } = window;
-
 class CodeBlock extends React.PureComponent {
   constructor(props) {
     super(props);
     this.setRef = this.setRef.bind(this);
   }
 
+  // eslint-disable-next-line react/sort-comp
   setRef(el) {
     this.codeEl = el;
   }
@@ -21,7 +20,7 @@ class CodeBlock extends React.PureComponent {
   }
 
   highlightCode() {
-    hljs.highlightBlock(this.codeEl);
+    window.hljs.highlightBlock(this.codeEl);
   }
 
   render() {

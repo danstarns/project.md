@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Col, Row } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
+import CodeMirror from "./CodeEditor.js";
+import CodeBlock from "./CodeBlock.js";
 import "./editor.css";
-import CodeMirror from "./codemirror.js";
-import CodeBlock from "./code-block.js";
 
 function Editor(props) {
   function onChange(event) {
