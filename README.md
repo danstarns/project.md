@@ -2,10 +2,18 @@
 
 📝 A Simple and Robust Markdown Inspired Project Management System
 
+
 # About
+
 Tired of complicated project management systems? What something that speaks to the Markdown 🐱‍👤 inside of you? Project.md is designed with simplicity at its heart, letting you manage projects & present your ideas with pure Markdown. No longer shall you recursively search nested 'sub tasks' to oblivion 🌌🤯.
 
+You can use this project as; a template, guide for inspiration, your own deployment and a project to contribute towards 🍻
+
+[Demo]()
+
 # Tech Stack
+
+> 🍻 To all the unmentioned technologies 
 
 1. Server
     * Node.JS
