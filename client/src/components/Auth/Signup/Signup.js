@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import { AuthContext } from "../../../contexts/index.js";
+import { LoadingBanner, ErrorBanner } from "../../Common/index.js";
 
 function SignUp({ history }) {
   const Auth = useContext(AuthContext.Context);
@@ -8,6 +9,7 @@ function SignUp({ history }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   function updateEmail(event) {
     setError(null);
@@ -29,6 +31,7 @@ function SignUp({ history }) {
 
   async function submit(event) {
     setError(null);
+    setLoading(true);
 
     event.preventDefault();
 
@@ -39,6 +42,8 @@ function SignUp({ history }) {
     } catch (e) {
       setError(e.message);
     }
+
+    setLoading(false);
   }
 
   return (
@@ -46,7 +51,8 @@ function SignUp({ history }) {
       <br />
       <h1>SignUp</h1>
       <br />
-      {error && <Alert variant="warning">{error}</Alert>}
+      {error && <ErrorBanner error={error} />}
+      {loading && <LoadingBanner />}
       <br />
       <Form onSubmit={submit}>
         <Form.Group controlId="email">

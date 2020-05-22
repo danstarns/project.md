@@ -30,7 +30,7 @@ type ProjectData {
 }
 
 type CreateProjectResponse {
-    data: ProjectData
+    project: Project
     error: CreateProjectError
 }
 

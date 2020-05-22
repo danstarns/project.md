@@ -1,15 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import gql from "graphql-tag";
-import {
-  Button,
-  Row,
-  Col,
-  Card,
-  Jumbotron,
-  ListGroup,
-  Alert
-} from "react-bootstrap";
+import { Button, Row, Col, Card, Jumbotron, ListGroup } from "react-bootstrap";
 import { GraphQL } from "../../../contexts/index.js";
+import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
 
 function Query() {
   return gql`
@@ -99,23 +92,11 @@ function Projects({ history }) {
   }
 
   if (error) {
-    return (
-      <Row className="mt-3">
-        <Col xs={12} s={12} lg={12}>
-          <Alert variant="danger">{error}</Alert>
-        </Col>
-      </Row>
-    );
+    return <ErrorBanner error={error} />;
   }
 
   if (loading) {
-    return (
-      <Row className="mt-3">
-        <Col xs={12} s={12} lg={12}>
-          <Alert variant="info">Loading...</Alert>
-        </Col>
-      </Row>
-    );
+    return <LoadingBanner />;
   }
 
   return (

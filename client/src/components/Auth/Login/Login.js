@@ -1,12 +1,14 @@
 import React, { useState, useContext } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import { AuthContext } from "../../../contexts/index.js";
+import { LoadingBanner, ErrorBanner } from "../../Common/index.js";
 
 function Login({ history }) {
   const Auth = useContext(AuthContext.Context);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   function updateEmail(event) {
     setError(null);
@@ -22,6 +24,7 @@ function Login({ history }) {
 
   async function submit(event) {
     setError(null);
+    setLoading(true);
 
     event.preventDefault();
 
@@ -32,6 +35,8 @@ function Login({ history }) {
     } catch (e) {
       setError(e.message);
     }
+
+    setLoading(false);
   }
 
   return (
@@ -39,7 +44,8 @@ function Login({ history }) {
       <br />
       <h1>Login</h1>
       <br />
-      {error && <Alert variant="warning">{error}</Alert>}
+      {error && <ErrorBanner error={error} />}
+      {loading && <LoadingBanner />}
       <br />
       <Form onSubmit={submit}>
         <Form.Group controlId="email">

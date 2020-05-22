@@ -1,9 +1,14 @@
 import React, { useContext, useState, useEffect } from "react";
 import gql from "graphql-tag";
-import { Alert, Col, Row, Button, Card, Jumbotron } from "react-bootstrap";
+import { Col, Row, Button, Card, Jumbotron } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
 import { GraphQL } from "../../../../contexts/index.js";
 import { CodeBlock } from "../../../Editor/index.js";
+import {
+  ErrorBanner,
+  LoadingBanner,
+  TitleBanner
+} from "../../../Common/index.js";
 
 function Query() {
   return gql`
@@ -16,30 +21,6 @@ function Query() {
       }
     }
   `;
-}
-
-function ErrorBanner(error) {
-  return (
-    <Row>
-      <Col>
-        <Alert show className="mt-3" variant="warning">
-          {error}
-        </Alert>
-      </Col>
-    </Row>
-  );
-}
-
-function LoadingBanner() {
-  return (
-    <Row>
-      <Col>
-        <Alert show className="mt-3" variant="info">
-          Loading...
-        </Alert>
-      </Col>
-    </Row>
-  );
 }
 
 function Project({ match, history }) {
@@ -78,7 +59,7 @@ function Project({ match, history }) {
   }, []);
 
   if (error) {
-    return <ErrorBanner />;
+    return <ErrorBanner error={error} />;
   }
 
   if (!project) {
@@ -87,14 +68,7 @@ function Project({ match, history }) {
 
   return (
     <div>
-      <Row>
-        <Col xs={12} s={12} lg={12}>
-          <Alert show variant="success" className="mt-3">
-            <Alert.Heading>{project.name}</Alert.Heading>
-            <p>{project.tagline}</p>
-          </Alert>
-        </Col>
-      </Row>
+      <TitleBanner heading={project.name} content={project.tagline} />
 
       <h1>Tasks</h1>
       <hr />

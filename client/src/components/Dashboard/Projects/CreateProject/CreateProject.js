@@ -5,6 +5,11 @@ import moment from "moment";
 import gql from "graphql-tag";
 import Editor from "../../../Editor/index.js";
 import { GraphQL } from "../../../../contexts/index.js";
+import {
+  ErrorBanner,
+  LoadingBanner,
+  TitleBanner
+} from "../../../Common/index.js";
 
 function Mutation() {
   return gql`
@@ -27,10 +32,8 @@ function Mutation() {
         error {
           message
         }
-        data {
-          project {
-            _id
-          }
+        project {
+          _id
         }
       }
     }
@@ -48,6 +51,7 @@ function CreateProject({ history }) {
   );
   const [due, setDue] = useState(new Date());
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   function updateName(event) {
     setError(null);
@@ -96,6 +100,8 @@ function CreateProject({ history }) {
   async function submit(event) {
     event.preventDefault();
 
+    setLoading(true);
+
     try {
       setError(null);
 
@@ -112,37 +118,31 @@ function CreateProject({ history }) {
         variables
       });
 
-      const { createProject, error: gqlError } = response.data;
+      const { data: { createProject = {} } = {} } = response;
 
-      if (gqlError) {
-        throw new Error(gqlError.message);
+      if (createProject.error) {
+        throw new Error(createProject.error.message);
       }
 
-      const {
-        data: { project }
-      } = createProject;
-
       // eslint-disable-next-line no-underscore-dangle
-      history.push(`/project/${project._id}`);
+      history.push(`/project/${createProject.project._id}`);
     } catch (e) {
       setError(e.message);
     }
+
+    setLoading(false);
   }
 
   return (
     <>
       <Form onSubmit={submit} className="mt-3">
-        <Row>
-          <Col xs={12} s={12} lg={12}>
-            <Alert show className="mt-3" variant="success">
-              <Alert.Heading>Create Project</Alert.Heading>
-              <p>
-                Use projects to group tasks together, invite friends or
-                colleagues and share with the world!
-              </p>
-            </Alert>
-          </Col>
+        <TitleBanner
+          heading="Create Project"
+          content={`Use projects to group tasks together, invite friends or
+                colleagues and share with the world!`}
+        />
 
+        <Row>
           <Col xs={6} s={6} lg={6}>
             <Form.Group controlId="name">
               <Form.Label>Name</Form.Label>
@@ -226,31 +226,20 @@ function CreateProject({ history }) {
 
         <hr />
 
-        <Row>
-          <Col xs={12} s={12} lg={12}>
-            <Alert show variant="info">
-              <Alert.Heading>Enter Markdown</Alert.Heading>
-              <p>
-                Use the box on the left to start writing markdown, as you type
-                the output will render on the right. This will be shown on the
-                projects homepage.
-              </p>
-            </Alert>
-          </Col>
-        </Row>
+        <TitleBanner
+          heading="Enter Markdown"
+          content={`Use the box on the left to start writing markdown, as you type
+          the output will render on the right. This will be shown on the
+          projects homepage.`}
+          type="info"
+        />
 
         <Editor onChange={updateMarkdown} markdown={markdown} />
 
         <hr />
 
-        {error && (
-          <>
-            <Alert className="mt-3" variant="warning">
-              {error}
-            </Alert>
-            <br />
-          </>
-        )}
+        {error && <ErrorBanner error={error} />}
+        {loading && <LoadingBanner />}
 
         <Button variant="primary" type="submit" block className="mt-3 mb-3">
           Submit

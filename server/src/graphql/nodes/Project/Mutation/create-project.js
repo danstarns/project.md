@@ -21,14 +21,10 @@ async function createProject(root, args, context) {
         });
 
         return {
-            data: {
-                project
-            }
+            project
         };
     } catch (error) {
-        console.error(error);
         return {
-            data: null,
             error: {
                 message: error.message
             }
