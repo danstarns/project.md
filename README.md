@@ -49,8 +49,8 @@ Recommended to open `server` & `client` folders in separate instances of your ed
 2. `npm install`
 3. `npm run start`
 
-## Docker 🐳
+## Docker
 
-> Use this to start client, server & decencies all at once, take consideration for any local, conflicting, services. 
+> Use this to start client, server & dependencies all at once, take consideration for any local, conflicting, services 🐳
 
 1. `docker-compose-up`
