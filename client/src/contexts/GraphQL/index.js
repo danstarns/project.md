@@ -40,7 +40,7 @@ const client = new ApolloClient({
     }),
     authLink.concat(httpLink)
   ]),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache({ resultCaching: false })
 });
 
 function Provider(props) {

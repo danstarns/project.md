@@ -1,7 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Container } from "react-bootstrap";
-import { AuthContext, GraphQL } from "./contexts/index.js";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faSortUp,
+  faSortDown,
+  faChevronLeft,
+  faChevronRight
+} from "@fortawesome/free-solid-svg-icons";
 import {
   Home,
   NavBar,
@@ -13,6 +19,9 @@ import {
   SignUp,
   Logout
 } from "./components/index.js";
+import { AuthContext, GraphQL } from "./contexts/index.js";
+
+library.add(faSortUp, faSortDown, faChevronLeft, faChevronRight);
 
 function App() {
   return (

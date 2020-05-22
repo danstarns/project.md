@@ -10,6 +10,12 @@ type Project {
     updatedAt: String! # TODO SCALAR DATE
 }
 
+# COMMON 
+enum DateSortEnum {
+    desc
+    asc
+}
+
 
 # CREATE PROJECT
 # ------------------------------------
@@ -49,11 +55,14 @@ type UserProjectsResponse {
 input UserProjectsInput {
     page: Int!
     limit: Int!
+    sort: DateSortEnum!
+    search: String
 }
 
 type Query {
     project(id: ID!): Project
     userProjects(input: UserProjectsInput!): UserProjectsResponse!
+    publicProjects(input: UserProjectsInput!): UserProjectsResponse!
 }
 
 type Mutation {

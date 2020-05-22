@@ -1,0 +1,14 @@
+.project-filter-card:hover {
+    background-color: #007BFF;
+    cursor: pointer;
+    color: white;
+}
+
+.project-filter-card-date:hover {
+    cursor: pointer;
+}
+
+.project-filter-card-arrow:hover {
+    cursor: pointer;
+    color: #007BFF;
+}

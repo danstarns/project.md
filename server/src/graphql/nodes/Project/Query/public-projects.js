@@ -1,15 +1,11 @@
 const { Project } = require("../../../../models/index.js");
 
-async function userProjects(
-    root,
-    { input: { page, limit, sort, search } },
-    ctx
-) {
+async function publicProjects(root, { input: { page, limit, sort, search } }) {
     const regexMatch = { $regex: new RegExp(search), $options: ["i", "g"] };
 
     const { docs, hasNextPage } = await Project.paginate(
         {
-            creator: ctx.user,
+            private: false,
             ...(search
                 ? { $or: [{ name: regexMatch }, { tagline: regexMatch }] }
                 : {})
@@ -25,4 +21,4 @@ async function userProjects(
     };
 }
 
-module.exports = userProjects;
+module.exports = publicProjects;
