@@ -25,19 +25,37 @@ type CreateProjectError {
     message: String!
 }
 
-type CreateProjectData {
+type ProjectData {
     project: Project!
 }
 
 type CreateProjectResponse {
-    data: CreateProjectData
+    data: ProjectData
     error: CreateProjectError
+}
+
+# USER PROJECTS
+# --
+
+type UserProjectsData {
+    projects: [Project]!
+}
+
+type UserProjectsResponse {
+    hasNextPage: Boolean!
+    data: UserProjectsData!
+}
+
+input UserProjectsInput {
+    page: Int!
+    limit: Int!
 }
 
 type Query {
     project(id: ID!): Project
+    userProjects(input: UserProjectsInput!): UserProjectsResponse!
 }
 
 type Mutation {
-    createProject(input: CreateProjectInput!): CreateProjectResponse
+    createProject(input: CreateProjectInput!): CreateProjectResponse!
 }
