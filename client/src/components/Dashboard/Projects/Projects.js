@@ -1,10 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import gql from "graphql-tag";
-import { Button, Row, Col, Card, Jumbotron } from "react-bootstrap";
+import { Button, Row, Col, Jumbotron } from "react-bootstrap";
 import { GraphQL } from "../../../contexts/index.js";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
 import ProjectsFilter from "./ProjectsFilter.js";
 import "./projects.css";
+import ProjectList from "./ProjectsList.js";
 
 const userProjects = gql`
   query userProjects(
@@ -22,6 +23,7 @@ const userProjects = gql`
           _id
           name
           tagline
+          due
         }
       }
     }
@@ -44,6 +46,7 @@ const publicProjects = gql`
           _id
           name
           tagline
+          due
         }
       }
     }
@@ -55,7 +58,7 @@ function Projects({ history }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [projects, setProjects] = useState([]);
-  const [hasNextPage, setHasNextPage] = useState([]);
+  const [hasNextPage, setHasNextPage] = useState(false);
   const [filter, setFilter] = useState({
     selected: "user",
     dateDirection: "desc",
@@ -71,9 +74,7 @@ function Projects({ history }) {
           filter.selected === "user" ? userProjects : publicProjects;
 
         const {
-          data: {
-            result: { data }
-          }
+          data: { result }
         } = await client.query({
           query,
           variables: {
@@ -81,12 +82,13 @@ function Projects({ history }) {
             limit: filter.limit,
             sort: filter.dateDirection,
             search: filter.search
-          }
+          },
+          fetchPolicy: "no-cache"
         });
 
         setError(false);
-        setProjects(data.projects);
-        setHasNextPage(data.hasNextPage);
+        setProjects(result.data.projects);
+        setHasNextPage(result.hasNextPage);
         setLoading(false);
       } catch (e) {
         setError(e.message);
@@ -94,35 +96,6 @@ function Projects({ history }) {
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
-
-  function onChange(update) {
-    setFilter(update);
-  }
-
-  function ProjectCards() {
-    return (
-      <Row>
-        {projects.map(project => (
-          <Col xs={12} s={6} lg={6}>
-            <Card bg="light" className="w-100 mb-4">
-              <Card.Header />
-              <Card.Body>
-                <Card.Title>{project.title}</Card.Title>
-                <Card.Text>
-                  {project.tagline} <hr />
-                  <Button
-                    onClick={() => history.push(`/project/${project._id}`)}
-                  >
-                    Enter
-                  </Button>
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    );
-  }
 
   if (error) {
     return <ErrorBanner error={error} />;
@@ -135,25 +108,25 @@ function Projects({ history }) {
   return (
     <>
       <h1 className="mt-3">Projects</h1>
-      <Row className="mt-3">
-        <Col>
+
+      <hr />
+
+      <Row>
+        <Col sm={12} md={12} lg={2}>
           <Button
-            className="mt-3 mb-3"
+            className="mt-3 mb-3 w-100"
             onClick={() => history.push("/create-project")}
           >
             Create project
           </Button>
+          <ProjectsFilter onChange={setFilter} hasNextPage={hasNextPage} />
+        </Col>
+        <Col sm={12} md={12} lg={10} className="mt-3">
+          <ProjectList projects={projects} history={history} />
         </Col>
       </Row>
 
-      <Row>
-        <Col sm={4}>
-          <ProjectsFilter onChange={onChange} hasNextPage={hasNextPage} />
-        </Col>
-        <Col sm={8}>
-          <ProjectCards />
-        </Col>
-      </Row>
+      <hr />
 
       <Row className="mt-3">
         <Col>

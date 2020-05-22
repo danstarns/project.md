@@ -4,10 +4,10 @@ type Project {
     tagline: String
     creator: User!
     private: Boolean!
-    due: String!
+    due: DateTimeString
     markdown: String!
-    createdAt: String! # TODO SCALAR DATE
-    updatedAt: String! # TODO SCALAR DATE
+    createdAt: DateTimeString! # TODO SCALAR DATE
+    updatedAt: DateTimeString! # TODO SCALAR DATE
 }
 
 # COMMON 
@@ -23,7 +23,7 @@ input CreateProjectInput {
     name: String!
     tagline: String
     private: Boolean!
-    due: String!
+    due: String
     markdown: String!
 }
 

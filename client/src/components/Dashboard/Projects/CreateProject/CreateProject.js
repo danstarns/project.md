@@ -11,34 +11,32 @@ import {
   TitleBanner
 } from "../../../Common/index.js";
 
-function Mutation() {
-  return gql`
-    mutation createProject(
-      $name: String!
-      $tagline: String!
-      $private: Boolean!
-      $due: String!
-      $markdown: String!
+const Mutation = gql`
+  mutation createProject(
+    $name: String!
+    $tagline: String!
+    $private: Boolean!
+    $due: String
+    $markdown: String!
+  ) {
+    createProject(
+      input: {
+        name: $name
+        tagline: $tagline
+        private: $private
+        due: $due
+        markdown: $markdown
+      }
     ) {
-      createProject(
-        input: {
-          name: $name
-          tagline: $tagline
-          private: $private
-          due: $due
-          markdown: $markdown
-        }
-      ) {
-        error {
-          message
-        }
-        project {
-          _id
-        }
+      error {
+        message
+      }
+      project {
+        _id
       }
     }
-  `;
-}
+  }
+`;
 
 function CreateProject({ history }) {
   const { client } = useContext(GraphQL.Context);
@@ -49,7 +47,7 @@ function CreateProject({ history }) {
   const [markdown, setMarkdown] = useState(
     `# My Project \n look at my super cool project 🍺`
   );
-  const [due, setDue] = useState(new Date());
+  const [due, setDue] = useState();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -109,12 +107,12 @@ function CreateProject({ history }) {
         name,
         tagline,
         private: _private,
-        due,
-        markdown
+        markdown,
+        ...(due ? { due: due.toISOString() } : {})
       };
 
       const response = await client.mutate({
-        mutation: Mutation(),
+        mutation: Mutation,
         variables
       });
 
@@ -153,7 +151,7 @@ function CreateProject({ history }) {
                 required
                 checked={name}
                 onChange={updateName}
-                maxLength="50"
+                maxLength="60"
               />
             </Form.Group>
 
@@ -184,7 +182,7 @@ function CreateProject({ history }) {
                 as="textarea"
                 rows="3"
                 value={tagline}
-                maxLength="200"
+                maxLength="60"
                 onChange={updateTagline}
               />
             </Form.Group>

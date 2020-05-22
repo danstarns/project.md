@@ -3,7 +3,7 @@ const { Project } = require("../../../../models/index.js");
 async function createProject(root, args, context) {
     try {
         const {
-            input: { name, tagline, private: _private, markdown }
+            input: { name, tagline, private: _private, markdown, due }
         } = args;
 
         const existingByName = await Project.findOne({ name });
@@ -17,7 +17,8 @@ async function createProject(root, args, context) {
             tagline,
             private: _private,
             markdown,
-            creator: context.user
+            creator: context.user,
+            due
         });
 
         return {

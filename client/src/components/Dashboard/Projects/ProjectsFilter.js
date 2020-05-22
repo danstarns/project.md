@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col, ListGroup, Form, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -18,6 +18,8 @@ function ProjectsFilter(props) {
     props.onChange({ selected, dateDirection, search, page, limit });
   }
 
+  useEffect(onChange, [selected, dateDirection, search, page, limit]);
+
   function updateDirection() {
     let newDirection;
 
@@ -28,21 +30,15 @@ function ProjectsFilter(props) {
     }
 
     setDateDirection(newDirection);
-
-    onChange();
   }
 
   function updateSearch(e) {
     setSearch(e.target.value);
-
-    onChange();
   }
 
   function updateSelected(type) {
     return () => {
       setSelected(type);
-
-      onChange();
     };
   }
 
@@ -57,8 +53,6 @@ function ProjectsFilter(props) {
       }
 
       setPage(newPageNum);
-
-      onChange();
     };
   }
 
@@ -117,36 +111,38 @@ function ProjectsFilter(props) {
               />
             )}
           </ListGroup.Item>
-          <ListGroup.Item>
-            <Container>
-              <Row className="text-center">
-                <Col
-                  onClick={updatePage("back")}
-                  xm={6}
-                  sm={6}
-                  md={6}
-                  lg={6}
-                  className="project-filter-card-arrow"
-                >
-                  {page > 1 && (
-                    <FontAwesomeIcon icon="chevron-left" size="2x" />
-                  )}
-                </Col>
-                <Col
-                  onClick={updatePage("next")}
-                  xm={6}
-                  sm={6}
-                  md={6}
-                  lg={6}
-                  className="project-filter-card-arrow"
-                >
-                  {props.hasNextPage && (
-                    <FontAwesomeIcon icon="chevron-right" size="2x" />
-                  )}
-                </Col>
-              </Row>
-            </Container>
-          </ListGroup.Item>
+          {props.hasNextPage && page !== 1 && (
+            <ListGroup.Item>
+              <Container>
+                <Row className="text-center">
+                  <Col
+                    onClick={updatePage("back")}
+                    xm={6}
+                    sm={6}
+                    md={6}
+                    lg={6}
+                    className="project-filter-card-arrow"
+                  >
+                    {page > 1 && (
+                      <FontAwesomeIcon icon="chevron-left" size="2x" />
+                    )}
+                  </Col>
+                  <Col
+                    onClick={updatePage("next")}
+                    xm={6}
+                    sm={6}
+                    md={6}
+                    lg={6}
+                    className="project-filter-card-arrow"
+                  >
+                    {props.hasNextPage && (
+                      <FontAwesomeIcon icon="chevron-right" size="2x" />
+                    )}
+                  </Col>
+                </Row>
+              </Container>
+            </ListGroup.Item>
+          )}
         </ListGroup>
       </Col>
     </Row>

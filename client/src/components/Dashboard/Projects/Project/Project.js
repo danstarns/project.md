@@ -70,6 +70,10 @@ function Project({ match, history }) {
     <div>
       <TitleBanner heading={project.name} content={project.tagline} />
 
+      <Button onClick={() => history.push("/projects")}>
+        Back to projects
+      </Button>
+
       <h1>Tasks</h1>
       <hr />
       <Row>
