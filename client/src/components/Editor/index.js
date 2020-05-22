@@ -32,4 +32,5 @@ function Editor(props) {
   );
 }
 
+export { CodeBlock };
 export default Editor;

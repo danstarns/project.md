@@ -1,7 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
 import gql from "graphql-tag";
-import { Alert, Col, Row } from "react-bootstrap";
+import { Alert, Col, Row, Button, Card, Jumbotron } from "react-bootstrap";
+import ReactMarkdown from "react-markdown";
 import { GraphQL } from "../../../../contexts/index.js";
+import { CodeBlock } from "../../../Editor/index.js";
 
 function Query() {
   return gql`
@@ -9,9 +11,35 @@ function Query() {
       project(id: $id) {
         _id
         name
+        tagline
+        markdown
       }
     }
   `;
+}
+
+function ErrorBanner(error) {
+  return (
+    <Row>
+      <Col>
+        <Alert show className="mt-3" variant="warning">
+          {error}
+        </Alert>
+      </Col>
+    </Row>
+  );
+}
+
+function LoadingBanner() {
+  return (
+    <Row>
+      <Col>
+        <Alert show className="mt-3" variant="info">
+          Loading...
+        </Alert>
+      </Col>
+    </Row>
+  );
 }
 
 function Project({ match, history }) {
@@ -46,35 +74,79 @@ function Project({ match, history }) {
     }
 
     get();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (error) {
-    return (
-      <Row>
-        <Col>
-          <Alert show className="mt-3" variant="warning">
-            {error}
-          </Alert>
-        </Col>
-      </Row>
-    );
+    return <ErrorBanner />;
   }
 
   if (!project) {
-    return (
+    return <LoadingBanner />;
+  }
+
+  return (
+    <div>
       <Row>
-        <Col>
-          <Alert show className="mt-3" variant="info">
-            Loading...
+        <Col xs={12} s={12} lg={12}>
+          <Alert show variant="success" className="mt-3">
+            <Alert.Heading>{project.name}</Alert.Heading>
+            <p>{project.tagline}</p>
           </Alert>
         </Col>
       </Row>
-    );
-  }
 
-  return <h1>{project.name}</h1>;
+      <h1>Tasks</h1>
+      <hr />
+      <Row>
+        {Array(8)
+          .fill(null)
+          .map(_ => (
+            <Col xs={6} s={3} lg={3}>
+              <Card bg="light" className="w-100 mb-4">
+                <Card.Header />
+                <Card.Body>
+                  <Card.Title>THis will be the task title</Card.Title>
+                  <Card.Text>
+                    THis will be the task tagline <hr />
+                    <Button>Enter</Button>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+      </Row>
+
+      <h1>Markdown</h1>
+      <hr />
+
+      <Row>
+        <Col xs={12} s={12} lg={12}>
+          <div className="result-pane">
+            <ReactMarkdown
+              source={project.markdown}
+              renderers={{ code: CodeBlock }}
+            />
+          </div>
+        </Col>
+      </Row>
+
+      <hr />
+
+      <Row className="mt-3">
+        <Col>
+          <Jumbotron>
+            <h1>Recents</h1>
+          </Jumbotron>
+        </Col>
+        <Col>
+          <Jumbotron>
+            <h1>Events</h1>
+          </Jumbotron>
+        </Col>
+      </Row>
+    </div>
+  );
 }
 
 export default Project;
