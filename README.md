@@ -39,10 +39,18 @@ Recommended to open `server` & `client` folders in separate instances of your ed
 
 ## Server 
 1. [MongoDB Server](https://www.mongodb.com/)
-2. `npm install`
-3. `npm run start`
+2. `cd server`
+3. `npm install`
+4. `npm run start`
 
 ## Client 
 
-1. `npm install`
-2. `npm run start`
+1. `cd client`
+2. `npm install`
+3. `npm run start`
+
+## Docker 🐳
+
+> Use this to start client, server & decencies all at once, take consideration for any local, conflicting, services. 
+
+1. `docker-compose-up`
