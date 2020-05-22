@@ -1,11 +1,126 @@
-import React from "react";
-import { Button, Row, Col, Card, Jumbotron } from "react-bootstrap";
+import React, { useState, useContext, useEffect } from "react";
+import gql from "graphql-tag";
+import {
+  Button,
+  Row,
+  Col,
+  Card,
+  Jumbotron,
+  ListGroup,
+  Alert
+} from "react-bootstrap";
+import { GraphQL } from "../../../contexts/index.js";
+
+function Query() {
+  return gql`
+    query userProjects($page: Int!, $limit: Int!) {
+      userProjects(input: { page: $page, limit: $limit }) {
+        hasNextPage
+        data {
+          projects {
+            _id
+            name
+            tagline
+          }
+        }
+      }
+    }
+  `;
+}
+
+const filterTypes = [
+  ["user", "My Projects"],
+  ["public", "Public Projects"],
+  ["search", "Search: "]
+];
 
 function Projects({ history }) {
+  const { client } = useContext(GraphQL.Context);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [projects, setProjects] = useState([]);
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState([]);
+  const [filterType, setFilterType] = useState("user");
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const {
+          data: {
+            userProjects: { data }
+          }
+        } = await client.query({
+          query: Query(),
+          variables: { page, limit: 6 }
+        });
+
+        setError(false);
+        setProjects(data.projects);
+        setLoading(false);
+      } catch (e) {
+        setError(e.message);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterType]);
+
+  function filterTypeMapper([type, display]) {
+    return (
+      <ListGroup.Item onClick={() => setFilterType(type)}>
+        {display}
+      </ListGroup.Item>
+    );
+  }
+
+  function ProjectCards() {
+    return (
+      <Row>
+        {projects.map(project => (
+          <Col xs={12} s={6} lg={6}>
+            <Card bg="light" className="w-100 mb-4">
+              <Card.Header />
+              <Card.Body>
+                <Card.Title>{project.title}</Card.Title>
+                <Card.Text>
+                  {project.tagline} <hr />
+                  <Button
+                    onClick={() => history.push(`/project/${project._id}`)}
+                  >
+                    Enter
+                  </Button>
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    );
+  }
+
+  if (error) {
+    return (
+      <Row className="mt-3">
+        <Col xs={12} s={12} lg={12}>
+          <Alert variant="danger">{error}</Alert>
+        </Col>
+      </Row>
+    );
+  }
+
+  if (loading) {
+    return (
+      <Row className="mt-3">
+        <Col xs={12} s={12} lg={12}>
+          <Alert variant="info">Loading...</Alert>
+        </Col>
+      </Row>
+    );
+  }
+
   return (
     <>
       <h1 className="mt-3">Projects</h1>
-
       <Row className="mt-3">
         <Col>
           <Button
@@ -17,24 +132,13 @@ function Projects({ history }) {
         </Col>
       </Row>
 
-      <Row className="mt-3">
-        {Array(6)
-          .fill(null)
-          .map((x, i) => (
-            <Col xs={6} s={6} lg={4}>
-              <Card bg="light" key={i} className="w-100 mb-4">
-                <Card.Header />
-                <Card.Body>
-                  <Card.Title> Card Title </Card.Title>
-                  <Card.Text>
-                    Some quick example text to build on the card title and make
-                    up the bulk of the content. <hr />
-                    <Button>Enter</Button>
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
+      <Row>
+        <Col sm={4}>
+          <ListGroup>{filterTypes.map(filterTypeMapper)}</ListGroup>
+        </Col>
+        <Col sm={8}>
+          <ProjectCards />
+        </Col>
       </Row>
 
       <Row className="mt-3">
