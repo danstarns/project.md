@@ -41,9 +41,18 @@ function App() {
 
               {/** DASHBOARD */}
               <Route exact path="/dashboard" component={Dashboard} />
+
+              {/** ******** PROJECTS */}
               <Route exact path="/projects" component={Projects} />
-              <Route exact path="/create-project" component={CreateProject} />
+              <Route exact path="/project/create" component={CreateProject} />
               <Route exact path="/project/:id" component={Project} />
+              {/* <Route exact path="/project/update/:id" component={UpdateProject} /> */}
+
+              {/** ******** TASKS */}
+              {/* <Route exact path="/tasks" component={Tasks} /> */}
+              {/* <Route exact path="/task/create" component={CreateTask} /> */}
+              {/* <Route exact path="/task/:id" component={Task} /> */}
+              {/* <Route exact path="/task/update/:id" component={UpdateTask} /> */}
 
               {/** 404 */}
               <Route component={Home} />

@@ -115,7 +115,7 @@ function Projects({ history }) {
         <Col sm={12} md={12} lg={2}>
           <Button
             className="mt-3 mb-3 w-100"
-            onClick={() => history.push("/create-project")}
+            onClick={() => history.push("/project/create")}
           >
             Create project
           </Button>
