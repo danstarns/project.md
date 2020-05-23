@@ -1,3 +1,3 @@
-const DateTimeString = require("./DateTimeString.js");
+const GraphQLDateTime = require("./GraphQLDateTime.js");
 
-module.exports = [DateTimeString];
+module.exports = [GraphQLDateTime];

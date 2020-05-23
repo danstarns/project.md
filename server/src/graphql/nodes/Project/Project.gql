@@ -4,10 +4,31 @@ type Project {
     tagline: String
     creator: User!
     private: Boolean!
-    due: DateTimeString
+    due: GraphQLDateTime
     markdown: String!
-    createdAt: DateTimeString! # TODO SCALAR DATE
-    updatedAt: DateTimeString! # TODO SCALAR DATE
+    createdAt: GraphQLDateTime! # TODO SCALAR DATE
+    updatedAt: GraphQLDateTime! # TODO SCALAR DATE
+
+    tasks(input: ProjectTasksInput): ProjectTasksResponse!
+}
+
+# PROJECT.TASKS
+# ------------------------------------
+type ProjectTasksData {
+    tasks: [Task]
+}
+
+type ProjectTasksResponse {
+    hasNextPage: Boolean!
+    data: ProjectTasksData
+}
+
+input ProjectTasksInput {
+    page: Int! 
+    limit: Int!
+    search: String
+    sort: String!
+    user: Boolean!
 }
 
 # COMMON 

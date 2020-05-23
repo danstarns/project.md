@@ -1,0 +1,42 @@
+type Task {
+    _id: ID!
+    name: String!
+    tagline: String
+    creator: User!
+    due: GraphQLDateTime
+    markdown: String!
+    project: Project!
+    createdAt: GraphQLDateTime!
+    updatedAt: GraphQLDateTime!
+}
+
+# CREATE TASK
+# ------------------------------------
+input CreateTaskInput {
+    name: String!
+    tagline: String!
+    due: String
+    markdown: String!
+    project: ID!
+}
+
+type CreateTaskError {
+    message: String!
+}
+
+type CreateTaskData {
+    task: Task!
+}
+
+type CreateTaskResponse {
+    data: CreateTaskData
+    error: CreateTaskError
+}
+
+type Query {
+    task(id: ID!): Task
+}
+
+type Mutation {
+    createTask(input: CreateTaskInput!): CreateTaskResponse!
+}

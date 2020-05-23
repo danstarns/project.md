@@ -17,7 +17,9 @@ import {
   CreateProject,
   Login,
   SignUp,
-  Logout
+  Logout,
+  Task,
+  CreateTask
 } from "./components/index.js";
 import { AuthContext, GraphQL } from "./contexts/index.js";
 
@@ -49,9 +51,12 @@ function App() {
               {/* <Route exact path="/project/update/:id" component={UpdateProject} /> */}
 
               {/** ******** TASKS */}
-              {/* <Route exact path="/tasks" component={Tasks} /> */}
-              {/* <Route exact path="/task/create" component={CreateTask} /> */}
-              {/* <Route exact path="/task/:id" component={Task} /> */}
+              <Route
+                exact
+                path="/task/create/:project"
+                component={CreateTask}
+              />
+              <Route exact path="/task/:id" component={Task} />
               {/* <Route exact path="/task/update/:id" component={UpdateTask} /> */}
 
               {/** 404 */}

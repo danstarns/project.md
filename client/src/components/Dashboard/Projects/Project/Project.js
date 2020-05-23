@@ -9,15 +9,42 @@ import {
   LoadingBanner,
   TitleBanner
 } from "../../../Common/index.js";
+import { TasksFilter } from "../../Tasks/index.js";
+import TaskList from "../../Tasks/TasksList.js";
 
 function Query() {
   return gql`
-    query project($id: ID!) {
+    query project(
+      $id: ID!
+      $page: Int!
+      $limit: Int!
+      $search: String
+      $sort: String!
+      $user: Boolean!
+    ) {
       project(id: $id) {
         _id
         name
         tagline
         markdown
+        tasks(
+          input: {
+            page: $page
+            limit: $limit
+            search: $search
+            sort: $sort
+            user: $user
+          }
+        ) {
+          hasNextPage
+          data {
+            tasks {
+              _id
+              name
+              tagline
+            }
+          }
+        }
       }
     }
   `;
@@ -27,13 +54,33 @@ function Project({ match, history }) {
   const { client } = useContext(GraphQL.Context);
   const [project, setProject] = useState();
   const [error, setError] = useState();
+  const [tasksFilter, setTasksFilter] = useState({
+    selected: "user",
+    dateDirection: "desc",
+    search: "",
+    page: 1,
+    limit: 6
+  });
+  const [tasks, setTasks] = useState([]);
+  const [hasNextTasks, setHasNextTasks] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function get() {
       try {
         const { data, errors } = await client.query({
           query: Query(),
-          variables: { id: match.params.id }
+          variables: {
+            id: match.params.id,
+            page: tasksFilter.page,
+            limit: tasksFilter.limit,
+            sort: tasksFilter.dateDirection,
+            search: tasksFilter.search,
+            ...(tasksFilter.selected === "user"
+              ? { user: true }
+              : { user: false })
+          },
+          fetchPolicy: "no-cache"
         });
 
         if (errors && errors.length) {
@@ -44,55 +91,61 @@ function Project({ match, history }) {
           history.push("/");
         }
 
+        setTasks(data.project.tasks.data.tasks);
+        setHasNextTasks(data.project.tasks.hasNextPage);
         setProject(data.project);
       } catch (e) {
         setError(e.message);
-
-        setTimeout(() => {
-          history.push("/");
-        }, 1000);
       }
+
+      setLoading(false);
     }
 
     get();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [tasksFilter]);
 
   if (error) {
     return <ErrorBanner error={error} />;
   }
 
-  if (!project) {
+  if (loading) {
     return <LoadingBanner />;
+  }
+
+  function updateTasks(filter) {
+    setTasksFilter(filter);
   }
 
   return (
     <div>
-      <TitleBanner heading={project.name} content={project.tagline} />
-
-      <Button onClick={() => history.push("/projects")}>
-        Back to projects
-      </Button>
+      <TitleBanner
+        heading={`Project: ${project.name}`}
+        content={project.tagline}
+      />
 
       <h1>Tasks</h1>
       <hr />
+
       <Row>
-        {Array(8)
-          .fill(null)
-          .map(_ => (
-            <Col xs={6} s={3} lg={3}>
-              <Card bg="light" className="w-100 mb-4">
-                <Card.Header />
-                <Card.Body>
-                  <Card.Title>THis will be the task title</Card.Title>
-                  <Card.Text>
-                    THis will be the task tagline <hr />
-                    <Button>Enter</Button>
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
+        <Col sm={12} md={12} lg={2}>
+          <Button
+            className="mt-3 mb-3 w-100"
+            onClick={() => history.push(`/task/create/${project._id}`)}
+          >
+            Create Task
+          </Button>
+
+          <TasksFilter onChange={updateTasks} />
+        </Col>
+
+        <Col sm={12} md={12} lg={10} className="mt-3">
+          <TaskList
+            tasks={tasks}
+            history={history}
+            hasNextPage={hasNextTasks}
+          />
+        </Col>
       </Row>
 
       <h1>Markdown</h1>
