@@ -89,10 +89,11 @@ function Projects({ history }) {
         setError(false);
         setProjects(result.data.projects);
         setHasNextPage(result.hasNextPage);
-        setLoading(false);
       } catch (e) {
         setError(e.message);
       }
+
+      setLoading(false);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
