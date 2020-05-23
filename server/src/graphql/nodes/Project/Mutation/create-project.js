@@ -9,7 +9,7 @@ async function createProject(root, args, context) {
         const existingByName = await Project.findOne({ name });
 
         if (existingByName) {
-            throw new Error(`name: '${name}' already exists`);
+            throw new Error(`Project with name: '${name}' already exists`);
         }
 
         const project = await Project.create({

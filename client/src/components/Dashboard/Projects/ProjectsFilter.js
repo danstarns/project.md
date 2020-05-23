@@ -111,34 +111,34 @@ function ProjectsFilter(props) {
               />
             )}
           </ListGroup.Item>
-          {props.hasNextPage && page !== 1 && (
+          {Boolean(props.hasNextPage || page > 1) && (
             <ListGroup.Item>
               <Container>
                 <Row className="text-center">
-                  <Col
-                    onClick={updatePage("back")}
-                    xm={6}
-                    sm={6}
-                    md={6}
-                    lg={6}
-                    className="project-filter-card-arrow"
-                  >
-                    {page > 1 && (
+                  {page > 1 && (
+                    <Col
+                      onClick={updatePage("back")}
+                      xm={6}
+                      sm={6}
+                      md={6}
+                      lg={6}
+                      className="project-filter-card-arrow mx-auto"
+                    >
                       <FontAwesomeIcon icon="chevron-left" size="2x" />
-                    )}
-                  </Col>
-                  <Col
-                    onClick={updatePage("next")}
-                    xm={6}
-                    sm={6}
-                    md={6}
-                    lg={6}
-                    className="project-filter-card-arrow"
-                  >
-                    {props.hasNextPage && (
+                    </Col>
+                  )}
+                  {props.hasNextPage && (
+                    <Col
+                      onClick={updatePage("next")}
+                      xm={6}
+                      sm={6}
+                      md={6}
+                      lg={6}
+                      className="project-filter-card-arrow mx-auto"
+                    >
                       <FontAwesomeIcon icon="chevron-right" size="2x" />
-                    )}
-                  </Col>
+                    </Col>
+                  )}
                 </Row>
               </Container>
             </ListGroup.Item>

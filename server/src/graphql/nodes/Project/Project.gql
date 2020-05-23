@@ -61,6 +61,30 @@ type CreateProjectResponse {
     error: CreateProjectError
 }
 
+# EDIT PROJECT 
+# ------------------------------------
+input EditProjectInput {
+    id: ID!
+    name: String!
+    tagline: String
+    private: Boolean!
+    due: String
+    markdown: String!
+}
+
+type EditProjectData {
+    project: Project
+}
+
+type EditProjectError {
+    message: String!
+}
+
+type EditProjectResponse {
+    data: EditProjectData
+    error: EditProjectError
+}
+
 # USER PROJECTS
 # --
 
@@ -88,4 +112,5 @@ type Query {
 
 type Mutation {
     createProject(input: CreateProjectInput!): CreateProjectResponse!
+    editProject(input: EditProjectInput!): EditProjectResponse!
 }

@@ -15,6 +15,7 @@ import {
   Projects,
   Project,
   CreateProject,
+  EditProject,
   Login,
   SignUp,
   Logout,
@@ -48,7 +49,7 @@ function App() {
               <Route exact path="/projects" component={Projects} />
               <Route exact path="/project/create" component={CreateProject} />
               <Route exact path="/project/:id" component={Project} />
-              {/* <Route exact path="/project/update/:id" component={UpdateProject} /> */}
+              <Route exact path="/project/edit/:id" component={EditProject} />
 
               {/** ******** TASKS */}
               <Route

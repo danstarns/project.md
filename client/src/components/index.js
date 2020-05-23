@@ -5,6 +5,7 @@ import {
   Projects,
   Project,
   CreateProject,
+  EditProject,
   Task,
   CreateTask
 } from "./Dashboard/index.js";
@@ -17,6 +18,7 @@ export {
   Projects,
   Project,
   CreateProject,
+  EditProject,
   Login,
   SignUp,
   Logout,

@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import gql from "graphql-tag";
-import { Col, Row, Button, Card, Jumbotron } from "react-bootstrap";
+import { Col, Row, Button, Jumbotron } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
 import { GraphQL } from "../../../../contexts/index.js";
 import { CodeBlock } from "../../../Editor/index.js";
@@ -122,6 +122,16 @@ function Project({ match, history }) {
       <TitleBanner
         heading={`Project: ${project.name}`}
         content={project.tagline}
+        nested={
+          <>
+            <hr />{" "}
+            <Button
+              onClick={() => history.push(`/project/edit/${project._id}`)}
+            >
+              Edit
+            </Button>
+          </>
+        }
       />
 
       <h1>Tasks</h1>
