@@ -26,7 +26,7 @@ const Mutation = gql`
     $tagline: String!
     $private: Boolean!
     $markdown: String!
-    $due: String
+    $due: String!
   ) {
     editProject(
       input: {
@@ -66,7 +66,8 @@ function EditProject({ match, history }) {
 
         const response = await client.query({
           query: Query,
-          variables
+          variables,
+          fetchPolicy: "no-cache"
         });
 
         const { data = {}, errors } = response;

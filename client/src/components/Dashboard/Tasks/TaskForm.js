@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Alert, Row, Col, Card } from "react-bootstrap";
+import { Form, Button, Row, Col, Card } from "react-bootstrap";
 import DatePicker from "react-date-picker";
 import moment from "moment";
 import Editor from "../../Editor/index.js";

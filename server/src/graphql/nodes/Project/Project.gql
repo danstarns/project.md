@@ -44,7 +44,7 @@ input CreateProjectInput {
     name: String!
     tagline: String
     private: Boolean!
-    due: String
+    due: String!
     markdown: String!
 }
 
@@ -68,7 +68,7 @@ input EditProjectInput {
     name: String!
     tagline: String
     private: Boolean!
-    due: String
+    due: String!
     markdown: String!
 }
 

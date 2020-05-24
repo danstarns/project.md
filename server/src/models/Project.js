@@ -10,7 +10,7 @@ const Project = new mongoose.Schema(
             required: true,
             ref: "User"
         },
-        due: { type: Date },
+        due: { type: Date, required: true },
         private: { type: Boolean, required: true },
         markdown: { type: String, required: true }
     },

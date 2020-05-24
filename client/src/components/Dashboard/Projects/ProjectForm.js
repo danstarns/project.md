@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Alert, Row, Col, Card } from "react-bootstrap";
+import { Form, Button, Row, Col, Card } from "react-bootstrap";
 import DatePicker from "react-date-picker";
 import moment from "moment";
 import Editor from "../../Editor/index.js";
 import { ErrorBanner, LoadingBanner, TitleBanner } from "../../Common/index.js";
 
-function ProjectForm({ defaults = {}, onChange, loading, error }) {
+function ProjectForm({
+  defaults = { due: new Date() },
+  onChange,
+  loading,
+  error
+}) {
   const [name, setName] = useState(defaults.name);
   const [tagline, setTagline] = useState(defaults.tagline);
   const [_private, setPrivate] = useState(defaults.private);
   const [markdown, setMarkdown] = useState(defaults.markdown);
-  const [wantDue, setWantDue] = useState(defaults.private);
   const [due, setDue] = useState(defaults.due);
   const [validationError, setValidationError] = useState("");
 
@@ -28,10 +32,6 @@ function ProjectForm({ defaults = {}, onChange, loading, error }) {
 
   function updatePrivate(event) {
     setPrivate(event.target.checked);
-  }
-
-  function updateWantDue() {
-    setWantDue(!wantDue);
   }
 
   function updateDue(date) {
@@ -74,19 +74,9 @@ function ProjectForm({ defaults = {}, onChange, loading, error }) {
           </Form.Group>
 
           <Form.Group controlId="date">
-            <Alert variant="info" className="w-75">
-              <Form.Check
-                label="Want A Due Date?"
-                onChange={updateWantDue}
-                value={wantDue}
-              />
-            </Alert>
-
-            {Boolean(wantDue || due) && (
-              <div>
-                Select Due Date: <DatePicker onChange={updateDue} value={due} />{" "}
-              </div>
-            )}
+            <div>
+              Select Due Date: <DatePicker onChange={updateDue} value={due} />{" "}
+            </div>
           </Form.Group>
 
           <Form.Group controlId="tagline">
@@ -109,7 +99,7 @@ function ProjectForm({ defaults = {}, onChange, loading, error }) {
               type="checkbox"
               label="Select To Make Private"
               onChange={updatePrivate}
-              value={_private}
+              checked={_private}
               className="ml-3"
             />
           </Form.Group>
@@ -120,20 +110,16 @@ function ProjectForm({ defaults = {}, onChange, loading, error }) {
             <Card.Header />
             <Card.Body>
               <Card.Title>{name}</Card.Title>
-              {_private && (
-                <Form.Check
-                  type="checkbox"
-                  label="Private"
-                  checked={_private}
-                  disabled
-                />
-              )}
+              <Form.Check
+                type="checkbox"
+                label="Private"
+                checked={_private}
+                disabled
+              />
               <Card.Text>{tagline}</Card.Text>
-              {Boolean(wantDue || due) && (
-                <Card.Text>
-                  Due On: {moment(due).format("MMMM Do YYYY, h:mm:ss a")}
-                </Card.Text>
-              )}
+              <Card.Text>
+                Due On: {moment(due).format("MMMM Do YYYY, h:mm:ss a")}
+              </Card.Text>
             </Card.Body>
           </Card>
         </Col>

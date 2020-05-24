@@ -124,9 +124,9 @@ function Project({ match, history }) {
         content={project.tagline}
         nested={
           <>
-            <hr />{" "}
+            <hr />
             <Button
-              onClick={() => history.push(`/project/edit/${project._id}`)}
+              onClick={() => history.push(`/project/edit/${match.params.id}`)}
             >
               Edit
             </Button>
@@ -141,7 +141,7 @@ function Project({ match, history }) {
         <Col sm={12} md={12} lg={2}>
           <Button
             className="mt-3 mb-3 w-100"
-            onClick={() => history.push(`/task/create/${project._id}`)}
+            onClick={() => history.push(`/task/create/${match.params.id}`)}
           >
             Create Task
           </Button>

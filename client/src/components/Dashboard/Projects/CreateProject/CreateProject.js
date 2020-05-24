@@ -10,7 +10,7 @@ const Mutation = gql`
     $name: String!
     $tagline: String!
     $private: Boolean!
-    $due: String
+    $due: String!
     $markdown: String!
   ) {
     createProject(
@@ -48,12 +48,13 @@ function CreateProject({ history }) {
         tagline: project.tagline,
         private: Boolean(project.private),
         markdown: project.markdown,
-        ...(project.due ? { due: project.due.toISOString() } : {})
+        due: project.due.toISOString()
       };
 
       const response = await client.mutate({
         mutation: Mutation,
-        variables
+        variables,
+        fetchPolicy: "no-cache"
       });
 
       const { data: { createProject = {} } = {} } = response;
