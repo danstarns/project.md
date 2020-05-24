@@ -33,10 +33,34 @@ type CreateTaskResponse {
     error: CreateTaskError
 }
 
+# EDIT TASK 
+# ------------------------------------
+input EditTaskInput {
+    id: ID!
+    name: String!
+    tagline: String!
+    due: String
+    markdown: String!
+}
+
+type EditTaskData {
+    task: Task
+}
+
+type EditTaskError {
+    message: String!
+}
+
+type EditTaskResponse {
+    data: EditTaskData
+    error: EditTaskError
+}
+
 type Query {
     task(id: ID!): Task
 }
 
 type Mutation {
     createTask(input: CreateTaskInput!): CreateTaskResponse!
+    editTask(input: EditTaskInput!): EditTaskResponse!
 }
