@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, Row, Col, Card } from "react-bootstrap";
 import DatePicker from "react-date-picker";
 import moment from "moment";
-import Editor from "../../Editor/index.js";
+import { Editor } from "../../Markdown/index.js";
 import { ErrorBanner, LoadingBanner, TitleBanner } from "../../Common/index.js";
 
 function ProjectForm({

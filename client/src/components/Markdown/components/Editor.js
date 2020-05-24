@@ -1,9 +1,9 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
-import CodeEditor from "./CodeEditor.js";
-import CodeBlock from "./CodeBlock.js";
-import "./editor.css";
+import Input from "./Input.js";
+import Code from "./Code.js";
+import "../markdown.css";
 
 function Editor(props) {
   function onChange(event) {
@@ -13,7 +13,7 @@ function Editor(props) {
   return (
     <Row>
       <Col xs={6} s={6} lg={6}>
-        <CodeEditor
+        <Input
           mode="markdown"
           theme="monokai"
           value={props.markdown}
@@ -22,15 +22,11 @@ function Editor(props) {
       </Col>
       <Col xs={6} s={6} lg={6}>
         <div className="result-pane">
-          <ReactMarkdown
-            source={props.markdown}
-            renderers={{ code: CodeBlock }}
-          />
+          <ReactMarkdown source={props.markdown} renderers={{ code: Code }} />
         </div>
       </Col>
     </Row>
   );
 }
 
-export { CodeBlock };
 export default Editor;

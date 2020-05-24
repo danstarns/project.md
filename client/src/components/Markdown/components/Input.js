@@ -12,7 +12,7 @@ const IS_MOBILE =
   navigator.userAgent.match(/BlackBerry/i) ||
   navigator.userAgent.match(/Windows Phone/i);
 
-class CodeMirrorEditor extends React.Component {
+class Input extends React.Component {
   constructor(props) {
     super(props);
     this.state = { isControlled: Boolean(this.props.value) };
@@ -76,4 +76,4 @@ class CodeMirrorEditor extends React.Component {
   }
 }
 
-export default CodeMirrorEditor;
+export default Input;

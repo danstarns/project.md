@@ -1,6 +1,6 @@
 const React = require("react");
 
-class CodeBlock extends React.PureComponent {
+class Code extends React.PureComponent {
   constructor(props) {
     super(props);
     this.setRef = this.setRef.bind(this);
@@ -32,4 +32,4 @@ class CodeBlock extends React.PureComponent {
   }
 }
 
-export default CodeBlock;
+export default Code;

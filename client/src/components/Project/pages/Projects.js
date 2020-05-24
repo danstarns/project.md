@@ -3,9 +3,8 @@ import gql from "graphql-tag";
 import { Button, Row, Col, Jumbotron } from "react-bootstrap";
 import { GraphQL } from "../../../contexts/index.js";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
-import ProjectsFilter from "./ProjectsFilter.js";
-import "./projects.css";
-import ProjectList from "./ProjectsList.js";
+import { ProjectFilter, ProjectList } from "../components/index.js";
+import "../project.css";
 
 const userProjects = gql`
   query userProjects(
@@ -95,7 +94,6 @@ function Projects({ history }) {
 
       setLoading(false);
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
   if (error) {
@@ -120,7 +118,7 @@ function Projects({ history }) {
           >
             Create project
           </Button>
-          <ProjectsFilter onChange={setFilter} hasNextPage={hasNextPage} />
+          <ProjectFilter onChange={setFilter} hasNextPage={hasNextPage} />
         </Col>
         <Col sm={12} md={12} lg={10} className="mt-3">
           <ProjectList projects={projects} history={history} />

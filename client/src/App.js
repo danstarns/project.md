@@ -12,14 +12,9 @@ import {
   Home,
   NavBar,
   Dashboard,
-  Projects,
-  Project,
-  CreateProject,
-  EditProject,
   Auth,
   Task,
-  CreateTask,
-  EditTask
+  Project
 } from "./components/index.js";
 import { AuthContext, GraphQL } from "./contexts/index.js";
 
@@ -33,33 +28,34 @@ function App() {
           <NavBar />
           <Container>
             <Switch>
-              {/** COMMON */}
               <Route exact path="/" component={Home} />
+              <Route exact path="/dashboard" component={Dashboard} />
 
-              {/** AUTH */}
               <Route exact path="/login" component={Auth.Login} />
               <Route exact path="/signup" component={Auth.SignUp} />
               <Route exact path="/logout" component={Auth.Logout} />
 
-              {/** DASHBOARD */}
-              <Route exact path="/dashboard" component={Dashboard} />
+              <Route exact path="/projects" component={Project.Projects} />
+              <Route
+                exact
+                path="/project/create"
+                component={Project.CreateProject}
+              />
+              <Route exact path="/project/:id" component={Project.Project} />
+              <Route
+                exact
+                path="/project/edit/:id"
+                component={Project.EditProject}
+              />
 
-              {/** ******** PROJECTS */}
-              <Route exact path="/projects" component={Projects} />
-              <Route exact path="/project/create" component={CreateProject} />
-              <Route exact path="/project/:id" component={Project} />
-              <Route exact path="/project/edit/:id" component={EditProject} />
-
-              {/** ******** TASKS */}
               <Route
                 exact
                 path="/task/create/:project"
-                component={CreateTask}
+                component={Task.CreateTask}
               />
-              <Route exact path="/task/:id" component={Task} />
-              <Route exact path="/task/edit/:id" component={EditTask} />
+              <Route exact path="/task/:id" component={Task.Task} />
+              <Route exact path="/task/edit/:id" component={Task.EditTask} />
 
-              {/** 404 */}
               <Route component={Home} />
             </Switch>
           </Container>

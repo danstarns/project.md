@@ -2,15 +2,10 @@ import React, { useContext, useState, useEffect } from "react";
 import gql from "graphql-tag";
 import { Col, Row, Button, Jumbotron } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
-import { GraphQL } from "../../../../contexts/index.js";
-import { CodeBlock } from "../../../Editor/index.js";
-import {
-  ErrorBanner,
-  LoadingBanner,
-  TitleBanner
-} from "../../../Common/index.js";
-import { TasksFilter } from "../../Tasks/index.js";
-import TaskList from "../../Tasks/TasksList.js";
+import { GraphQL } from "../../../contexts/index.js";
+import { Code } from "../../Markdown/index.js";
+import { ErrorBanner, TitleBanner, LoadingBanner } from "../../Common/index.js";
+import { TasksList, TasksFilter } from "../../Task/index.js";
 
 function Query() {
   return gql`
@@ -103,7 +98,6 @@ function Project({ match, history }) {
     }
 
     get();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tasksFilter]);
 
   if (error) {
@@ -151,7 +145,7 @@ function Project({ match, history }) {
         </Col>
 
         <Col sm={12} md={12} lg={10} className="mt-3">
-          <TaskList
+          <TasksList
             tasks={tasks}
             history={history}
             hasNextPage={hasNextTasks}
@@ -167,7 +161,7 @@ function Project({ match, history }) {
           <div className="result-pane">
             <ReactMarkdown
               source={project.markdown}
-              renderers={{ code: CodeBlock }}
+              renderers={{ code: Code }}
             />
           </div>
         </Col>

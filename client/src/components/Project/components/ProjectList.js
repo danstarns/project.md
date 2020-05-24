@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import React from "react";
 import { Row, Col, Card, Button } from "react-bootstrap";
 import moment from "moment";

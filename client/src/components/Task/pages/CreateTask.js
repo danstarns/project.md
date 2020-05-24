@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import gql from "graphql-tag";
 import { GraphQL } from "../../../contexts/index.js";
-import TaskForm from "./TaskForm.js";
+import { TaskForm } from "../components/index.js";
 
 const Mutation = gql`
   mutation createTask(
@@ -58,7 +58,6 @@ function CreateTask({ history, match }) {
         throw new Error(createTask.error.message);
       }
 
-      // eslint-disable-next-line no-underscore-dangle
       history.push(`/task/${createTask.data.task._id}`);
     } catch (e) {
       setError(e.message);

@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
 import gql from "graphql-tag";
 import { Row, Col } from "react-bootstrap";
-import { GraphQL } from "../../../../contexts/index.js";
-import ProjectForm from "../ProjectForm.js";
-import { TitleBanner } from "../../../Common/index.js";
+import { GraphQL } from "../../../contexts/index.js";
+import { ProjectForm } from "../components/index.js";
+import { TitleBanner } from "../../Common/index.js";
 
 const Mutation = gql`
   mutation createProject(
@@ -63,7 +63,6 @@ function CreateProject({ history }) {
         throw new Error(createProject.error.message);
       }
 
-      // eslint-disable-next-line no-underscore-dangle
       history.push(`/project/${createProject.project._id}`);
     } catch (e) {
       setError(e.message);

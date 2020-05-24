@@ -1,39 +1,35 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import gql from "graphql-tag";
 import { Row, Col, Button } from "react-bootstrap";
-import ProjectForm from "./ProjectForm.js";
+import { LoadingBanner, TitleBanner } from "../../Common/index.js";
 import { GraphQL } from "../../../contexts/index.js";
-import { TitleBanner, LoadingBanner } from "../../Common/index.js";
+import { TaskForm } from "../components/index.js";
 
 const Query = gql`
-  query project($id: ID!) {
-    project(id: $id) {
+  query task($id: ID!) {
+    task(id: $id) {
       _id
       name
       tagline
-      private
       markdown
-      private
       due
     }
   }
 `;
 
 const Mutation = gql`
-  mutation editProject(
+  mutation editTask(
     $id: ID!
     $name: String!
     $tagline: String!
-    $private: Boolean!
     $markdown: String!
     $due: String!
   ) {
-    editProject(
+    editTask(
       input: {
         id: $id
         name: $name
         tagline: $tagline
-        private: $private
         markdown: $markdown
         due: $due
       }
@@ -42,7 +38,7 @@ const Mutation = gql`
         message
       }
       data {
-        project {
+        task {
           _id
         }
       }
@@ -50,11 +46,11 @@ const Mutation = gql`
   }
 `;
 
-function EditProject({ match, history }) {
+function EditTask({ match, history }) {
   const { client } = useContext(GraphQL.Context);
-  const [loadingProject, setLoadingProject] = useState(true);
+  const [LoadingTask, setLoadingTask] = useState(true);
   const [error, setError] = useState(false);
-  const [project, setProject] = useState(false);
+  const [task, setTask] = useState(false);
   const [loadingCreate, setLoadingCreate] = useState(false);
 
   useEffect(() => {
@@ -76,28 +72,27 @@ function EditProject({ match, history }) {
           throw new Error(errors[0].message);
         }
 
-        if (!data.project) {
-          throw new Error(`Project not found`);
+        if (!data.task) {
+          throw new Error(`Task not found`);
         }
 
-        setProject(data.project);
+        setTask(data.task);
       } catch (e) {
         setError(e.message);
       }
 
-      setLoadingProject(false);
+      setLoadingTask(false);
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function submit(newProject) {
+  function submit(newTask) {
     setLoadingCreate(true);
 
     (async () => {
       try {
         const variables = {
           id: match.params.id,
-          ...newProject
+          ...newTask
         };
 
         const response = await client.mutate({
@@ -111,12 +106,11 @@ function EditProject({ match, history }) {
           throw new Error(errors[0].message);
         }
 
-        if (data.editProject.error) {
-          throw new Error(data.editProject.error.message);
+        if (data.editTask.error) {
+          throw new Error(data.editTask.error.message);
         }
 
-        // eslint-disable-next-line no-underscore-dangle
-        history.push(`/project/${data.editProject.data.project._id}`);
+        history.push(`/task/${data.editTask.data.task._id}`);
       } catch (e) {
         setError(e.message);
       }
@@ -125,7 +119,7 @@ function EditProject({ match, history }) {
     })();
   }
 
-  if (loadingProject) {
+  if (LoadingTask) {
     return <LoadingBanner />;
   }
 
@@ -133,16 +127,16 @@ function EditProject({ match, history }) {
     <>
       <Row>
         <Col>
-          <TitleBanner heading="Edit Project" />
+          <TitleBanner heading="Edit Task" />
         </Col>
       </Row>
       <Row>
         <Col>
-          <ProjectForm
+          <TaskForm
             onChange={submit}
             error={error}
             loading={loadingCreate}
-            defaults={project}
+            defaults={task}
           />
 
           <Button
@@ -159,4 +153,4 @@ function EditProject({ match, history }) {
   );
 }
 
-export default EditProject;
+export default EditTask;

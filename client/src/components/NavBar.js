@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../contexts/index.js";
+import { AuthContext } from "../contexts/index.js";
 
 const defaultLinks = [["Home", "/"]];
 

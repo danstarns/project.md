@@ -3,8 +3,8 @@ import { Col, Row, Button } from "react-bootstrap";
 import gql from "graphql-tag";
 import ReactMarkdown from "react-markdown";
 import { GraphQL } from "../../../contexts/index.js";
-import { TitleBanner, ErrorBanner, LoadingBanner } from "../../Common/index.js";
-import { CodeBlock } from "../../Editor/index.js";
+import { ErrorBanner, LoadingBanner, TitleBanner } from "../../Common/index.js";
+import { Code } from "../../Markdown/index.js";
 
 const Query = gql`
   query task($id: ID!) {
@@ -42,7 +42,6 @@ function Task({ match, history }) {
 
       setLoading(false);
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (error) {
@@ -73,10 +72,7 @@ function Task({ match, history }) {
       </Col>
       <Col xs={12} s={12} lg={12}>
         <div className="result-pane">
-          <ReactMarkdown
-            source={task.markdown}
-            renderers={{ code: CodeBlock }}
-          />
+          <ReactMarkdown source={task.markdown} renderers={{ code: Code }} />
         </div>
       </Col>
     </Row>

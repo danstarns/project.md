@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Form, Button } from "react-bootstrap";
 import { AuthContext } from "../../../contexts/index.js";
-import { LoadingBanner, ErrorBanner } from "../../Common/index.js";
+import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
 
 function SignUp({ history }) {
   const Auth = useContext(AuthContext.Context);
