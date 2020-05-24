@@ -5,18 +5,17 @@ import moment from "moment";
 import Editor from "../../Editor/index.js";
 import { ErrorBanner, LoadingBanner, TitleBanner } from "../../Common/index.js";
 
-function ProjectForm({ defaults = {}, onChange, loading, error }) {
+function TaskForm({ defaults = {}, onChange, loading, error }) {
   const [name, setName] = useState(defaults.name);
   const [tagline, setTagline] = useState(defaults.tagline);
-  const [_private, setPrivate] = useState(defaults.private);
   const [markdown, setMarkdown] = useState(defaults.markdown);
-  const [wantDue, setWantDue] = useState(defaults.private);
   const [due, setDue] = useState(defaults.due);
-  const [validationError, setValidationError] = useState("");
+  const [wantDue, setWantDue] = useState(Boolean(defaults.due));
+  const [validationError, setValidationError] = useState(false);
 
   useEffect(() => {
     setValidationError(null);
-  }, [name, tagline, _private, markdown, due]);
+  }, [name, tagline, markdown, due]);
 
   function updateName(event) {
     setName(event.target.value);
@@ -24,10 +23,6 @@ function ProjectForm({ defaults = {}, onChange, loading, error }) {
 
   function updateTagline(event) {
     setTagline(event.target.value);
-  }
-
-  function updatePrivate(event) {
-    setPrivate(event.target.checked);
   }
 
   function updateWantDue() {
@@ -53,11 +48,16 @@ function ProjectForm({ defaults = {}, onChange, loading, error }) {
   function submit(e) {
     e.preventDefault();
 
-    onChange({ name, tagline, private: _private, markdown, due });
+    onChange({ name, tagline, markdown, due });
   }
 
   return (
     <Form onSubmit={submit} className="mt-3">
+      <TitleBanner
+        heading="Create Task"
+        content="Use Tasks to; encapsulate a unit of work, assigned coworkers and track progress"
+      />
+
       <Row>
         <Col xs={6} s={6} lg={6}>
           <Form.Group controlId="name">
@@ -65,9 +65,9 @@ function ProjectForm({ defaults = {}, onChange, loading, error }) {
 
             <Form.Control
               type="text"
-              placeholder="Enter Project Name"
+              placeholder="Enter Task Name"
               required
-              value={name}
+              checked={name}
               onChange={updateName}
               maxLength="60"
             />
@@ -82,7 +82,7 @@ function ProjectForm({ defaults = {}, onChange, loading, error }) {
               />
             </Alert>
 
-            {Boolean(wantDue || due) && (
+            {wantDue && (
               <div>
                 Select Due Date: <DatePicker onChange={updateDue} value={due} />{" "}
               </div>
@@ -94,23 +94,13 @@ function ProjectForm({ defaults = {}, onChange, loading, error }) {
 
             <Form.Control
               type="text"
-              placeholder="Enter Project Tagline"
+              placeholder="Enter Task Tagline"
               required
               as="textarea"
               rows="3"
               value={tagline}
               maxLength="60"
               onChange={updateTagline}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="private">
-            <Form.Check
-              type="checkbox"
-              label="Select To Make Private"
-              onChange={updatePrivate}
-              value={_private}
-              className="ml-3"
             />
           </Form.Group>
         </Col>
@@ -120,16 +110,8 @@ function ProjectForm({ defaults = {}, onChange, loading, error }) {
             <Card.Header />
             <Card.Body>
               <Card.Title>{name}</Card.Title>
-              {_private && (
-                <Form.Check
-                  type="checkbox"
-                  label="Private"
-                  checked={_private}
-                  disabled
-                />
-              )}
               <Card.Text>{tagline}</Card.Text>
-              {Boolean(wantDue || due) && (
+              {wantDue && (
                 <Card.Text>
                   Due On: {moment(due).format("MMMM Do YYYY, h:mm:ss a")}
                 </Card.Text>
@@ -144,8 +126,8 @@ function ProjectForm({ defaults = {}, onChange, loading, error }) {
       <TitleBanner
         heading="Enter Markdown"
         content={`Use the box on the left to start writing markdown, as you type
-    the output will render on the right. This will be shown on the
-    projects homepage.`}
+      the output will render on the right. This will be shown on the
+      tasks homepage.`}
         type="info"
       />
 
@@ -153,8 +135,8 @@ function ProjectForm({ defaults = {}, onChange, loading, error }) {
 
       <hr />
 
-      {validationError && <ErrorBanner error={validationError} />}
       {error && <ErrorBanner error={error} />}
+      {validationError && <ErrorBanner error={validationError} />}
       {loading && <LoadingBanner />}
 
       <Button variant="primary" type="submit" block className="mt-3 mb-3">
@@ -164,4 +146,4 @@ function ProjectForm({ defaults = {}, onChange, loading, error }) {
   );
 }
 
-export default ProjectForm;
+export default TaskForm;
