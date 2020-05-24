@@ -42,6 +42,7 @@ function Query() {
               _id
               name
               tagline
+              due
             }
           }
         }

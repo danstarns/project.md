@@ -20,9 +20,7 @@ function TaskList({ tasks, history }) {
             <Card.Body>
               <Card.Text>
                 {task.tagline.substr(0, 60)} <hr />
-                {task.due && (
-                  <p>Due: {moment(new Date(task.due)).calendar()}</p>
-                )}
+                <p>Due: {moment(new Date(task.due)).calendar()}</p>
                 <Button onClick={() => history.push(`/task/${task._id}`)}>
                   Enter
                 </Button>
