@@ -66,7 +66,14 @@ function CreateTask({ history, match }) {
 
     setLoading(false);
   }
-  return <TaskForm onChange={onChange} error={error} loading={loading} />;
+  return (
+    <TaskForm
+      onChange={onChange}
+      error={error}
+      loading={loading}
+      defaults={{ due: new Date(), markdown: `# My Cool Task 🍻` }}
+    />
+  );
 }
 
 export default CreateTask;

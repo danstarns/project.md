@@ -90,6 +90,7 @@ function CreateProject({ history }) {
             error={error}
             loading={loading}
             defaults={{
+              due: new Date(),
               markdown: `# My Project \n look at my super cool project 🍺`
             }}
           />
