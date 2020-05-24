@@ -1,5 +1,4 @@
-import SignUp from "./SignUp/SignUp.js";
-import Login from "./Login/Login.js";
-import Logout from "./Logout/Logout.js";
+import * as pages from "./pages/index.js";
 
-export { SignUp, Login, Logout };
+// eslint-disable-next-line import/prefer-default-export
+export { pages };

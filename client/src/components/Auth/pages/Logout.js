@@ -17,7 +17,7 @@ function Logout() {
 
   return (
     <Alert variant="warning" className="mt-3">
-      Logged Out!
+      Logging out...
     </Alert>
   );
 }

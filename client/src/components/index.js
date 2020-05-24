@@ -10,7 +10,8 @@ import {
   CreateTask,
   EditTask
 } from "./Dashboard/index.js";
-import { Login, SignUp, Logout } from "./Auth/index.js";
+
+export { pages as Auth } from "./Auth/index.js";
 
 export {
   Home,
@@ -20,9 +21,6 @@ export {
   Project,
   CreateProject,
   EditProject,
-  Login,
-  SignUp,
-  Logout,
   Task,
   CreateTask,
   EditTask

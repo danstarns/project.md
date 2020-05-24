@@ -16,9 +16,7 @@ import {
   Project,
   CreateProject,
   EditProject,
-  Login,
-  SignUp,
-  Logout,
+  Auth,
   Task,
   CreateTask,
   EditTask
@@ -39,9 +37,9 @@ function App() {
               <Route exact path="/" component={Home} />
 
               {/** AUTH */}
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/signup" component={SignUp} />
-              <Route exact path="/logout" component={Logout} />
+              <Route exact path="/login" component={Auth.Login} />
+              <Route exact path="/signup" component={Auth.SignUp} />
+              <Route exact path="/logout" component={Auth.Logout} />
 
               {/** DASHBOARD */}
               <Route exact path="/dashboard" component={Dashboard} />
