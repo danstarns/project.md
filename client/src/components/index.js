@@ -7,7 +7,8 @@ import {
   CreateProject,
   EditProject,
   Task,
-  CreateTask
+  CreateTask,
+  EditTask
 } from "./Dashboard/index.js";
 import { Login, SignUp, Logout } from "./Auth/index.js";
 
@@ -23,5 +24,6 @@ export {
   SignUp,
   Logout,
   Task,
-  CreateTask
+  CreateTask,
+  EditTask
 };

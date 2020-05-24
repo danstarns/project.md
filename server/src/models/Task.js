@@ -10,7 +10,7 @@ const Task = new mongoose.Schema(
             required: true,
             ref: "User"
         },
-        due: { type: Date },
+        due: { type: Date, required: true },
         markdown: { type: String, required: true },
         project: {
             type: mongoose.Schema.Types.ObjectId,

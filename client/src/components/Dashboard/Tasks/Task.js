@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Button } from "react-bootstrap";
 import gql from "graphql-tag";
 import ReactMarkdown from "react-markdown";
 import { GraphQL } from "../../../contexts/index.js";
@@ -10,12 +10,13 @@ const Query = gql`
   query task($id: ID!) {
     task(id: $id) {
       name
+      tagline
       markdown
     }
   }
 `;
 
-function Task({ match }) {
+function Task({ match, history }) {
   const { client } = useContext(GraphQL.Context);
   const [loading, setLoading] = useState(true);
   const [task, setTask] = useState(false);
@@ -26,7 +27,8 @@ function Task({ match }) {
       try {
         const { data = {} } = await client.query({
           query: Query,
-          variables: { id: match.params.id }
+          variables: { id: match.params.id },
+          fetchPolicy: "no-cache"
         });
 
         if (!data.task) {
@@ -40,7 +42,8 @@ function Task({ match }) {
 
       setLoading(false);
     })();
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (error) {
     return <ErrorBanner error={error} />;
@@ -53,7 +56,20 @@ function Task({ match }) {
   return (
     <Row>
       <Col>
-        <TitleBanner heading={task.name} />
+        <TitleBanner
+          heading={`Task: ${task.name}`}
+          content={task.tagline}
+          nested={
+            <>
+              <hr />
+              <Button
+                onClick={() => history.push(`/task/edit/${match.params.id}`)}
+              >
+                Edit
+              </Button>
+            </>
+          }
+        />
       </Col>
       <Col xs={12} s={12} lg={12}>
         <div className="result-pane">

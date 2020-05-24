@@ -7,7 +7,7 @@ const Mutation = gql`
   mutation createTask(
     $name: String!
     $tagline: String!
-    $due: String
+    $due: String!
     $markdown: String!
     $project: ID!
   ) {

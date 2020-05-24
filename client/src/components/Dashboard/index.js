@@ -5,7 +5,7 @@ import {
   CreateProject,
   EditProject
 } from "./Projects/index.js";
-import { Task, CreateTask } from "./Tasks/index.js";
+import { Task, CreateTask, EditTask } from "./Tasks/index.js";
 
 export {
   Dashboard,
@@ -14,5 +14,6 @@ export {
   CreateProject,
   EditProject,
   Task,
-  CreateTask
+  CreateTask,
+  EditTask
 };

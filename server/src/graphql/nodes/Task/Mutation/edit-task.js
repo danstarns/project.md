@@ -4,7 +4,10 @@ async function editTask(root, args) {
     try {
         const { input: { id, ...updates } = {} } = args;
 
-        const existingByName = await Task.findOne({ name: updates.name });
+        const existingByName = await Task.findOne({
+            _id: { $ne: id },
+            name: updates.name
+        });
 
         if (existingByName) {
             throw new Error(`Task with name: '${updates.name}' already exists`);

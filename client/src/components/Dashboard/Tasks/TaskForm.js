@@ -5,12 +5,16 @@ import moment from "moment";
 import Editor from "../../Editor/index.js";
 import { ErrorBanner, LoadingBanner, TitleBanner } from "../../Common/index.js";
 
-function TaskForm({ defaults = {}, onChange, loading, error }) {
+function TaskForm({
+  defaults = { due: new Date() },
+  onChange,
+  loading,
+  error
+}) {
   const [name, setName] = useState(defaults.name);
   const [tagline, setTagline] = useState(defaults.tagline);
   const [markdown, setMarkdown] = useState(defaults.markdown);
   const [due, setDue] = useState(defaults.due);
-  const [wantDue, setWantDue] = useState(Boolean(defaults.due));
   const [validationError, setValidationError] = useState(false);
 
   useEffect(() => {
@@ -23,10 +27,6 @@ function TaskForm({ defaults = {}, onChange, loading, error }) {
 
   function updateTagline(event) {
     setTagline(event.target.value);
-  }
-
-  function updateWantDue() {
-    setWantDue(!wantDue);
   }
 
   function updateDue(date) {
@@ -53,11 +53,6 @@ function TaskForm({ defaults = {}, onChange, loading, error }) {
 
   return (
     <Form onSubmit={submit} className="mt-3">
-      <TitleBanner
-        heading="Create Task"
-        content="Use Tasks to; encapsulate a unit of work, assigned coworkers and track progress"
-      />
-
       <Row>
         <Col xs={6} s={6} lg={6}>
           <Form.Group controlId="name">
@@ -67,26 +62,17 @@ function TaskForm({ defaults = {}, onChange, loading, error }) {
               type="text"
               placeholder="Enter Task Name"
               required
-              checked={name}
+              value={name}
               onChange={updateName}
               maxLength="60"
             />
           </Form.Group>
 
           <Form.Group controlId="date">
-            <Alert variant="info" className="w-75">
-              <Form.Check
-                label="Want A Due Date?"
-                onChange={updateWantDue}
-                value={wantDue}
-              />
-            </Alert>
-
-            {wantDue && (
-              <div>
-                Select Due Date: <DatePicker onChange={updateDue} value={due} />{" "}
-              </div>
-            )}
+            <div>
+              Select Due Date:{" "}
+              <DatePicker onChange={updateDue} value={new Date(due)} />
+            </div>
           </Form.Group>
 
           <Form.Group controlId="tagline">
@@ -111,11 +97,10 @@ function TaskForm({ defaults = {}, onChange, loading, error }) {
             <Card.Body>
               <Card.Title>{name}</Card.Title>
               <Card.Text>{tagline}</Card.Text>
-              {wantDue && (
-                <Card.Text>
-                  Due On: {moment(due).format("MMMM Do YYYY, h:mm:ss a")}
-                </Card.Text>
-              )}
+              <Card.Text>
+                Due On:{" "}
+                {moment(new Date(due)).format("MMMM Do YYYY, h:mm:ss a")}
+              </Card.Text>
             </Card.Body>
           </Card>
         </Col>

@@ -3,7 +3,7 @@ type Task {
     name: String!
     tagline: String
     creator: User!
-    due: GraphQLDateTime
+    due: GraphQLDateTime!
     markdown: String!
     project: Project!
     createdAt: GraphQLDateTime!
@@ -15,7 +15,7 @@ type Task {
 input CreateTaskInput {
     name: String!
     tagline: String!
-    due: String
+    due: String!
     markdown: String!
     project: ID!
 }
@@ -39,7 +39,7 @@ input EditTaskInput {
     id: ID!
     name: String!
     tagline: String!
-    due: String
+    due: String!
     markdown: String!
 }
 
