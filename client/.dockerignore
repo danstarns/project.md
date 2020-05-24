@@ -1,0 +1,5 @@
+node_modules
+.env.example
+.eslintrc
+nodemon.json
+.env.example

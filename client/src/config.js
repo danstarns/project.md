@@ -8,5 +8,4 @@ Object.entries(config).forEach(([key, value]) => {
   }
 });
 
-exports.REACT_APP_API_URL = REACT_APP_API_URL;
-exports.REACT_APP_JWT_KEY = REACT_APP_JWT_KEY;
+export { REACT_APP_API_URL, REACT_APP_JWT_KEY };

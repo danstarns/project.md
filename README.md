@@ -1,5 +1,7 @@
 # Project.md
 
+> Work in progress 🚧🏗👷‍♂️
+
 📝 A Simple and Robust Markdown Inspired Project Management System
 
 
@@ -8,8 +10,6 @@
 Tired of complicated project management systems? What something that speaks to the Markdown 🐱‍👤 inside of you? Project.md is designed with simplicity at its heart, letting you manage projects & present your ideas with pure Markdown. No longer shall you recursively search nested 'sub tasks' to oblivion 🌌🤯.
 
 You can use this project as; a template, guide for inspiration, your own deployment and a project to contribute towards 🍻
-
-[Demo]()
 
 # Tech Stack
 
@@ -53,4 +53,4 @@ Recommended to open `server` & `client` folders in separate instances of your ed
 
 > Use this to start client, server & dependencies all at once, take consideration for any local, conflicting, services 🐳
 
-1. `docker-compose-up`
+1. `docker-compose up`

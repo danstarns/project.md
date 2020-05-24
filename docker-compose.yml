@@ -1,0 +1,38 @@
+version: "2.0"
+
+volumes:
+  build-volume:
+
+services:
+  client:
+    build:
+      context: ./client
+    volumes:
+      - build-volume:/app/build
+    environment:
+      - SKIP_PREFLIGHT_CHECK=true
+      - REACT_APP_JWT_KEY=project-md-token
+      - REACT_APP_API_URL=http://localhost:5000
+      - NODE_ENV=production
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    logging:
+      driver: none
+  server:
+    build:
+      context: ./server
+    volumes:
+      - build-volume:/app/build
+    environment:
+      - HTTP_PORT=5000
+      - JWT_SECRET=beerandbongs
+      - MONGODB_URI=mongodb://host.docker.internal:27017/Project-md
+      - NODE_ENV=production
+      - DEBUG=@Project.md:*
+    ports:
+      - "5000:5000"
+    depends_on:
+      - client
+      - mongo

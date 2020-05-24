@@ -10,6 +10,10 @@ app.use(express.json());
 app.use(cors());
 graphql.applyMiddleware({ app });
 
+if (NODE_ENV === "production") {
+    app.use("/", express.static("./build"));
+}
+
 function start() {
     debug(`App Starting on Port: '${HTTP_PORT}'`);
 
