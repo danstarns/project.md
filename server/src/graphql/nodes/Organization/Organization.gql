@@ -1,0 +1,54 @@
+type Organization {
+    _id: ID!
+    name: String!
+    tagline: String!
+    creator: User! 
+    admins: [User]!
+    users: [User]!
+    private: Boolean!
+    markdown: String!
+    createdAt: GraphQLDateTime!
+    updatedAt: GraphQLDateTime!
+    projects(input: OrganizationProjectsInput!): OrganizationProjectsResponse!
+}
+
+# ORGANIZATION.PROJECTS
+# ------------------------------------
+type OrganizationProjectsData {
+    organizations: [Organization]!
+}
+
+type OrganizationProjectsResponse {
+    hasNextPage: Boolean!
+    data: OrganizationProjectsData
+}
+
+input OrganizationProjectsInput {
+    page: Int! 
+    limit: Int!
+    search: String
+    sort: String!
+    user: Boolean!
+}
+
+# CREATE ORGANIZATION
+# ------------------------------------
+input CreateOrganizationInput {
+    name: String!
+    tagline: String!
+    private: Boolean!
+    markdown: String!
+}
+
+type CreateOrganizationResponse {
+    organization: Organization
+    error: Error
+}
+
+type Query {
+    organization(id: ID!): Organization
+}
+
+type Mutation {
+    createOrganization(input: CreateOrganizationInput!): CreateOrganizationResponse!
+}

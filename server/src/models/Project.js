@@ -12,7 +12,11 @@ const Project = new mongoose.Schema(
         },
         due: { type: Date, required: true },
         private: { type: Boolean, required: true },
-        markdown: { type: String, required: true }
+        markdown: { type: String, required: true },
+        organization: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Organization"
+        }
     },
     { timestamps: true }
 );

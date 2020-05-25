@@ -40,10 +40,6 @@ input CreateProjectInput {
     markdown: String!
 }
 
-type ProjectData {
-    project: Project!
-}
-
 type CreateProjectResponse {
     project: Project
     error: Error
