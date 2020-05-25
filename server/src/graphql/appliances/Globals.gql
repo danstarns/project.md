@@ -1,0 +1,8 @@
+enum DateSortEnum {
+    desc
+    asc
+}
+
+type Error {
+    message: String!
+}

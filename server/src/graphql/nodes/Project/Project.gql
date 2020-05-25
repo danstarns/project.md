@@ -4,11 +4,10 @@ type Project {
     tagline: String
     creator: User!
     private: Boolean!
-    due: GraphQLDateTime
+    due: GraphQLDateTime!
     markdown: String!
-    createdAt: GraphQLDateTime! # TODO SCALAR DATE
-    updatedAt: GraphQLDateTime! # TODO SCALAR DATE
-
+    createdAt: GraphQLDateTime!
+    updatedAt: GraphQLDateTime! 
     tasks(input: ProjectTasksInput): ProjectTasksResponse!
 }
 
@@ -31,13 +30,6 @@ input ProjectTasksInput {
     user: Boolean!
 }
 
-# COMMON 
-enum DateSortEnum {
-    desc
-    asc
-}
-
-
 # CREATE PROJECT
 # ------------------------------------
 input CreateProjectInput {
@@ -48,17 +40,13 @@ input CreateProjectInput {
     markdown: String!
 }
 
-type CreateProjectError {
-    message: String!
-}
-
 type ProjectData {
     project: Project!
 }
 
 type CreateProjectResponse {
     project: Project
-    error: CreateProjectError
+    error: Error
 }
 
 # EDIT PROJECT 
@@ -76,18 +64,13 @@ type EditProjectData {
     project: Project
 }
 
-type EditProjectError {
-    message: String!
-}
-
 type EditProjectResponse {
     data: EditProjectData
-    error: EditProjectError
+    error: Error
 }
 
 # USER PROJECTS
-# --
-
+# ------------------------------------
 type UserProjectsData {
     projects: [Project]!
 }

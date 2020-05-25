@@ -20,17 +20,13 @@ input CreateTaskInput {
     project: ID!
 }
 
-type CreateTaskError {
-    message: String!
-}
-
 type CreateTaskData {
     task: Task!
 }
 
 type CreateTaskResponse {
     data: CreateTaskData
-    error: CreateTaskError
+    error: Error
 }
 
 # EDIT TASK 
@@ -47,13 +43,9 @@ type EditTaskData {
     task: Task
 }
 
-type EditTaskError {
-    message: String!
-}
-
 type EditTaskResponse {
     data: EditTaskData
-    error: EditTaskError
+    error: Error
 }
 
 type Query {

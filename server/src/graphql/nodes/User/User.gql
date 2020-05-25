@@ -4,6 +4,11 @@ type User {
     email: String!
 }
 
+type AuthResponse {
+    jwt: String!
+    user: User!
+}
+
 # SIGN UP 
 # ------------------------------------
 input SignUpInput {
@@ -12,18 +17,9 @@ input SignUpInput {
     password: String!
 }
 
-type SignUpData {
-    jwt: String!
-    user: User!
-}
-
-type SignUpError {
-    message: String!
-}
-
 type SignUpResponse {
-    data: SignUpData
-    error: SignUpError
+    data: AuthResponse
+    error: Error
 }
 
 # SIGN IN
@@ -33,23 +29,14 @@ input SignInInput {
     password: String!
 }
 
-type SignInData {
-    jwt: String!
-    user: User!
-}
-
-type SignInError {
-    message: String!
-}
-
 type SignInResponse {
-    data: SignInData
-    error: SignInError
+    data: AuthResponse
+    error: Error
 }
 
 type Mutation {
-    signUp(input: SignUpInput): SignUpResponse
-    signIn(input: SignInInput): SignInResponse
+    signUp(input: SignUpInput): SignUpResponse!
+    signIn(input: SignInInput): SignInResponse!
 }
 
 type Query {
