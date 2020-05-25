@@ -47,7 +47,12 @@ function Dashboard({ history }) {
             calling extra attention to featured content or information.
           </p>
           <p>
-            <Button variant="primary">Enter</Button>
+            <Button
+              onClick={() => history.push("/organizations")}
+              variant="primary"
+            >
+              Enter
+            </Button>
           </p>
         </Jumbotron>
       </Col>

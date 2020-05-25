@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Container } from "react-bootstrap";
@@ -14,7 +15,8 @@ import {
   Dashboard,
   Auth,
   Task,
-  Project
+  Project,
+  Organization
 } from "./components/index.js";
 import { AuthContext, GraphQL } from "./contexts/index.js";
 
@@ -35,47 +37,19 @@ function App() {
               <Route exact path="/signup" component={Auth.SignUp} />
               <Route exact path="/logout" component={Auth.Logout} />
 
+              <Route exact path="/project/create" component={Project.CreateProject} />
               <Route exact path="/projects" component={Project.Projects} />
-              <Route
-                exact
-                path="/project/create"
-                component={Project.CreateProject}
-              />
               <Route exact path="/project/:id" component={Project.Project} />
-              <Route
-                exact
-                path="/project/edit/:id"
-                component={Project.EditProject}
-              />
+              <Route exact path="/project/edit/:id" component={Project.EditProject} />
 
-              <Route
-                exact
-                path="/task/create/:project"
-                component={Task.CreateTask}
-              />
+              <Route exact path="/task/create/:project" component={Task.CreateTask} />
               <Route exact path="/task/:id" component={Task.Task} />
               <Route exact path="/task/edit/:id" component={Task.EditTask} />
 
-              {/* <Route
-                exact
-                path="/organization/create"
-                component={Organization.CreateOrganization}
-              />
-              <Route
-                exact
-                path="/organizations"
-                component={Organization.organizations}
-              />
-              <Route
-                exact
-                path="/organization/:id"
-                component={Organization.Organization}
-              />
-              <Route
-                exact
-                path="/organization/edit/:id"
-                component={Organization.EditOrganization}
-              /> */}
+              <Route exact path="/organization/create" component={Organization.CreateOrganization} />
+              <Route exact path="/organizations" component={Organization.Organizations} />
+              <Route exact path="/organization/:id" component={Organization.Organization} />
+              <Route exact path="/organization/edit/:id" component={Organization.EditOrganization} />
 
               <Route component={Home} />
             </Switch>
