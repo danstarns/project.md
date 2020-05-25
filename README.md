@@ -11,6 +11,20 @@ Tired of complicated project management systems? What something that speaks to t
 
 You can use this project as; a template, guide for inspiration, your own deployment and a project to contribute towards 🍻
 
+# To Do 🎯
+1. Organizations
+2. User Profiles
+3. Task/Project Comments
+4. Notifications/Emails
+5. Auth/LockDown routes
+6. Invite Users to Projects/Tasks/Organisation
+7. Live Demo
+8. Recents
+9. Audits
+10. Favourites 
+11. Home Page
+12. Logo/Styling
+
 # Tech Stack
 
 > 🍻 To all the unmentioned technologies 
