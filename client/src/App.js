@@ -56,6 +56,27 @@ function App() {
               <Route exact path="/task/:id" component={Task.Task} />
               <Route exact path="/task/edit/:id" component={Task.EditTask} />
 
+              {/* <Route
+                exact
+                path="/organization/create"
+                component={Organization.CreateOrganization}
+              />
+              <Route
+                exact
+                path="/organizations"
+                component={Organization.organizations}
+              />
+              <Route
+                exact
+                path="/organization/:id"
+                component={Organization.Organization}
+              />
+              <Route
+                exact
+                path="/organization/edit/:id"
+                component={Organization.EditOrganization}
+              /> */}
+
               <Route component={Home} />
             </Switch>
           </Container>
