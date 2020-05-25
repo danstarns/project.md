@@ -3,13 +3,13 @@ type Organization {
     name: String!
     tagline: String!
     creator: User! 
-    admins: [User]!
-    users: [User]!
+    admins: [User]! # todo field
+    users: [User]! # todo field
     private: Boolean!
     markdown: String!
     createdAt: GraphQLDateTime!
     updatedAt: GraphQLDateTime!
-    projects(input: OrganizationProjectsInput!): OrganizationProjectsResponse!
+    projects(input: OrganizationProjectsInput!): OrganizationProjectsResponse! # todo field
 }
 
 # ORGANIZATION.PROJECTS

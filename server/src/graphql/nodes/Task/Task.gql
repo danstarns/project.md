@@ -5,7 +5,7 @@ type Task {
     creator: User!
     due: GraphQLDateTime!
     markdown: String!
-    project: Project!
+    project: Project! # todo field
     createdAt: GraphQLDateTime!
     updatedAt: GraphQLDateTime!
 }

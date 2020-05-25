@@ -9,6 +9,7 @@ type Project {
     createdAt: GraphQLDateTime!
     updatedAt: GraphQLDateTime! 
     tasks(input: ProjectTasksInput): ProjectTasksResponse!
+    organization: Organization # todo field
 }
 
 # PROJECT.TASKS
