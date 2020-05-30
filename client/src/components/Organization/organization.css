@@ -1,0 +1,21 @@
+.organization-filter-card:hover {
+    background-color: #007BFF;
+    cursor: pointer;
+    color: white;
+}
+
+.organization-filter-card-date:hover {
+    cursor: pointer;
+}
+
+.organization-filter-card-arrow:hover {
+    cursor: pointer;
+    color: #007BFF;
+}
+
+.organization-list-item {
+    height: 250px;
+    max-height: 250px;
+    min-height: 250px;
+    overflow: hidden;
+}

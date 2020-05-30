@@ -9,18 +9,12 @@ type Organization {
     markdown: String!
     createdAt: GraphQLDateTime!
     updatedAt: GraphQLDateTime!
-    projects(input: OrganizationProjectsInput!): OrganizationProjectsResponse! # todo field
+    projects(input: OrganizationProjectsInput!): OrganizationProjectsConnection! # todo field
 }
 
-# ORGANIZATION.PROJECTS
-# ------------------------------------
-type OrganizationProjectsData {
-    organizations: [Organization]!
-}
-
-type OrganizationProjectsResponse {
+type OrganizationProjectsConnection {
     hasNextPage: Boolean!
-    data: OrganizationProjectsData
+    projects: [Project]!
 }
 
 input OrganizationProjectsInput {
@@ -28,7 +22,6 @@ input OrganizationProjectsInput {
     limit: Int!
     search: String
     sort: String!
-    user: Boolean!
 }
 
 # CREATE ORGANIZATION
@@ -45,10 +38,42 @@ type CreateOrganizationResponse {
     error: Error
 }
 
+# EDIT ORGANIZATION
+# ------------------------------------
+input EditOrganizationInput {
+    id: ID!
+    name: String!
+    tagline: String!
+    private: Boolean!
+    markdown: String!
+}
+
+type EditOrganizationResponse {
+    organization: Organization
+    error: Error
+}
+
+# ORGANIZATIONS
+# ------------------------------------
+input OgranizationsInput {
+    page: Int!
+    limit: Int!
+    sort: DateSortEnum!
+    search: String
+}
+
+type OgranizationsResponse {
+    hasNextPage: Boolean!
+    organizations: [Organization]!
+}
+
 type Query {
     organization(id: ID!): Organization
+    userOrganizations(input: OgranizationsInput!): OgranizationsResponse!
+    publicOrganizations(input: OgranizationsInput!): OgranizationsResponse!
 }
 
 type Mutation {
     createOrganization(input: CreateOrganizationInput!): CreateOrganizationResponse!
+    editOrganization(input: EditOrganizationInput!): EditOrganizationResponse!
 }

@@ -85,7 +85,7 @@ function CreateOrganization({ history }) {
             onChange={submit}
             error={error}
             loading={loading}
-            defaults={{ markdown: `# Hi World Look At My Project 👀` }}
+            defaults={{ markdown: `# Hi World Look At My Organization 👀` }}
           />
         </Col>
       </Row>
