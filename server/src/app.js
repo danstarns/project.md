@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const { express: voyagerMiddleware } = require("graphql-voyager/middleware");
+const path = require("path");
 const { HTTP_PORT, NODE_ENV } = require("./config.js");
 const debug = require("./debug.js")("App: ");
 const graphql = require("./graphql/index.js");
@@ -12,6 +13,10 @@ graphql.applyMiddleware({ app });
 
 if (NODE_ENV === "production") {
     app.use("/", express.static("./build"));
+
+    app.use((req, res) => {
+        res.sendFile(path.join(__dirname, "../build/index.html"));
+    });
 }
 
 function start() {
