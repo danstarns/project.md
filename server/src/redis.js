@@ -1,7 +1,10 @@
 const Redis = require("ioredis");
 const Queue = require("bull");
+const util = require("util");
 const { REDIS_URI } = require("./config.js");
 const debug = require("./debug.js")("Redis: ");
+
+const sleep = util.promisify(setTimeout);
 
 const options = { enableReadyCheck: true };
 
@@ -27,21 +30,17 @@ const queues = {
     email: new Queue("email", { createClient })
 };
 
-function connect() {
-    // eslint-disable-next-line no-async-promise-executor
-    return new Promise(async (resolve, reject) => {
-        debug(`Connecting to Redis: '${REDIS_URI}'`);
+async function connect() {
+    debug(`Connecting to Redis: '${REDIS_URI}'`);
 
-        await Promise.all([client.connect, subscriber.connect]);
+    await Promise.all([client.connect, subscriber.connect]);
 
-        [client, subscriber].forEach((x) => x.on("error", reject));
-
-        client.on("ready", () => {
-            debug("Connected");
-
-            resolve();
-        });
-    });
+    while (client.status !== "ready") {
+        // eslint-disable-next-line no-await-in-loop
+        await sleep(100);
+        // eslint-disable-next-line no-continue
+        continue;
+    }
 }
 
 module.exports = { connect, dbs, queues };
