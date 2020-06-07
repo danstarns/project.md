@@ -14,6 +14,10 @@ services:
       - REACT_APP_JWT_KEY=project-md-token
       - REACT_APP_API_URL=http://localhost:5000
       - NODE_ENV=production
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
   mongo:
     image: mongo
     ports:
@@ -29,6 +33,14 @@ services:
       - HTTP_PORT=5000
       - JWT_SECRET=beerandbongs
       - MONGODB_URI=mongodb://host.docker.internal:27017/Project-md
+      - REDIS_URI=redis://host.docker.internal:6379
+      - CLIENT_URL=http://localhost:5000
+      - EMAIL_HOST=smtp.ethereal.email
+      - EMAIL_PORT=587
+      - EMAIL_USER=test@test.com
+      - EMAIL_PASSWORD=password!
+      - EMAIL_SECURE=false
+      - EMAIL_FROM=no-reply@project-md.com
       - NODE_ENV=production
       - DEBUG=@Project.md:*
     ports:
@@ -36,3 +48,4 @@ services:
     depends_on:
       - client
       - mongo
+      - redis
