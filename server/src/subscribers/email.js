@@ -7,8 +7,7 @@ const {
     EMAIL_USER,
     EMAIL_PASSWORD,
     EMAIL_SECURE,
-    EMAIL_FROM,
-    NODE_ENV
+    EMAIL_FROM
 } = require("../config.js");
 
 let transporter;
@@ -30,29 +29,15 @@ async function process(/** @type {import("bull").Job} */ job) {
 async function start() {
     debug("Starting");
 
-    if (NODE_ENV === "development") {
-        let testAccount = await nodemailer.createTestAccount();
-
-        transporter = nodemailer.createTransport({
-            host: testAccount.smtp.host,
-            port: testAccount.smtp.port,
-            secure: testAccount.smtp.secure,
-            auth: {
-                user: testAccount.user,
-                pass: testAccount.pass
-            }
-        });
-    } else {
-        transporter = nodemailer.createTransport({
-            host: EMAIL_HOST,
-            port: EMAIL_PORT,
-            secure: EMAIL_SECURE,
-            auth: {
-                user: EMAIL_USER,
-                pass: EMAIL_PASSWORD
-            }
-        });
-    }
+    transporter = nodemailer.createTransport({
+        host: EMAIL_HOST,
+        port: EMAIL_PORT,
+        secure: EMAIL_SECURE,
+        auth: {
+            user: EMAIL_USER,
+            pass: EMAIL_PASSWORD
+        }
+    });
 
     await transporter.verify();
 
