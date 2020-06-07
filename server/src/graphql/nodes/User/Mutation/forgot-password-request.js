@@ -25,7 +25,7 @@ async function forgotPasswordRequest(root, args) {
         subject: "Project.md Password Reset",
         html: `
             <p>
-                Click <a href="${CLIENT_URL}/forgot-password/${token}">Here</a> to reset password,
+                Click <a href="${CLIENT_URL}/password-reset/${token}">Here</a> to reset password,
                 otherwise ignore this email.
             </p>
         `
