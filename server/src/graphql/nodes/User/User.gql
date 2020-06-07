@@ -34,9 +34,24 @@ type SignInResponse {
     error: Error
 }
 
+# FORGOT PASSWORD REQUEST
+# ------------------------------------
+input ForgotPasswordRequestInput {
+    search: String!
+}
+
+# FORGOT PASSWORD CALLBACK
+# ------------------------------------
+input ForgotPasswordCallbackInput {
+    token: String!
+    password: String!
+}
+
 type Mutation {
     signUp(input: SignUpInput): SignUpResponse!
     signIn(input: SignInInput): SignInResponse!
+    forgotPasswordRequest(input: ForgotPasswordRequestInput!): Boolean!
+    forgotPasswordCallback(input: ForgotPasswordCallbackInput!): Boolean!
 }
 
 type Query {
