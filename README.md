@@ -55,12 +55,12 @@ Recommended to open `server` & `client` folders in separate instances of your ed
 
 > **Environment variables** copy `./.env.example` => `./.env` You may need to adjust variables to suit your setup.
 
-
 ## Server 
 1. [MongoDB Server](https://www.mongodb.com/)
-2. `cd server`
-3. `npm install`
-4. `npm run start`
+2. [Redis](https://redis.io/)
+3. `cd server`
+4. `npm install`
+5. `npm run start`
 
 ### Emails
 This project uses [Nodemailer](https://nodemailer.com/about/) to send emails, you will need to adjust the config in either `./server/.env` or if you are using [Docker](#docker) adjust the variables in `./docker-compose.yml`
@@ -73,8 +73,6 @@ EMAIL_PASSWORD=password
 EMAIL_SECURE=true
 EMAIL_FROM=no-reply@project-md.com
 ```
-
----
 
 ## Client 
 
