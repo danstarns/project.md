@@ -36,6 +36,7 @@ function App() {
               <Route exact path="/login" component={Auth.Login} />
               <Route exact path="/signup" component={Auth.SignUp} />
               <Route exact path="/logout" component={Auth.Logout} />
+              <Route exact path="/forgot-password" component={Auth.ForgotPassword} />
 
               <Route exact path="/project/create" component={Project.CreateProject} />
               <Route exact path="/projects" component={Project.Projects} />

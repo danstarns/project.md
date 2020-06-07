@@ -39,6 +39,12 @@ function Login({ history }) {
     setLoading(false);
   }
 
+  function gotForgotPassword(e) {
+    e.preventDefault();
+
+    history.push("/forgot-password");
+  }
+
   return (
     <>
       <br />
@@ -76,6 +82,9 @@ function Login({ history }) {
 
         <Button variant="primary" type="submit">
           Submit
+        </Button>
+        <Button className="ml-3" variant="warning" onClick={gotForgotPassword}>
+          Forgot Password
         </Button>
       </Form>
     </>
