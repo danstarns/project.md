@@ -38,7 +38,11 @@ You can use this project as; a template, guide for inspiration, your own deploym
             * `graphql-voyager`
         3. `mongoose`
         4. `jsonwebtoken`
+        5. `ioredis`
+        6. `bull`
+        7. `nodemailer`
     * MongoDB
+    * Redis
 2. Client
     * React.JS
         1. `create-react-app`
