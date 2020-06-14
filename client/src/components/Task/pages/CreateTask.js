@@ -1,7 +1,8 @@
 import React, { useState, useContext } from "react";
 import gql from "graphql-tag";
-import { GraphQL } from "../../../contexts/index.js";
+import { GraphQL, AuthContext } from "../../../contexts/index.js";
 import { TaskForm } from "../components/index.js";
+import { ErrorBanner } from "../../Common/index.js";
 
 const Mutation = gql`
   mutation createTask(
@@ -34,8 +35,13 @@ const Mutation = gql`
 
 function CreateTask({ history, match }) {
   const { client } = useContext(GraphQL.Context);
+  const { isLoggedIn } = useContext(AuthContext.Context);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  if (!isLoggedIn) {
+    return <ErrorBanner error="Must be logged in to create a task" />;
+  }
 
   async function onChange(task) {
     setLoading(true);
