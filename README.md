@@ -1,18 +1,12 @@
 # Project.md
-
 > Work in progress 🚧🏗👷‍♂️
 
-📝 A Simple and Robust Markdown Inspired Project Management System
-
+📝 Exemplary markdown inspired project management built with; React, Node, GraphQL & MongoDB.
 
 # About
-
 Tired of complicated project management systems? What something that speaks to the Markdown 🐱‍👤 inside of you? Project.md is designed with simplicity at its heart, letting you manage projects & present your ideas with pure Markdown. No longer shall you recursively search nested 'sub tasks' to oblivion 🌌🤯.
 
-You can use this project as; a template, guide for inspiration, your own deployment and a project to contribute towards 🍻
-
-# To Do 🎯
-1. Organizations
+# To Do
 2. User Profiles
 3. Task/Project Comments
 4. Notifications/Emails
@@ -26,7 +20,6 @@ You can use this project as; a template, guide for inspiration, your own deploym
 12. Logo/Styling
 
 # Tech Stack
-
 > 🍻 To all the unmentioned technologies 
 
 1. Server
@@ -75,13 +68,24 @@ EMAIL_FROM=no-reply@project-md.com
 ```
 
 ## Client 
-
 1. `cd client`
 2. `npm install`
 3. `npm run start`
 
 ## Docker
-
 > Use this to start client, server & dependencies all at once, take consideration for any local, conflicting, services 🐳
 
 1. `docker-compose up`
+
+### Docker Containers
+> Use the following commands to setup the dependencies manually
+
+#### MongoDB
+```
+$ docker run -d --publish 27017:27017 --name project-md-mongo mongo 
+```
+
+#### Redis
+```
+$ docker run --name project-md-redis --publish 6379:6379 -d redis
+```
