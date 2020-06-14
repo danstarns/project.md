@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import gql from "graphql-tag";
 import { Col, Row, Button, Jumbotron } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
-import { GraphQL } from "../../../contexts/index.js";
+import { GraphQL, AuthContext } from "../../../contexts/index.js";
 import { Code } from "../../Markdown/index.js";
 import { ErrorBanner, TitleBanner, LoadingBanner } from "../../Common/index.js";
 import { ProjectList, ProjectFilter } from "../../Project/index.js";
@@ -39,10 +39,11 @@ function Query() {
 
 function Organization({ match, history }) {
   const { client } = useContext(GraphQL.Context);
+  const { isLoggedIn } = useContext(AuthContext.Context);
   const [organization, setOrganization] = useState();
   const [error, setError] = useState();
   const [projectFilter, setProjectsFilter] = useState({
-    selected: "user",
+    selected: isLoggedIn ? "user" : "public",
     dateDirection: "desc",
     search: "",
     page: 1,
@@ -109,16 +110,18 @@ function Organization({ match, history }) {
         heading={`Organization: ${organization.name}`}
         content={organization.tagline}
         nested={
-          <>
-            <hr />
-            <Button
-              onClick={() =>
-                history.push(`/organization/edit/${match.params.id}`)
-              }
-            >
-              Edit
-            </Button>
-          </>
+          isLoggedIn && (
+            <>
+              <hr />
+              <Button
+                onClick={() =>
+                  history.push(`/organization/edit/${match.params.id}`)
+                }
+              >
+                Edit
+              </Button>
+            </>
+          )
         }
       />
 
@@ -127,12 +130,14 @@ function Organization({ match, history }) {
 
       <Row>
         <Col sm={12} md={12} lg={2}>
-          <Button
-            className="mt-3 mb-3 w-100"
-            onClick={() => history.push(`/project/create/${match.params.id}`)}
-          >
-            Create Project
-          </Button>
+          {isLoggedIn && (
+            <Button
+              className="mt-3 mb-3 w-100"
+              onClick={() => history.push(`/project/create/${match.params.id}`)}
+            >
+              Create Project
+            </Button>
+          )}
 
           <ProjectFilter onChange={updateTasks} />
         </Col>
@@ -160,20 +165,24 @@ function Organization({ match, history }) {
         </Col>
       </Row>
 
-      <hr />
+      {isLoggedIn && (
+        <>
+          <hr />
 
-      <Row className="mt-3">
-        <Col>
-          <Jumbotron>
-            <h1>Recents</h1>
-          </Jumbotron>
-        </Col>
-        <Col>
-          <Jumbotron>
-            <h1>Events</h1>
-          </Jumbotron>
-        </Col>
-      </Row>
+          <Row className="mt-3">
+            <Col>
+              <Jumbotron>
+                <h1>Recents</h1>
+              </Jumbotron>
+            </Col>
+            <Col>
+              <Jumbotron>
+                <h1>Events</h1>
+              </Jumbotron>
+            </Col>
+          </Row>
+        </>
+      )}
     </div>
   );
 }
