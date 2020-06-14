@@ -12,6 +12,7 @@ const Mutation = gql`
     $private: Boolean!
     $due: String!
     $markdown: String!
+    $organization: ID
   ) {
     createProject(
       input: {
@@ -20,6 +21,7 @@ const Mutation = gql`
         private: $private
         due: $due
         markdown: $markdown
+        organization: $organization
       }
     ) {
       error {
@@ -32,7 +34,7 @@ const Mutation = gql`
   }
 `;
 
-function CreateProject({ history }) {
+function CreateProject({ history, match }) {
   const { client } = useContext(GraphQL.Context);
   const { isLoggedIn } = useContext(AuthContext.Context);
   const [loading, setLoading] = useState(false);
@@ -53,7 +55,8 @@ function CreateProject({ history }) {
         tagline: project.tagline,
         private: Boolean(project.private),
         markdown: project.markdown,
-        due: project.due.toISOString()
+        due: project.due.toISOString(),
+        organization: match.params.organization
       };
 
       const response = await client.mutate({
