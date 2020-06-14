@@ -87,5 +87,5 @@ $ docker run -d --publish 27017:27017 --name project-md-mongo mongo
 
 #### Redis
 ```
-$ docker run --name project-md-redis --publish 6379:6379 -d redis
+$ docker run -d --publish 6379:6379 --name project-md-redis redis
 ```
