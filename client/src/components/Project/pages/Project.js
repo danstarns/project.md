@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import gql from "graphql-tag";
-import { Col, Row, Button, Jumbotron } from "react-bootstrap";
+import { Col, Row, Button, Jumbotron, ProgressBar } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
 import { GraphQL, AuthContext } from "../../../contexts/index.js";
 import { Code } from "../../Markdown/index.js";
@@ -8,7 +8,8 @@ import {
   ErrorBanner,
   TitleBanner,
   LoadingBanner,
-  StatusDropdown
+  StatusDropdown,
+  StatusProgressBar
 } from "../../Common/index.js";
 import { TasksList, TasksFilter } from "../../Task/index.js";
 
@@ -181,6 +182,8 @@ function Project({ match, history }) {
           )
         }
       />
+
+      <StatusProgressBar status={status} />
 
       <h1>Tasks</h1>
       <hr />
