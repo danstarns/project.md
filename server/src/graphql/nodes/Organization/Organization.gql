@@ -69,11 +69,11 @@ type OgranizationsResponse {
 
 type Query {
     organization(id: ID!): Organization
-    userOrganizations(input: OgranizationsInput!): OgranizationsResponse!
+    userOrganizations(input: OgranizationsInput!): OgranizationsResponse! @Auth(input: {required: true})
     publicOrganizations(input: OgranizationsInput!): OgranizationsResponse!
 }
 
 type Mutation {
-    createOrganization(input: CreateOrganizationInput!): CreateOrganizationResponse!
-    editOrganization(input: EditOrganizationInput!): EditOrganizationResponse!
+    createOrganization(input: CreateOrganizationInput!): CreateOrganizationResponse! @Auth(input: {required: true})
+    editOrganization(input: EditOrganizationInput!): EditOrganizationResponse! @Auth(input: {required: true})
 }

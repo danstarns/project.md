@@ -53,6 +53,6 @@ type Query {
 }
 
 type Mutation {
-    createTask(input: CreateTaskInput!): CreateTaskResponse!
-    editTask(input: EditTaskInput!): EditTaskResponse!
+    createTask(input: CreateTaskInput!): CreateTaskResponse! @Auth(input: {required: true})
+    editTask(input: EditTaskInput!): EditTaskResponse! @Auth(input: {required: true})
 }

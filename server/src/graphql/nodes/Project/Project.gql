@@ -86,11 +86,11 @@ input UserProjectsInput {
 
 type Query {
     project(id: ID!): Project
-    userProjects(input: UserProjectsInput!): UserProjectsResponse!
+    userProjects(input: UserProjectsInput!): UserProjectsResponse! @Auth(input: {required: true})
     publicProjects(input: UserProjectsInput!): UserProjectsResponse!
 }
 
 type Mutation {
-    createProject(input: CreateProjectInput!): CreateProjectResponse!
-    editProject(input: EditProjectInput!): EditProjectResponse!
+    createProject(input: CreateProjectInput!): CreateProjectResponse! @Auth(input: {required: true})
+    editProject(input: EditProjectInput!): EditProjectResponse! @Auth(input: {required: true})
 }
