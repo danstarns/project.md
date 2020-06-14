@@ -20,7 +20,11 @@ function OrganizationList({ organizations, history }) {
             </Card.Header>
             <Card.Body>
               <Card.Text>
-                {organization.tagline.substr(0, 60)} <hr />
+                <p>Private: {JSON.stringify(organization.private)}</p>
+                <p>
+                  Tagline: {organization.tagline.substr(0, 60)} <hr />
+                </p>
+
                 <Button
                   onClick={() =>
                     history.push(`/organization/${organization._id}`)

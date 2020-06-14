@@ -23,6 +23,7 @@ const userProjects = gql`
           name
           tagline
           due
+          private
         }
       }
     }
@@ -46,6 +47,7 @@ const publicProjects = gql`
           name
           tagline
           due
+          private
         }
       }
     }

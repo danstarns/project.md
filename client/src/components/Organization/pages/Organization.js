@@ -15,6 +15,7 @@ function Query() {
       $limit: Int!
       $search: String
       $sort: String!
+      $user: Boolean
     ) {
       organization(id: $id) {
         _id
@@ -22,7 +23,13 @@ function Query() {
         tagline
         markdown
         projects(
-          input: { page: $page, limit: $limit, search: $search, sort: $sort }
+          input: {
+            page: $page
+            limit: $limit
+            search: $search
+            sort: $sort
+            user: $user
+          }
         ) {
           hasNextPage
           projects {
@@ -30,6 +37,7 @@ function Query() {
             name
             tagline
             due
+            private
           }
         }
       }

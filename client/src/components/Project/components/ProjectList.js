@@ -18,7 +18,10 @@ function ProjectList({ projects, history }) {
             </Card.Header>
             <Card.Body>
               <Card.Text>
-                {project.tagline.substr(0, 60)} <hr />
+                <p>Private: {JSON.stringify(project.private)}</p>
+                <p>Tagline: {project.tagline.substr(0, 60)}</p>
+
+                <hr />
                 {project.due && (
                   <p>Due: {moment(new Date(project.due)).calendar()}</p>
                 )}
