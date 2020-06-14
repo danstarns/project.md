@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import gql from "graphql-tag";
 import { Col, Row, Button, Jumbotron } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
-import { GraphQL } from "../../../contexts/index.js";
+import { GraphQL, AuthContext } from "../../../contexts/index.js";
 import { Code } from "../../Markdown/index.js";
 import { ErrorBanner, TitleBanner, LoadingBanner } from "../../Common/index.js";
 import { TasksList, TasksFilter } from "../../Task/index.js";
@@ -48,6 +48,7 @@ function Query() {
 
 function Project({ match, history }) {
   const { client } = useContext(GraphQL.Context);
+  const { isLoggedIn } = useContext(AuthContext.Context);
   const [project, setProject] = useState();
   const [error, setError] = useState();
   const [tasksFilter, setTasksFilter] = useState({
@@ -118,14 +119,16 @@ function Project({ match, history }) {
         heading={`Project: ${project.name}`}
         content={project.tagline}
         nested={
-          <>
-            <hr />
-            <Button
-              onClick={() => history.push(`/project/edit/${match.params.id}`)}
-            >
-              Edit
-            </Button>
-          </>
+          isLoggedIn && (
+            <>
+              <hr />
+              <Button
+                onClick={() => history.push(`/project/edit/${match.params.id}`)}
+              >
+                Edit
+              </Button>
+            </>
+          )
         }
       />
 
@@ -134,13 +137,14 @@ function Project({ match, history }) {
 
       <Row>
         <Col sm={12} md={12} lg={2}>
-          <Button
-            className="mt-3 mb-3 w-100"
-            onClick={() => history.push(`/task/create/${match.params.id}`)}
-          >
-            Create Task
-          </Button>
-
+          {isLoggedIn && (
+            <Button
+              className="mt-3 mb-3 w-100"
+              onClick={() => history.push(`/task/create/${match.params.id}`)}
+            >
+              Create Task
+            </Button>
+          )}
           <TasksFilter onChange={updateTasks} />
         </Col>
 

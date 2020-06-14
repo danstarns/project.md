@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Row, Col, ListGroup, Form, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AuthContext } from "../../../contexts/index.js";
 
 const selectedStyle = {
   backgroundColor: "#077bff",
@@ -8,7 +9,8 @@ const selectedStyle = {
 };
 
 function ProjectsFilter(props) {
-  const [selected, setSelected] = useState("user");
+  const { isLoggedIn } = useContext(AuthContext.Context);
+  const [selected, setSelected] = useState(isLoggedIn ? "user" : "public");
   const [dateDirection, setDateDirection] = useState("desc");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -60,15 +62,18 @@ function ProjectsFilter(props) {
     <Row>
       <Col>
         <ListGroup>
-          <ListGroup.Item
-            onClick={updateSelected("user")}
-            className="project-filter-card"
-            style={{
-              ...(selected === "user" ? selectedStyle : {})
-            }}
-          >
-            My Projects
-          </ListGroup.Item>
+          {isLoggedIn && (
+            <ListGroup.Item
+              onClick={updateSelected("user")}
+              className="project-filter-card"
+              style={{
+                ...(selected === "user" ? selectedStyle : {})
+              }}
+            >
+              My Projects
+            </ListGroup.Item>
+          )}
+
           <ListGroup.Item
             onClick={updateSelected("public")}
             className="project-filter-card"
