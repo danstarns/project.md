@@ -39,7 +39,7 @@ function App() {
               <Route exact path="/forgot-password" component={Auth.ForgotPassword} />
               <Route exact path="/password-reset/:token" component={Auth.PasswordReset} />
 
-              <Route path="/project/create/:organization" component={Project.CreateProject} />
+              <Route path="/project/create/:organization?" component={Project.CreateProject} />
               <Route exact path="/projects" component={Project.Projects} />
               <Route exact path="/project/:id" component={Project.Project} />
               <Route exact path="/project/edit/:id" component={Project.EditProject} />
