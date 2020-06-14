@@ -22,7 +22,7 @@ async function project(root, { id }, ctx) {
             ...organization.users
         ];
 
-        if (!includedUsers.includes(ctx.user)) {
+        if (!includedUsers.map((x) => x.toString()).includes(ctx.user)) {
             throw new Error("Forbidden");
         }
     }
