@@ -39,6 +39,7 @@ input CreateProjectInput {
     private: Boolean!
     due: String!
     markdown: String!
+    organization: ID
 }
 
 type CreateProjectResponse {
