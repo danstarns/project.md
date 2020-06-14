@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import gql from "graphql-tag";
 import { Row, Col, Button } from "react-bootstrap";
-import { GraphQL } from "../../../contexts/index.js";
+import { GraphQL, AuthContext } from "../../../contexts/index.js";
 import { OrganizationForm } from "../components/index.js";
-import { TitleBanner, LoadingBanner } from "../../Common/index.js";
+import { TitleBanner, LoadingBanner, ErrorBanner } from "../../Common/index.js";
 
 const Query = gql`
   query organization($id: ID!) {
@@ -46,6 +46,7 @@ const Mutation = gql`
 
 function EditOrganization({ history, match }) {
   const { client } = useContext(GraphQL.Context);
+  const { isLoggedIn } = useContext(AuthContext.Context);
   const [loading, setLoading] = useState(false);
   const [loadingOrganization, setLoadingOrganization] = useState(true);
   const [error, setError] = useState(false);
@@ -82,6 +83,10 @@ function EditOrganization({ history, match }) {
       setLoadingOrganization(false);
     })();
   }, []);
+
+  if (!isLoggedIn) {
+    return <ErrorBanner error="Must be logged in to edit a Organization" />;
+  }
 
   async function submit(newOrganization) {
     setLoading(true);

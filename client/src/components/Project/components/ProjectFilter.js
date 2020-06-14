@@ -70,7 +70,7 @@ function ProjectsFilter(props) {
                 ...(selected === "user" ? selectedStyle : {})
               }}
             >
-              My Projects
+              Mine
             </ListGroup.Item>
           )}
 
@@ -81,7 +81,7 @@ function ProjectsFilter(props) {
               ...(selected === "public" ? selectedStyle : {})
             }}
           >
-            Public Projects
+            Public
           </ListGroup.Item>
           <ListGroup.Item className="p-0">
             <Container>

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import gql from "graphql-tag";
 import { Button, Row, Col, Jumbotron } from "react-bootstrap";
-import { GraphQL } from "../../../contexts/index.js";
+import { GraphQL, AuthContext } from "../../../contexts/index.js";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
 import { OrganizationsFilter, OrganizationList } from "../components/index.js";
 
@@ -51,12 +51,13 @@ const publicOrganizations = gql`
 
 function Organizations({ history }) {
   const { client } = useContext(GraphQL.Context);
+  const { isLoggedIn } = useContext(AuthContext.Context);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [organizations, setOrganizations] = useState([]);
   const [hasNextPage, setHasNextPage] = useState(false);
   const [filter, setFilter] = useState({
-    selected: "user",
+    selected: isLoggedIn ? "user" : "public",
     dateDirection: "desc",
     search: "",
     page: 1,
@@ -109,12 +110,14 @@ function Organizations({ history }) {
 
       <Row>
         <Col sm={12} md={12} lg={2}>
-          <Button
-            className="mt-3 mb-3 w-100"
-            onClick={() => history.push("/organization/create")}
-          >
-            Create
-          </Button>
+          {isLoggedIn && (
+            <Button
+              className="mt-3 mb-3 w-100"
+              onClick={() => history.push("/organization/create")}
+            >
+              Create
+            </Button>
+          )}
           <OrganizationsFilter onChange={setFilter} hasNextPage={hasNextPage} />
         </Col>
         <Col sm={12} md={12} lg={10} className="mt-3">
@@ -122,20 +125,24 @@ function Organizations({ history }) {
         </Col>
       </Row>
 
-      <hr />
+      {isLoggedIn && (
+        <>
+          <hr />
 
-      <Row className="mt-3">
-        <Col>
-          <Jumbotron>
-            <h1>Recents</h1>
-          </Jumbotron>
-        </Col>
-        <Col>
-          <Jumbotron>
-            <h1>Events</h1>
-          </Jumbotron>
-        </Col>
-      </Row>
+          <Row className="mt-3">
+            <Col>
+              <Jumbotron>
+                <h1>Recents</h1>
+              </Jumbotron>
+            </Col>
+            <Col>
+              <Jumbotron>
+                <h1>Events</h1>
+              </Jumbotron>
+            </Col>
+          </Row>
+        </>
+      )}
     </>
   );
 }

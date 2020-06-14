@@ -70,7 +70,7 @@ function TasksFilter(props) {
                 ...(selected === "user" ? selectedStyle : {})
               }}
             >
-              My Tasks
+              Mine
             </ListGroup.Item>
           )}
           <ListGroup.Item
@@ -80,7 +80,7 @@ function TasksFilter(props) {
               ...(selected === "all" ? selectedStyle : {})
             }}
           >
-            All Tasks
+            All
           </ListGroup.Item>
 
           <ListGroup.Item className="p-0">
