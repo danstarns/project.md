@@ -16,6 +16,11 @@ const Project = new mongoose.Schema(
         organization: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Organization"
+        },
+        status: {
+            type: String,
+            enum: ["Todo", "InProgress", "Done"],
+            default: "Todo"
         }
     },
     { timestamps: true }

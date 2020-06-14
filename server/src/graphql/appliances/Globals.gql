@@ -6,3 +6,9 @@ enum DateSortEnum {
 type Error {
     message: String!
 }
+
+enum StatusEnum {
+    Todo
+    InProgress
+    Done
+}

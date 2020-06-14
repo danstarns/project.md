@@ -4,10 +4,28 @@ import { Col, Row, Button, Jumbotron } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
 import { GraphQL, AuthContext } from "../../../contexts/index.js";
 import { Code } from "../../Markdown/index.js";
-import { ErrorBanner, TitleBanner, LoadingBanner } from "../../Common/index.js";
+import {
+  ErrorBanner,
+  TitleBanner,
+  LoadingBanner,
+  StatusDropdown
+} from "../../Common/index.js";
 import { TasksList, TasksFilter } from "../../Task/index.js";
 
-function Query() {
+function UpdateProjectStatus() {
+  return gql`
+    mutation updateProjectStatus($id: ID!, $status: StatusEnum!) {
+      updateProjectStatus(input: { id: $id, status: $status }) {
+        error {
+          message
+        }
+        status
+      }
+    }
+  `;
+}
+
+function ProjectQuery() {
   return gql`
     query project(
       $id: ID!
@@ -22,6 +40,7 @@ function Query() {
         name
         tagline
         markdown
+        status
         tasks(
           input: {
             page: $page
@@ -61,12 +80,13 @@ function Project({ match, history }) {
   const [tasks, setTasks] = useState([]);
   const [hasNextTasks, setHasNextTasks] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState("InProgress");
 
   useEffect(() => {
     async function get() {
       try {
         const { data, errors } = await client.query({
-          query: Query(),
+          query: ProjectQuery(),
           variables: {
             id: match.params.id,
             page: tasksFilter.page,
@@ -91,6 +111,7 @@ function Project({ match, history }) {
         setTasks(data.project.tasks.data.tasks);
         setHasNextTasks(data.project.tasks.hasNextPage);
         setProject(data.project);
+        setStatus(data.project.status);
       } catch (e) {
         setError(e.message);
       }
@@ -113,6 +134,29 @@ function Project({ match, history }) {
     setTasksFilter(filter);
   }
 
+  async function updateStatus(s) {
+    setStatus(s);
+
+    try {
+      const { data } = await client.mutate({
+        mutation: UpdateProjectStatus(),
+        variables: {
+          id: match.params.id,
+          status: s
+        },
+        fetchPolicy: "no-cache"
+      });
+
+      if (data.error) {
+        throw new Error(data.error.message);
+      }
+
+      setStatus(data.updateProjectStatus.status);
+    } catch (e) {
+      setError(e.message);
+    }
+  }
+
   return (
     <div>
       <TitleBanner
@@ -123,10 +167,16 @@ function Project({ match, history }) {
             <>
               <hr />
               <Button
+                className="mr-3"
                 onClick={() => history.push(`/project/edit/${match.params.id}`)}
               >
                 Edit
               </Button>
+              <StatusDropdown
+                onSelect={updateStatus}
+                status={status}
+                title="Select Status"
+              />
             </>
           )
         }
