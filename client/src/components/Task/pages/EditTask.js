@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import gql from "graphql-tag";
 import { Row, Col, Button } from "react-bootstrap";
-import { LoadingBanner, TitleBanner, ErrorBanner } from "../../Common/index.js";
-import { GraphQL, AuthContext } from "../../../contexts/index.js";
+import { LoadingBanner, TitleBanner } from "../../Common/index.js";
+import { GraphQL } from "../../../contexts/index.js";
 import { TaskForm } from "../components/index.js";
 
 const Query = gql`
@@ -48,7 +48,6 @@ const Mutation = gql`
 
 function EditTask({ match, history }) {
   const { client } = useContext(GraphQL.Context);
-  const { isLoggedIn } = useContext(AuthContext.Context);
   const [LoadingTask, setLoadingTask] = useState(true);
   const [error, setError] = useState(false);
   const [task, setTask] = useState(false);
@@ -85,10 +84,6 @@ function EditTask({ match, history }) {
       setLoadingTask(false);
     })();
   }, []);
-
-  if (!isLoggedIn) {
-    return <ErrorBanner error="Must be logged in to edit a task" />;
-  }
 
   function submit(newTask) {
     setLoadingCreate(true);

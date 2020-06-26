@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
 import gql from "graphql-tag";
 import { Row, Col } from "react-bootstrap";
-import { GraphQL, AuthContext } from "../../../contexts/index.js";
+import { GraphQL } from "../../../contexts/index.js";
 import { ProjectForm } from "../components/index.js";
-import { TitleBanner, ErrorBanner } from "../../Common/index.js";
+import { TitleBanner } from "../../Common/index.js";
 
 const Mutation = gql`
   mutation createProject(
@@ -36,13 +36,8 @@ const Mutation = gql`
 
 function CreateProject({ history, match }) {
   const { client } = useContext(GraphQL.Context);
-  const { isLoggedIn } = useContext(AuthContext.Context);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-
-  if (!isLoggedIn) {
-    return <ErrorBanner error="Must be logged in to create a project" />;
-  }
 
   async function submit(project) {
     setLoading(true);

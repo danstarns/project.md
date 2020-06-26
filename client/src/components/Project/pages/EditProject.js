@@ -2,8 +2,8 @@ import React, { useState, useContext, useEffect } from "react";
 import gql from "graphql-tag";
 import { Row, Col, Button } from "react-bootstrap";
 import { ProjectForm } from "../components/index.js";
-import { GraphQL, AuthContext } from "../../../contexts/index.js";
-import { TitleBanner, LoadingBanner, ErrorBanner } from "../../Common/index.js";
+import { GraphQL } from "../../../contexts/index.js";
+import { TitleBanner, LoadingBanner } from "../../Common/index.js";
 
 const Query = gql`
   query project($id: ID!) {
@@ -52,7 +52,6 @@ const Mutation = gql`
 
 function EditProject({ match, history }) {
   const { client } = useContext(GraphQL.Context);
-  const { isLoggedIn } = useContext(AuthContext.Context);
   const [loadingProject, setLoadingProject] = useState(true);
   const [error, setError] = useState(false);
   const [project, setProject] = useState(false);
@@ -89,10 +88,6 @@ function EditProject({ match, history }) {
       setLoadingProject(false);
     })();
   }, []);
-
-  if (!isLoggedIn) {
-    return <ErrorBanner error="Must be logged in to create a project" />;
-  }
 
   function submit(newProject) {
     setLoadingCreate(true);

@@ -5,5 +5,6 @@ import Auth from "./Auth/index.js";
 import Task from "./Task/index.js";
 import Project from "./Project/index.js";
 import Organization from "./Organization/index.js";
+import * as Routes from "./Routes/index.js";
 
-export { Home, NavBar, Dashboard, Task, Project, Auth, Organization };
+export { Home, NavBar, Dashboard, Task, Project, Auth, Organization, Routes };

@@ -16,7 +16,8 @@ import {
   Auth,
   Task,
   Project,
-  Organization
+  Organization,
+  Routes
 } from "./components/index.js";
 import { AuthContext, GraphQL } from "./contexts/index.js";
 
@@ -38,20 +39,21 @@ function App() {
               <Route exact path="/logout" component={Auth.Logout} />
               <Route exact path="/forgot-password" component={Auth.ForgotPassword} />
               <Route exact path="/password-reset/:token" component={Auth.PasswordReset} />
+              <Route exact path="/no-power" component={Auth.NoPowerHere} />
 
-              <Route path="/project/create/:organization?" component={Project.CreateProject} />
+              <Routes.Protected path="/project/create/:organization?" component={Project.CreateProject} />
               <Route exact path="/projects" component={Project.Projects} />
               <Route exact path="/project/:id" component={Project.Project} />
-              <Route exact path="/project/edit/:id" component={Project.EditProject} />
+              <Routes.Protected exact path="/project/edit/:id" component={Project.EditProject} />
 
-              <Route exact path="/task/create/:project" component={Task.CreateTask} />
+              <Routes.Protected exact path="/task/create/:project" component={Task.CreateTask} />
               <Route exact path="/task/:id" component={Task.Task} />
-              <Route exact path="/task/edit/:id" component={Task.EditTask} />
+              <Routes.Protected exact path="/task/edit/:id" component={Task.EditTask} />
 
-              <Route exact path="/organization/create" component={Organization.CreateOrganization} />
+              <Routes.Protected exact path="/organization/create" component={Organization.CreateOrganization} />
               <Route exact path="/organizations" component={Organization.Organizations} />
               <Route exact path="/organization/:id" component={Organization.Organization} />
-              <Route exact path="/organization/edit/:id" component={Organization.EditOrganization} />
+              <Routes.Protected exact path="/organization/edit/:id" component={Organization.EditOrganization} />
 
               <Route component={Home} />
             </Switch>
