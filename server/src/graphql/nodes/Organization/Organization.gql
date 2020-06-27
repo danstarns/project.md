@@ -10,6 +10,7 @@ type Organization {
     createdAt: GraphQLDateTime!
     updatedAt: GraphQLDateTime!
     projects(input: OrganizationProjectsInput!): OrganizationProjectsConnection! # todo field
+    isUserAdmin: Boolean!
 }
 
 type OrganizationProjectsConnection {
@@ -63,6 +64,13 @@ input OgranizationsInput {
     search: String
 }
 
+# INVITE USER
+# ------------------------------------
+input InviteUserProjectInput {
+    id: ID!
+    email: String!
+}
+
 type OgranizationsResponse {
     hasNextPage: Boolean!
     organizations: [Organization]!
@@ -77,4 +85,5 @@ type Query {
 type Mutation {
     createOrganization(input: CreateOrganizationInput!): CreateOrganizationResponse! @Auth(input: {required: true})
     editOrganization(input: EditOrganizationInput!): EditOrganizationResponse! @Auth(input: {required: true})
+    inviteUserOrganization(input: InviteUserProjectInput!): Boolean! @Auth(input: {required: true, populate: true})
 }

@@ -23,7 +23,8 @@ function createClient(type) {
 }
 
 const dbs = {
-    passwordReset: new Redis(REDIS_URI, { keyPrefix: "password-reset" })
+    passwordReset: new Redis(REDIS_URI, { keyPrefix: "password-reset" }),
+    invite: new Redis(REDIS_URI, { keyPrefix: "invite" })
 };
 
 const queues = {

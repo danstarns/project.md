@@ -6,6 +6,7 @@ import { GraphQL, AuthContext } from "../../../contexts/index.js";
 import { Code } from "../../Markdown/index.js";
 import { ErrorBanner, TitleBanner, LoadingBanner } from "../../Common/index.js";
 import { ProjectList, ProjectFilter } from "../../Project/index.js";
+import { InviteUserModal } from "../components/index.js";
 
 function Query() {
   return gql`
@@ -22,6 +23,7 @@ function Query() {
         name
         tagline
         markdown
+        isUserAdmin
         projects(
           input: {
             page: $page
@@ -60,6 +62,7 @@ function Organization({ match, history }) {
   const [projects, setProjects] = useState([]);
   const [hasNextProjects, setHasNextProjects] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isInviteUserModal, setIsInviteUserModal] = useState(false);
 
   useEffect(() => {
     async function get() {
@@ -114,20 +117,34 @@ function Organization({ match, history }) {
 
   return (
     <div>
+      <InviteUserModal
+        show={isInviteUserModal}
+        onHide={() => setIsInviteUserModal(false)}
+        organization={organization}
+      />
       <TitleBanner
         heading={`Organization: ${organization.name}`}
         content={organization.tagline}
         nested={
-          isLoggedIn && (
+          organization.isUserAdmin && (
             <>
               <hr />
-              <Button
-                onClick={() =>
-                  history.push(`/organization/edit/${match.params.id}`)
-                }
-              >
-                Edit
-              </Button>
+              <div className="d-flex align-items-start">
+                <Button
+                  onClick={() =>
+                    history.push(`/organization/edit/${match.params.id}`)
+                  }
+                >
+                  Edit
+                </Button>
+
+                <Button
+                  className="ml-3"
+                  onClick={() => setIsInviteUserModal(true)}
+                >
+                  Invite User
+                </Button>
+              </div>
             </>
           )
         }
