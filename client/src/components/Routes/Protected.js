@@ -9,7 +9,7 @@ function Protected({ exact, path, component: Component }) {
     <Route
       exact={exact}
       path={path}
-      render={(...props) => {
+      render={props => {
         if (!isLoggedIn) {
           props[0].history.push("/no-power");
         }
