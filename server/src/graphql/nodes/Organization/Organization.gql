@@ -22,6 +22,7 @@ input OrganizationProjectsInput {
     limit: Int!
     search: String
     sort: String!
+    user: Boolean
 }
 
 # CREATE ORGANIZATION
