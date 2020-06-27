@@ -7,7 +7,8 @@ import {
   faSortUp,
   faSortDown,
   faChevronLeft,
-  faChevronRight
+  faChevronRight,
+  faUserLock
 } from "@fortawesome/free-solid-svg-icons";
 import {
   Home,
@@ -21,7 +22,7 @@ import {
 } from "./components/index.js";
 import { AuthContext, GraphQL } from "./contexts/index.js";
 
-library.add(faSortUp, faSortDown, faChevronLeft, faChevronRight);
+library.add(faSortUp, faSortDown, faChevronLeft, faChevronRight, faUserLock);
 
 function App() {
   return (
@@ -39,7 +40,6 @@ function App() {
               <Route exact path="/logout" component={Auth.Logout} />
               <Route exact path="/forgot-password" component={Auth.ForgotPassword} />
               <Route exact path="/password-reset/:token" component={Auth.PasswordReset} />
-              <Route exact path="/no-power" component={Auth.NoPowerHere} />
 
               <Routes.Protected path="/project/create/:organization?" component={Project.CreateProject} />
               <Route exact path="/projects" component={Project.Projects} />

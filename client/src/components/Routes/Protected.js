@@ -1,6 +1,27 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext } from "react";
 import { Route } from "react-router-dom";
+import { Jumbotron, Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AuthContext } from "../../contexts/index.js";
+
+function NoPowerHere({ history }) {
+  return (
+    <div className="mt-3">
+      <Jumbotron className="d-flex flex-column align-items-center">
+        <h1>You have no power here!</h1>
+        <FontAwesomeIcon size="6x" icon="user-lock" />
+        <Button
+          size="lg"
+          className="mt-4"
+          onClick={() => history.push("/login")}
+        >
+          Login
+        </Button>
+      </Jumbotron>
+    </div>
+  );
+}
 
 function Protected({ exact, path, component: Component }) {
   const { isLoggedIn } = useContext(AuthContext.Context);
@@ -11,10 +32,9 @@ function Protected({ exact, path, component: Component }) {
       path={path}
       render={props => {
         if (!isLoggedIn) {
-          props[0].history.push("/no-power");
+          return <NoPowerHere {...props} />;
         }
 
-        // eslint-disable-next-line react/jsx-props-no-spreading
         return <Component {...props} />;
       }}
     />
