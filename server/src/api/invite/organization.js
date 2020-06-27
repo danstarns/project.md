@@ -7,6 +7,7 @@ async function get(req, res) {
 
         if (!job) {
             const html = req.views.error({
+                title: "Invalid Code",
                 error: {
                     message: "Invalid code"
                 }
@@ -39,6 +40,7 @@ async function get(req, res) {
         return res.send(html);
     } catch (error) {
         const html = req.views.error({
+            title: "Error",
             error: {
                 message: error.message
             }
@@ -70,7 +72,6 @@ async function post(req, res) {
 
         return res.send("OK");
     } catch (error) {
-        console.error(error);
         return res.status(500).send(error.message);
     }
 }
