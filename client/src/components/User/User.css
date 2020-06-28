@@ -1,0 +1,13 @@
+.user-list-container {
+    overflow-y: auto;     
+}
+
+.user-list-card {
+    height: 200px;
+    width: 200px;
+    border-radius: 100px;
+    border-color: #077BFF;
+    border-width: .3rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+}

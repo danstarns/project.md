@@ -7,6 +7,7 @@ import { Code } from "../../Markdown/index.js";
 import { ErrorBanner, TitleBanner, LoadingBanner } from "../../Common/index.js";
 import { ProjectList, ProjectFilter } from "../../Project/index.js";
 import { InviteUserModal } from "../components/index.js";
+import { UserListCards } from "../../User/index";
 
 function Query() {
   return gql`
@@ -24,6 +25,15 @@ function Query() {
         tagline
         markdown
         isUserAdmin
+        users {
+          username
+        }
+        admins {
+          username
+        }
+        creator {
+          username
+        }
         projects(
           input: {
             page: $page
@@ -117,97 +127,100 @@ function Organization({ match, history }) {
 
   return (
     <div>
-      <InviteUserModal
-        show={isInviteUserModal}
-        onHide={() => setIsInviteUserModal(false)}
-        organization={organization}
-      />
-      <TitleBanner
-        heading={`Organization: ${organization.name}`}
-        content={organization.tagline}
-        nested={
-          organization.isUserAdmin && (
-            <>
-              <hr />
-              <div className="d-flex align-items-start">
-                <Button
-                  onClick={() =>
-                    history.push(`/organization/edit/${match.params.id}`)
-                  }
-                >
-                  Edit
-                </Button>
+      <section>
+        <InviteUserModal
+          show={isInviteUserModal}
+          onHide={() => setIsInviteUserModal(false)}
+          organization={organization}
+        />
+        <TitleBanner
+          heading={`Organization: ${organization.name}`}
+          content={organization.tagline}
+          nested={
+            organization.isUserAdmin && (
+              <>
+                <hr />
+                <div className="d-flex align-items-start">
+                  <Button
+                    onClick={() =>
+                      history.push(`/organization/edit/${match.params.id}`)
+                    }
+                  >
+                    Edit
+                  </Button>
 
-                <Button
-                  className="ml-3"
-                  onClick={() => setIsInviteUserModal(true)}
-                >
-                  Invite User
-                </Button>
-              </div>
-            </>
-          )
-        }
-      />
+                  <Button
+                    className="ml-3"
+                    onClick={() => setIsInviteUserModal(true)}
+                  >
+                    Invite User
+                  </Button>
+                </div>
+              </>
+            )
+          }
+        />
+      </section>
 
-      <h1>Projects</h1>
-      <hr />
+      <section>
+        <h1>Projects</h1>
 
-      <Row>
-        <Col sm={12} md={12} lg={2}>
-          {isLoggedIn && (
-            <Button
-              className="mt-3 mb-3 w-100"
-              onClick={() => history.push(`/project/create/${match.params.id}`)}
-            >
-              Create Project
-            </Button>
-          )}
+        <Row>
+          <Col sm={12} md={12} lg={2}>
+            {isLoggedIn && (
+              <Button
+                className="mt-3 mb-3 w-100"
+                onClick={() =>
+                  history.push(`/project/create/${match.params.id}`)
+                }
+              >
+                Create Project
+              </Button>
+            )}
 
-          <ProjectFilter onChange={updateTasks} />
-        </Col>
+            <ProjectFilter onChange={updateTasks} />
+          </Col>
 
-        <Col sm={12} md={12} lg={10} className="mt-3">
-          <ProjectList
-            projects={projects}
-            history={history}
-            hasNextPage={hasNextProjects}
-          />
-        </Col>
-      </Row>
-
-      <h1>Markdown</h1>
-      <hr />
-
-      <Row>
-        <Col xs={12} s={12} lg={12}>
-          <div className="result-pane">
-            <ReactMarkdown
-              source={organization.markdown}
-              renderers={{ code: Code }}
+          <Col sm={12} md={12} lg={10} className="mt-3">
+            <ProjectList
+              projects={projects}
+              history={history}
+              hasNextPage={hasNextProjects}
             />
-          </div>
-        </Col>
-      </Row>
+          </Col>
+        </Row>
+        <hr />
+      </section>
 
-      {isLoggedIn && (
-        <>
-          <hr />
+      <section>
+        <h1>Users</h1>
 
-          <Row className="mt-3">
-            <Col>
-              <Jumbotron>
-                <h1>Recents</h1>
-              </Jumbotron>
-            </Col>
-            <Col>
-              <Jumbotron>
-                <h1>Events</h1>
-              </Jumbotron>
-            </Col>
-          </Row>
-        </>
-      )}
+        {organization && (
+          <UserListCards
+            users={[
+              ...(organization.users || []),
+              ...(organization.admins || []),
+              ...(organization.creator ? [organization.creator] : [])
+            ]}
+          />
+        )}
+        <hr />
+      </section>
+
+      <section>
+        <h1>Markdown</h1>
+
+        <Row>
+          <Col xs={12} s={12} lg={12}>
+            <div className="result-pane">
+              <ReactMarkdown
+                source={organization.markdown}
+                renderers={{ code: Code }}
+              />
+            </div>
+          </Col>
+        </Row>
+      </section>
     </div>
   );
 }
