@@ -5,7 +5,7 @@ import { Jumbotron, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AuthContext } from "../../contexts/index.js";
 
-function NoPowerHere({ history }) {
+function NoPowerHere({ history, location }) {
   return (
     <div className="mt-3">
       <Jumbotron className="d-flex flex-column align-items-center">
@@ -14,7 +14,9 @@ function NoPowerHere({ history }) {
         <Button
           size="lg"
           className="mt-4"
-          onClick={() => history.push("/login")}
+          onClick={() =>
+            history.push("/login", { redirect: location.pathname })
+          }
         >
           Login
         </Button>
