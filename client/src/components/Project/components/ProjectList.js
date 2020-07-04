@@ -11,8 +11,8 @@ function ProjectList({ projects, history }) {
   return (
     <Row>
       {projects.map(project => (
-        <Col xs={12} s={6} lg={6}>
-          <Card bg="light" className="w-100 mb-4 project-list-item">
+        <Col xs={12} s={6} lg={6} key={project.name}>
+          <Card className="w-100 mb-4">
             <Card.Header>
               <Card.Title>{project.name}</Card.Title>
             </Card.Header>

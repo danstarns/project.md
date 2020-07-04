@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import { Form, Button } from "react-bootstrap";
 import gql from "graphql-tag";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
@@ -17,51 +17,54 @@ function PasswordReset({ history, match }) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  function updatePassword1(event) {
+  const updatePassword1 = useCallback(event => {
     setError(null);
 
     setPassword1(event.target.value);
-  }
+  }, []);
 
-  function updatePassword2(event) {
+  const updatePassword2 = useCallback(event => {
     setError(null);
 
     setPassword2(event.target.value);
-  }
+  }, []);
 
-  async function submit(event) {
-    event.preventDefault();
+  const submit = useCallback(
+    async event => {
+      event.preventDefault();
 
-    setError(null);
+      setError(null);
 
-    if (password1 !== password2) {
-      setError("Passwords do not match");
+      if (password1 !== password2) {
+        setError("Passwords do not match");
 
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const { errors } = await client.mutate({
-        mutation: Mutation,
-        variables: {
-          token: match.params.token,
-          password: password1
-        }
-      });
-
-      if (errors && errors.length) {
-        throw new Error(errors[0].message);
+        return;
       }
 
-      history.push("/login");
-    } catch (e) {
-      setError(e.message);
-    }
+      setLoading(true);
 
-    setLoading(false);
-  }
+      try {
+        const { errors } = await client.mutate({
+          mutation: Mutation,
+          variables: {
+            token: match.params.token,
+            password: password1
+          }
+        });
+
+        if (errors && errors.length) {
+          throw new Error(errors[0].message);
+        }
+
+        history.push("/login");
+      } catch (e) {
+        setError(e.message);
+      }
+
+      setLoading(false);
+    },
+    [password1, password2]
+  );
 
   return (
     <>

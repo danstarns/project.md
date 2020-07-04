@@ -5,18 +5,11 @@ const path = require("path");
 const { HTTP_PORT, NODE_ENV } = require("./config.js");
 const debug = require("./debug.js")("App: ");
 const graphql = require("./graphql/index.js");
-const api = require("./api/index");
-const views = require("./views/index.js");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use((req, res, next) => {
-    req.views = views;
-    next();
-});
 
-app.use("/api", api);
 graphql.applyMiddleware({ app });
 
 if (NODE_ENV === "production") {

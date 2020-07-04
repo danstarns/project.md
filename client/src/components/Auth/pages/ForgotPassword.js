@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
 import gql from "graphql-tag";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
@@ -17,43 +17,46 @@ function ForgotPassword({ history }) {
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     history.push("/login");
 
     setShow(false);
-  };
+  }, []);
 
-  function updateSearch(event) {
+  const updateSearch = useCallback(event => {
     setError(null);
 
     setSearch(event.target.value);
-  }
+  }, []);
 
-  async function submit(event) {
-    setError(null);
-    setLoading(true);
+  const submit = useCallback(
+    async event => {
+      setError(null);
+      setLoading(true);
 
-    event.preventDefault();
+      event.preventDefault();
 
-    try {
-      const { errors } = await client.mutate({
-        mutation: Mutation,
-        variables: {
-          search
+      try {
+        const { errors } = await client.mutate({
+          mutation: Mutation,
+          variables: {
+            search
+          }
+        });
+
+        if (errors && errors.length) {
+          throw new Error(errors[0].message);
         }
-      });
 
-      if (errors && errors.length) {
-        throw new Error(errors[0].message);
+        setShow(true);
+      } catch (e) {
+        setError(e.message);
       }
 
-      setShow(true);
-    } catch (e) {
-      setError(e.message);
-    }
-
-    setLoading(false);
-  }
+      setLoading(false);
+    },
+    [search]
+  );
 
   function SuccessModal() {
     return (

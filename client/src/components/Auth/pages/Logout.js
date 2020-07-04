@@ -12,7 +12,7 @@ function Logout() {
   useEffect(() => {
     setTimeout(() => {
       logout();
-    }, 1000); // time for banner to display
+    }, 500);
   }, [isLoggedIn, logout]);
 
   return (

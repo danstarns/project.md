@@ -1,9 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import gql from "graphql-tag";
 import { GraphQL } from "../../../contexts/index.js";
 import { TaskForm } from "../components/index.js";
 
-const Mutation = gql`
+const CREATE_TASK_MUTATION = gql`
   mutation createTask(
     $name: String!
     $tagline: String!
@@ -37,7 +37,7 @@ function CreateTask({ history, match }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function onChange(task) {
+  const onChange = useCallback(async task => {
     setLoading(true);
     setError(null);
 
@@ -48,7 +48,7 @@ function CreateTask({ history, match }) {
       };
 
       const response = await client.mutate({
-        mutation: Mutation,
+        mutation: CREATE_TASK_MUTATION,
         variables
       });
 
@@ -64,14 +64,18 @@ function CreateTask({ history, match }) {
     }
 
     setLoading(false);
-  }
+  });
+
   return (
-    <TaskForm
-      onChange={onChange}
-      error={error}
-      loading={loading}
-      defaults={{ due: new Date(), markdown: `# My Cool Task 🍻` }}
-    />
+    <div>
+      <h1>Create Task</h1>
+      <TaskForm
+        onChange={onChange}
+        error={error}
+        loading={loading}
+        defaults={{ due: new Date(), markdown: `# My Cool Task 🍻` }}
+      />
+    </div>
   );
 }
 

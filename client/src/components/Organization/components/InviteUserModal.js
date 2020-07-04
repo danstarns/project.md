@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import {
   Modal,
   Form,
@@ -23,45 +23,44 @@ function InviteUserModal(props) {
   const [error, setError] = useState(false);
   const [email, setEmail] = useState("");
 
-  async function onSubmit(event) {
-    event.preventDefault();
+  const onSubmit = useCallback(
+    async event => {
+      event.preventDefault();
 
-    setLoading(true);
+      setLoading(true);
 
-    try {
-      setError(null);
+      try {
+        setError(null);
 
-      const variables = {
-        id: props.organization._id,
-        email
-      };
+        const variables = {
+          id: props.organization._id,
+          email
+        };
 
-      const { errors } = await client.mutate({
-        mutation: INVITE_USER_ORGANIZATION,
-        variables,
-        fetchPolicy: "no-cache"
-      });
+        const { errors } = await client.mutate({
+          mutation: INVITE_USER_ORGANIZATION,
+          variables,
+          fetchPolicy: "no-cache"
+        });
 
-      if (errors && errors.length) {
-        throw new Error(errors[0].message);
+        if (errors && errors.length) {
+          throw new Error(errors[0].message);
+        }
+
+        onHide();
+      } catch (e) {
+        setError(e.message);
       }
 
-      onHide();
-    } catch (e) {
-      setError(e.message);
-    }
+      setLoading(false);
+    },
+    [email]
+  );
 
-    setLoading(false);
-  }
-
-  function updateEmail(e) {
-    setEmail(e.target.value);
-  }
-
-  function onHide() {
+  const onHide = useCallback(() => {
     setEmail("");
     props.onHide();
-  }
+  }, []);
 
   return (
     <Modal show={props.show} onHide={onHide}>
@@ -82,7 +81,7 @@ function InviteUserModal(props) {
                 className="mt-3"
                 value={email}
                 required
-                onChange={updateEmail}
+                onChange={e => setEmail(e.target.value)}
               />
             </Form.Group>
 

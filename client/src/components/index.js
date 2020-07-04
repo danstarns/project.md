@@ -6,5 +6,18 @@ import Task from "./Task/index.js";
 import Project from "./Project/index.js";
 import Organization from "./Organization/index.js";
 import * as Routes from "./Routes/index.js";
+import Notification from "./Notification";
+import NotFound from "./NotFound.js";
 
-export { Home, NavBar, Dashboard, Task, Project, Auth, Organization, Routes };
+export {
+  Home,
+  NavBar,
+  Dashboard,
+  Task,
+  Project,
+  Auth,
+  Organization,
+  Routes,
+  Notification,
+  NotFound
+};

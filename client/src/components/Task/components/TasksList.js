@@ -2,6 +2,7 @@ import React from "react";
 import { Row, Col, Card, Button } from "react-bootstrap";
 import moment from "moment";
 import { TitleBanner } from "../../Common/index.js";
+import "../task.css";
 
 function TaskList({ tasks, history }) {
   if (!tasks.length) {
@@ -11,8 +12,8 @@ function TaskList({ tasks, history }) {
   return (
     <Row>
       {tasks.map(task => (
-        <Col xs={12} s={6} lg={6}>
-          <Card bg="light" className="w-100 mb-4 project-list-item">
+        <Col xs={12} s={4} lg={4} key={task.name}>
+          <Card className="w-100 mb-4 task-list-item">
             <Card.Header>
               <Card.Title>{task.name}</Card.Title>
             </Card.Header>

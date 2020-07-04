@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
 import gql from "graphql-tag";
-import { Button, Row, Col, Jumbotron } from "react-bootstrap";
+import { Button, Row, Col } from "react-bootstrap";
 import { GraphQL, AuthContext } from "../../../contexts/index.js";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
 import { ProjectFilter, ProjectList } from "../components/index.js";
 import "../project.css";
 
-const userProjects = gql`
+const USER_PROJECTS_QUERY = gql`
   query userProjects(
     $page: Int!
     $limit: Int!
@@ -30,7 +30,7 @@ const userProjects = gql`
   }
 `;
 
-const publicProjects = gql`
+const PUBLIC_PROJECTS_QUERY = gql`
   query publicProjects(
     $page: Int!
     $limit: Int!
@@ -73,7 +73,9 @@ function Projects({ history }) {
     (async () => {
       try {
         const query =
-          filter.selected === "user" ? userProjects : publicProjects;
+          filter.selected === "user"
+            ? USER_PROJECTS_QUERY
+            : PUBLIC_PROJECTS_QUERY;
 
         const {
           data: { result }
@@ -110,9 +112,7 @@ function Projects({ history }) {
   return (
     <>
       <h1 className="mt-3">Projects</h1>
-
       <hr />
-
       <Row>
         <Col sm={12} md={12} lg={2}>
           {isLoggedIn && (
@@ -129,24 +129,6 @@ function Projects({ history }) {
           <ProjectList projects={projects} history={history} />
         </Col>
       </Row>
-
-      {isLoggedIn && (
-        <>
-          <hr />
-          <Row className="mt-3">
-            <Col>
-              <Jumbotron>
-                <h1>Recents</h1>
-              </Jumbotron>
-            </Col>
-            <Col>
-              <Jumbotron>
-                <h1>Events</h1>
-              </Jumbotron>
-            </Col>
-          </Row>
-        </>
-      )}
     </>
   );
 }

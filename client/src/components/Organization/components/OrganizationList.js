@@ -13,8 +13,8 @@ function OrganizationList({ organizations, history }) {
   return (
     <Row>
       {organizations.map(organization => (
-        <Col xs={12} s={6} lg={6}>
-          <Card bg="light" className="w-100 mb-4 organization-list-item">
+        <Col xs={12} s={6} lg={6} key={organization.name}>
+          <Card className="w-100 mb-4 ">
             <Card.Header>
               <Card.Title>{organization.name}</Card.Title>
             </Card.Header>

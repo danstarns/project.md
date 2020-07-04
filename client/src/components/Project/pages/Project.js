@@ -1,70 +1,65 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import gql from "graphql-tag";
-import { Col, Row, Button, Jumbotron, ProgressBar } from "react-bootstrap";
+import { Col, Row, Button, Card } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
 import { GraphQL, AuthContext } from "../../../contexts/index.js";
 import { Code } from "../../Markdown/index.js";
 import {
   ErrorBanner,
-  TitleBanner,
   LoadingBanner,
   StatusDropdown,
   StatusProgressBar
 } from "../../Common/index.js";
 import { TasksList, TasksFilter } from "../../Task/index.js";
 
-function UpdateProjectStatus() {
-  return gql`
-    mutation updateProjectStatus($id: ID!, $status: StatusEnum!) {
-      updateProjectStatus(input: { id: $id, status: $status }) {
-        error {
-          message
-        }
-        status
+const UPDATE_PROJECT_STATUS_MUTATION = gql`
+  mutation updateProjectStatus($id: ID!, $status: StatusEnum!) {
+    updateProjectStatus(input: { id: $id, status: $status }) {
+      error {
+        message
       }
+      status
     }
-  `;
-}
+  }
+`;
 
-function ProjectQuery() {
-  return gql`
-    query project(
-      $id: ID!
-      $page: Int!
-      $limit: Int!
-      $search: String
-      $sort: String!
-      $user: Boolean!
-    ) {
-      project(id: $id) {
-        _id
-        name
-        tagline
-        markdown
-        status
-        tasks(
-          input: {
-            page: $page
-            limit: $limit
-            search: $search
-            sort: $sort
-            user: $user
-          }
-        ) {
-          hasNextPage
-          data {
-            tasks {
-              _id
-              name
-              tagline
-              due
-            }
+const PROJECT_QUERY = gql`
+  query project(
+    $id: ID!
+    $page: Int!
+    $limit: Int!
+    $search: String
+    $sort: String!
+    $user: Boolean!
+  ) {
+    project(id: $id) {
+      _id
+      name
+      tagline
+      markdown
+      status
+      tasks(
+        input: {
+          page: $page
+          limit: $limit
+          search: $search
+          sort: $sort
+          user: $user
+        }
+      ) {
+        hasNextPage
+        data {
+          tasks {
+            _id
+            name
+            tagline
+            due
           }
         }
       }
     }
-  `;
-}
+  }
+`;
 
 function Project({ match, history }) {
   const { client } = useContext(GraphQL.Context);
@@ -84,10 +79,10 @@ function Project({ match, history }) {
   const [status, setStatus] = useState("InProgress");
 
   useEffect(() => {
-    async function get() {
+    (async () => {
       try {
         const { data, errors } = await client.query({
-          query: ProjectQuery(),
+          query: PROJECT_QUERY,
           variables: {
             id: match.params.id,
             page: tasksFilter.page,
@@ -109,38 +104,26 @@ function Project({ match, history }) {
           history.push("/");
         }
 
-        setTasks(data.project.tasks.data.tasks);
-        setHasNextTasks(data.project.tasks.hasNextPage);
-        setProject(data.project);
-        setStatus(data.project.status);
+        setTimeout(() => {
+          setTasks(data.project.tasks.data.tasks);
+          setHasNextTasks(data.project.tasks.hasNextPage);
+          setProject(data.project);
+          setStatus(data.project.status);
+          setLoading(false);
+        }, 500);
       } catch (e) {
         setError(e.message);
+        setLoading(false);
       }
-
-      setLoading(false);
-    }
-
-    get();
+    })();
   }, [tasksFilter]);
 
-  if (error) {
-    return <ErrorBanner error={error} />;
-  }
-
-  if (loading) {
-    return <LoadingBanner />;
-  }
-
-  function updateTasks(filter) {
-    setTasksFilter(filter);
-  }
-
-  async function updateStatus(s) {
+  const updateStatus = useCallback(async s => {
     setStatus(s);
 
     try {
       const { data } = await client.mutate({
-        mutation: UpdateProjectStatus(),
+        mutation: UPDATE_PROJECT_STATUS_MUTATION,
         variables: {
           id: match.params.id,
           status: s
@@ -156,17 +139,24 @@ function Project({ match, history }) {
     } catch (e) {
       setError(e.message);
     }
+  });
+
+  if (loading) {
+    return <LoadingBanner />;
+  }
+
+  if (error) {
+    return <ErrorBanner error={error} />;
   }
 
   return (
     <div>
-      <TitleBanner
-        heading={`Project: ${project.name}`}
-        content={project.tagline}
-        nested={
-          isLoggedIn && (
-            <>
-              <hr />
+      <Row className="pb-3">
+        <Col>
+          <h1 className="mt-3 mb-0">Project: {project.name}</h1>
+          <p className="ml-1 mt-0 font-italic">{project.tagline}</p>
+          <Card className="p-3 mt-3">
+            <div className="d-inline">
               <Button
                 className="mr-3"
                 onClick={() => history.push(`/project/edit/${match.params.id}`)}
@@ -178,66 +168,41 @@ function Project({ match, history }) {
                 status={status}
                 title="Select Status"
               />
-            </>
-          )
-        }
-      />
-
-      <StatusProgressBar status={status} />
-
-      <h1>Tasks</h1>
-      <hr />
-
-      <Row>
-        <Col sm={12} md={12} lg={2}>
-          {isLoggedIn && (
-            <Button
-              className="mt-3 mb-3 w-100"
-              onClick={() => history.push(`/task/create/${match.params.id}`)}
-            >
-              Create Task
-            </Button>
-          )}
-          <TasksFilter onChange={updateTasks} />
-        </Col>
-
-        <Col sm={12} md={12} lg={10} className="mt-3">
-          <TasksList
-            tasks={tasks}
-            history={history}
-            hasNextPage={hasNextTasks}
-          />
+            </div>
+            <div className="mt-3">
+              <StatusProgressBar status={status} />
+            </div>
+          </Card>
         </Col>
       </Row>
 
-      <h1>Markdown</h1>
-      <hr />
+      <Card className="p-3">
+        <ReactMarkdown source={project.markdown} renderers={{ code: Code }} />
+      </Card>
 
-      <Row>
-        <Col xs={12} s={12} lg={12}>
-          <div className="result-pane">
-            <ReactMarkdown
-              source={project.markdown}
-              renderers={{ code: Code }}
+      <Card className="p-3 mt-3">
+        <Row>
+          <Col sm={12} md={12} lg={2}>
+            {isLoggedIn && (
+              <Button
+                className="mt-3 mb-3 w-100"
+                onClick={() => history.push(`/task/create/${match.params.id}`)}
+              >
+                Create Task
+              </Button>
+            )}
+            <TasksFilter onChange={setTasksFilter} />
+          </Col>
+
+          <Col sm={12} md={12} lg={10} className="mt-3">
+            <TasksList
+              tasks={tasks}
+              history={history}
+              hasNextPage={hasNextTasks}
             />
-          </div>
-        </Col>
-      </Row>
-
-      <hr />
-
-      <Row className="mt-3">
-        <Col>
-          <Jumbotron>
-            <h1>Recents</h1>
-          </Jumbotron>
-        </Col>
-        <Col>
-          <Jumbotron>
-            <h1>Events</h1>
-          </Jumbotron>
-        </Col>
-      </Row>
+          </Col>
+        </Row>
+      </Card>
     </div>
   );
 }

@@ -1,0 +1,18 @@
+.notifications-options-icon {
+    cursor: pointer;
+}
+
+.notifications-options-icon:hover {
+    color: #007BFF
+}
+
+.checkbox-2x {
+    transform: scale(2);
+    -webkit-transform: scale(2);
+    cursor: pointer;
+}
+
+.notification-disabled {
+    text-decoration-line: line-through;
+    background-color: #F0ECE9;
+}

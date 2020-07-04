@@ -1,11 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import gql from "graphql-tag";
-import { Row, Col } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { GraphQL } from "../../../contexts/index.js";
 import { OrganizationForm } from "../components/index.js";
-import { TitleBanner } from "../../Common/index.js";
 
-const Mutation = gql`
+const CREATE_ORGANIZATION_MUTATION = gql`
   mutation createOrganization(
     $name: String!
     $tagline: String!
@@ -35,7 +34,7 @@ function CreateOrganization({ history }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  async function submit(organization) {
+  const submit = useCallback(async organization => {
     setLoading(true);
 
     try {
@@ -49,7 +48,7 @@ function CreateOrganization({ history }) {
       };
 
       const response = await client.mutate({
-        mutation: Mutation,
+        mutation: CREATE_ORGANIZATION_MUTATION,
         variables,
         fetchPolicy: "no-cache"
       });
@@ -66,30 +65,26 @@ function CreateOrganization({ history }) {
     }
 
     setLoading(false);
-  }
+  }, []);
 
   return (
-    <>
-      <Row>
-        <Col>
-          <TitleBanner
-            heading="Create Organization"
-            content={`Use Organization's to group projects together, invite friends or
-    colleagues and share with the world!`}
-          />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <OrganizationForm
-            onChange={submit}
-            error={error}
-            loading={loading}
-            defaults={{ markdown: `# Hi World Look At My Organization 👀` }}
-          />
-        </Col>
-      </Row>
-    </>
+    <div>
+      <h1>Create Organization</h1>
+      <OrganizationForm
+        onChange={submit}
+        error={error}
+        loading={loading}
+        defaults={{ markdown: `# Hi World Look At My Organization 👀` }}
+      />
+      <Button
+        block
+        variant="warning"
+        onClick={() => history.goBack()}
+        className="mb-3"
+      >
+        Cancel
+      </Button>
+    </div>
   );
 }
 

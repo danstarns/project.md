@@ -1,4 +1,4 @@
-const { Organization } = require("../../../../models/index.js");
+const { Organization, Notification } = require("../../../../models/index.js");
 
 async function organization(root, args, ctx) {
     const org = await Organization.findById(args.id);
@@ -8,11 +8,15 @@ async function organization(root, args, ctx) {
     }
 
     if (!org.public) {
-        if (!ctx.user) {
-            throw new Error("Forbidden");
-        }
+        if (args.key) {
+            const notification = await Notification.findById(args.key);
 
-        if (
+            if (!notification) {
+                throw new Error("Forbidden");
+            }
+        } else if (!ctx.user) {
+            throw new Error("Forbidden");
+        } else if (
             ![...org.users, ...org.admins, org.creator]
                 .map((x) => x.toString())
                 .includes(ctx.user)

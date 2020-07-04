@@ -1,0 +1,43 @@
+type Notification {
+    _id: ID!
+    creator: User!
+    invitee: User!
+    type: NotificationTypes!
+    subject: NotificationSubject!
+    seen: Boolean
+    stale: Boolean
+}
+
+enum NotificationTypes {
+    invitation
+}
+
+enum NotificationSubjectTypes {
+    organization
+}
+
+type NotificationSubject {
+    id: ID!
+    type: NotificationSubjectTypes!
+    name: String!
+}
+
+input NotificationsInput {
+    page: Int!
+    limit: Int!
+}
+
+type NotificationsReponse {
+    hasNextPage: Boolean!
+    notifications: [Notification]!
+}
+
+type Query {
+    notifications(input: NotificationsInput!): NotificationsReponse! @Auth(input: {required: true})
+    notification(id: ID!): Notification @Auth(input: {required: true})
+}
+
+type Mutation {
+    deleteNotifications(ids: [ID]!): Boolean @Auth(input: {required: true})
+    viewNotifications(ids: [ID]!): Boolean @Auth(input: {required: true})
+}

@@ -1,11 +1,11 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import gql from "graphql-tag";
-import { Row, Col, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { GraphQL } from "../../../contexts/index.js";
 import { OrganizationForm } from "../components/index.js";
-import { TitleBanner, LoadingBanner } from "../../Common/index.js";
+import { LoadingBanner } from "../../Common/index.js";
 
-const Query = gql`
+const ORGANIZATION_QUERY = gql`
   query organization($id: ID!) {
     organization(id: $id) {
       _id
@@ -17,7 +17,7 @@ const Query = gql`
   }
 `;
 
-const Mutation = gql`
+const EDIT_ORGANIZATION_MUTATION = gql`
   mutation editOrganization(
     $id: ID!
     $name: String!
@@ -59,7 +59,7 @@ function EditOrganization({ history, match }) {
         };
 
         const response = await client.query({
-          query: Query,
+          query: ORGANIZATION_QUERY,
           variables,
           fetchPolicy: "no-cache"
         });
@@ -83,7 +83,7 @@ function EditOrganization({ history, match }) {
     })();
   }, []);
 
-  async function submit(newOrganization) {
+  const submit = useCallback(async newOrganization => {
     setLoading(true);
 
     try {
@@ -98,7 +98,7 @@ function EditOrganization({ history, match }) {
       };
 
       const response = await client.mutate({
-        mutation: Mutation,
+        mutation: EDIT_ORGANIZATION_MUTATION,
         variables,
         fetchPolicy: "no-cache"
       });
@@ -115,39 +115,30 @@ function EditOrganization({ history, match }) {
     }
 
     setLoading(false);
-  }
+  }, []);
 
   if (loadingOrganization) {
     return <LoadingBanner />;
   }
 
   return (
-    <>
-      <Row>
-        <Col>
-          <TitleBanner heading="Edit Organization" />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <OrganizationForm
-            onChange={submit}
-            error={error}
-            loading={loading}
-            defaults={organization}
-          />
-
-          <Button
-            block
-            variant="warning"
-            onClick={() => history.goBack()}
-            className="mb-3"
-          >
-            Cancel
-          </Button>
-        </Col>
-      </Row>
-    </>
+    <div>
+      <h1>Edit Organization: {organization.name}</h1>
+      <OrganizationForm
+        onChange={submit}
+        error={error}
+        loading={loading}
+        defaults={organization}
+      />
+      <Button
+        block
+        variant="warning"
+        onClick={() => history.goBack()}
+        className="mb-3"
+      >
+        Cancel
+      </Button>
+    </div>
   );
 }
 

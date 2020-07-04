@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Form, Button, Row, Col, Card } from "react-bootstrap";
+import React, { useState, useEffect, useCallback } from "react";
+import { Form, Button, Card, Alert } from "react-bootstrap";
 import DatePicker from "react-date-picker";
-import moment from "moment";
 import { Editor } from "../../Markdown/index.js";
-import { ErrorBanner, LoadingBanner, TitleBanner } from "../../Common/index.js";
+import { LoadingBanner } from "../../Common/index.js";
 
 function ProjectForm({
   defaults = { due: new Date() },
@@ -22,19 +21,7 @@ function ProjectForm({
     setValidationError(null);
   }, [name, tagline, _private, markdown, due]);
 
-  function updateName(event) {
-    setName(event.target.value);
-  }
-
-  function updateTagline(event) {
-    setTagline(event.target.value);
-  }
-
-  function updatePrivate(event) {
-    setPrivate(event.target.checked);
-  }
-
-  function updateDue(date) {
+  const updateDue = useCallback(date => {
     const selectedDate = new Date(date);
 
     if (selectedDate < new Date()) {
@@ -44,104 +31,79 @@ function ProjectForm({
     }
 
     setDue(new Date(date));
-  }
+  });
 
-  function updateMarkdown(value) {
-    setMarkdown(value);
-  }
+  const submit = useCallback(
+    e => {
+      e.preventDefault();
 
-  function submit(e) {
-    e.preventDefault();
-
-    onChange({ name, tagline, private: _private, markdown, due });
-  }
+      onChange({ name, tagline, private: _private, markdown, due });
+    },
+    [name, tagline, _private, markdown, due]
+  );
 
   return (
     <Form onSubmit={submit} className="mt-3">
-      <Row>
-        <Col xs={6} s={6} lg={6}>
-          <Form.Group controlId="name">
-            <Form.Label>Name</Form.Label>
+      <Card className="p-3">
+        <Form.Group controlId="name">
+          <Form.Label>Name</Form.Label>
 
-            <Form.Control
-              type="text"
-              placeholder="Enter Project Name"
-              required
-              value={name}
-              onChange={updateName}
-              maxLength="60"
-            />
-          </Form.Group>
+          <Form.Control
+            autoFocus
+            type="text"
+            placeholder="Enter Project Name"
+            required
+            value={name}
+            onChange={e => setName(e.target.value)}
+            maxLength="60"
+          />
+        </Form.Group>
 
-          <Form.Group controlId="date">
-            <div>
-              Select Due Date: <DatePicker onChange={updateDue} value={due} />{" "}
-            </div>
-          </Form.Group>
+        <Form.Group controlId="date">
+          <div>
+            Select Due Date: <DatePicker onChange={updateDue} value={due} />{" "}
+          </div>
+        </Form.Group>
 
-          <Form.Group controlId="tagline">
-            <Form.Label>Tagline</Form.Label>
+        <Form.Group controlId="tagline">
+          <Form.Label>Tagline</Form.Label>
 
-            <Form.Control
-              type="text"
-              placeholder="Enter Project Tagline"
-              required
-              as="textarea"
-              rows="3"
-              value={tagline}
-              maxLength="60"
-              onChange={updateTagline}
-            />
-          </Form.Group>
+          <Form.Control
+            type="text"
+            placeholder="Enter Project Tagline"
+            required
+            as="textarea"
+            rows="3"
+            value={tagline}
+            maxLength="60"
+            onChange={e => setTagline(e.target.value)}
+          />
+        </Form.Group>
 
-          <Form.Group controlId="private">
-            <Form.Check
-              type="checkbox"
-              label="Select To Make Private"
-              onChange={updatePrivate}
-              checked={_private}
-              className="ml-3"
-            />
-          </Form.Group>
-        </Col>
+        <Form.Group controlId="private">
+          <Form.Check
+            type="checkbox"
+            label="Select To Make Private"
+            onChange={e => setPrivate(e.target.checked)}
+            checked={_private}
+            className="ml-1"
+          />
+        </Form.Group>
+      </Card>
 
-        <Col xs={6} s={6} lg={6}>
-          <Card bg="light" className="w-100 mt-4">
-            <Card.Header />
-            <Card.Body>
-              <Card.Title>{name}</Card.Title>
-              <Form.Check
-                type="checkbox"
-                label="Private"
-                checked={_private}
-                disabled
-              />
-              <Card.Text>{tagline}</Card.Text>
-              <Card.Text>
-                Due On: {moment(due).format("MMMM Do YYYY, h:mm:ss a")}
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+      <Card className="p-3 mt-3">
+        <Editor onChange={setMarkdown} markdown={markdown} />
+      </Card>
 
-      <hr />
-
-      <TitleBanner
-        heading="Enter Markdown"
-        content={`Use the box on the left to start writing markdown, as you type
-    the output will render on the right. This will be shown on the
-    projects homepage.`}
-        type="info"
-      />
-
-      <Editor onChange={updateMarkdown} markdown={markdown} />
-
-      <hr />
-
-      {validationError && <ErrorBanner error={validationError} />}
-      {error && <ErrorBanner error={error} />}
-      {loading && <LoadingBanner />}
+      <div>
+        {error && <Alert variant="danger">{error}</Alert>}
+        {validationError && <Alert variant="danger">{validationError}</Alert>}
+        {loading && (
+          <div className="mb-5">
+            <LoadingBanner />
+          </div>
+        )}
+      </div>
 
       <Button variant="primary" type="submit" block className="mt-3 mb-3">
         Submit

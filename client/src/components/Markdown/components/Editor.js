@@ -15,15 +15,17 @@ function Editor(props) {
       <Col xs={6} s={6} lg={6}>
         <Input
           mode="markdown"
-          theme="monokai"
+          theme="light"
           value={props.markdown}
           onChange={onChange}
         />
       </Col>
       <Col xs={6} s={6} lg={6}>
-        <div className="result-pane">
-          <ReactMarkdown source={props.markdown} renderers={{ code: Code }} />
-        </div>
+        <ReactMarkdown
+          className="editor-output"
+          source={props.markdown}
+          renderers={{ code: Code }}
+        />
       </Col>
     </Row>
   );

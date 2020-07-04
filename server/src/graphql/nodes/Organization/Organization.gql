@@ -66,9 +66,14 @@ input OgranizationsInput {
 
 # INVITE USER
 # ------------------------------------
-input InviteUserProjectInput {
+input InviteUserOrganizationInput {
     id: ID!
     email: String!
+}
+
+input InviteUserCallbackOrganizationInput {
+    id: ID!
+    approve: Boolean
 }
 
 type OgranizationsResponse {
@@ -77,7 +82,7 @@ type OgranizationsResponse {
 }
 
 type Query {
-    organization(id: ID!): Organization
+    organization(id: ID!, key: ID): Organization
     userOrganizations(input: OgranizationsInput!): OgranizationsResponse! @Auth(input: {required: true})
     publicOrganizations(input: OgranizationsInput!): OgranizationsResponse!
 }
@@ -85,5 +90,6 @@ type Query {
 type Mutation {
     createOrganization(input: CreateOrganizationInput!): CreateOrganizationResponse! @Auth(input: {required: true})
     editOrganization(input: EditOrganizationInput!): EditOrganizationResponse! @Auth(input: {required: true})
-    inviteUserOrganization(input: InviteUserProjectInput!): Boolean! @Auth(input: {required: true, populate: true})
+    inviteUserOrganization(input: InviteUserOrganizationInput!): Boolean! @Auth(input: {required: true, populate: true})
+    inviteUserOrganizationCallback(input: InviteUserCallbackOrganizationInput!): Boolean! @Auth(input: {required: true})
 }

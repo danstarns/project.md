@@ -1,11 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import gql from "graphql-tag";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 import { GraphQL } from "../../../contexts/index.js";
 import { ProjectForm } from "../components/index.js";
-import { TitleBanner } from "../../Common/index.js";
 
-const Mutation = gql`
+const CREATE_PROJECT_MUTATION = gql`
   mutation createProject(
     $name: String!
     $tagline: String!
@@ -39,7 +38,7 @@ function CreateProject({ history, match }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  async function submit(project) {
+  const submit = useCallback(async project => {
     setLoading(true);
 
     try {
@@ -55,7 +54,7 @@ function CreateProject({ history, match }) {
       };
 
       const response = await client.mutate({
-        mutation: Mutation,
+        mutation: CREATE_PROJECT_MUTATION,
         variables,
         fetchPolicy: "no-cache"
       });
@@ -66,25 +65,17 @@ function CreateProject({ history, match }) {
         throw new Error(createProject.error.message);
       }
 
-      history.push(`/project/${createProject.project._id}`);
+      setTimeout(() => {
+        history.push(`/project/${createProject.project._id}`);
+      }, 500);
     } catch (e) {
       setError(e.message);
     }
-
-    setLoading(false);
-  }
+  });
 
   return (
-    <>
-      <Row>
-        <Col>
-          <TitleBanner
-            heading="Create Project"
-            content={`Use projects to group tasks together, invite friends or
-    colleagues and share with the world!`}
-          />
-        </Col>
-      </Row>
+    <div>
+      <h1>Create Project</h1>
       <Row>
         <Col>
           <ProjectForm
@@ -96,9 +87,17 @@ function CreateProject({ history, match }) {
               markdown: `# My Project \n look at my super cool project 🍺`
             }}
           />
+          <Button
+            block
+            variant="warning"
+            onClick={() => history.goBack()}
+            className="mb-3"
+          >
+            Cancel
+          </Button>
         </Col>
       </Row>
-    </>
+    </div>
   );
 }
 

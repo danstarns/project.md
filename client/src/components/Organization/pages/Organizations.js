@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import gql from "graphql-tag";
-import { Button, Row, Col, Jumbotron } from "react-bootstrap";
+import { Button, Row, Col } from "react-bootstrap";
 import { GraphQL, AuthContext } from "../../../contexts/index.js";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
 import { OrganizationsFilter, OrganizationList } from "../components/index.js";
 
-const userOrganizations = gql`
+const USER_ORGANIZATIONS_QUERY = gql`
   query userOrganizations(
     $page: Int!
     $limit: Int!
@@ -27,7 +27,7 @@ const userOrganizations = gql`
   }
 `;
 
-const publicOrganizations = gql`
+const PUBLIC_ORGANIZATIONS_QUERY = gql`
   query publicOrganizations(
     $page: Int!
     $limit: Int!
@@ -68,7 +68,9 @@ function Organizations({ history }) {
     (async () => {
       try {
         const query =
-          filter.selected === "user" ? userOrganizations : publicOrganizations;
+          filter.selected === "user"
+            ? USER_ORGANIZATIONS_QUERY
+            : PUBLIC_ORGANIZATIONS_QUERY;
 
         const {
           data: { result }
@@ -105,9 +107,7 @@ function Organizations({ history }) {
   return (
     <>
       <h1 className="mt-3">Organizations</h1>
-
       <hr />
-
       <Row>
         <Col sm={12} md={12} lg={2}>
           {isLoggedIn && (
@@ -124,25 +124,6 @@ function Organizations({ history }) {
           <OrganizationList organizations={organizations} history={history} />
         </Col>
       </Row>
-
-      {isLoggedIn && (
-        <>
-          <hr />
-
-          <Row className="mt-3">
-            <Col>
-              <Jumbotron>
-                <h1>Recents</h1>
-              </Jumbotron>
-            </Col>
-            <Col>
-              <Jumbotron>
-                <h1>Events</h1>
-              </Jumbotron>
-            </Col>
-          </Row>
-        </>
-      )}
     </>
   );
 }

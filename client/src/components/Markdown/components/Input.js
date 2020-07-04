@@ -1,3 +1,5 @@
+import "../markdown.css";
+
 const React = require("react");
 
 const { CodeMirror } = window;
@@ -64,15 +66,19 @@ class Input extends React.Component {
   }
 
   render() {
-    const editor = React.createElement("textarea", {
-      ref: this.editorRef,
-      value: this.props.value,
-      readOnly: this.props.readOnly,
-      defaultValue: this.props.defaultValue,
-      onChange: this.props.onChange
-    });
-
-    return React.createElement("div", null, editor);
+    return (
+      <div className="editor-input">
+        <textarea
+          ref={this.editorRef}
+          value={this.props.value}
+          readOnly={this.props.readOnly}
+          defaultValue={this.props.defaultValue}
+          onChange={this.props.onChange}
+          rows="4"
+          cols="1"
+        />
+      </div>
+    );
   }
 }
 

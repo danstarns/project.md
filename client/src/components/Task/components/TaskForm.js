@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Form, Button, Row, Col, Card } from "react-bootstrap";
+import React, { useState, useEffect, useCallback } from "react";
+import { Form, Button, Row, Col, Card, Alert } from "react-bootstrap";
 import DatePicker from "react-date-picker";
-import moment from "moment";
 import { Editor } from "../../Markdown/index.js";
-import { ErrorBanner, LoadingBanner, TitleBanner } from "../../Common/index.js";
+import { LoadingBanner } from "../../Common/index.js";
 
 function TaskForm({
   defaults = { due: new Date() },
@@ -21,15 +20,7 @@ function TaskForm({
     setValidationError(null);
   }, [name, tagline, markdown, due]);
 
-  function updateName(event) {
-    setName(event.target.value);
-  }
-
-  function updateTagline(event) {
-    setTagline(event.target.value);
-  }
-
-  function updateDue(date) {
+  const updateDue = useCallback(date => {
     const selectedDate = new Date(date);
 
     if (selectedDate < new Date()) {
@@ -39,90 +30,72 @@ function TaskForm({
     }
 
     setDue(new Date(date));
-  }
+  });
 
-  function updateMarkdown(value) {
-    setMarkdown(value);
-  }
+  const submit = useCallback(
+    e => {
+      e.preventDefault();
 
-  function submit(e) {
-    e.preventDefault();
-
-    onChange({ name, tagline, markdown, due });
-  }
+      onChange({ name, tagline, markdown, due });
+    },
+    [name, tagline, markdown, due]
+  );
 
   return (
     <Form onSubmit={submit} className="mt-3">
       <Row>
-        <Col xs={6} s={6} lg={6}>
-          <Form.Group controlId="name">
-            <Form.Label>Name</Form.Label>
+        <Col>
+          <Card className="p-3">
+            <Form.Group controlId="name">
+              <Form.Label>Name</Form.Label>
 
-            <Form.Control
-              type="text"
-              placeholder="Enter Task Name"
-              required
-              value={name}
-              onChange={updateName}
-              maxLength="60"
-            />
-          </Form.Group>
+              <Form.Control
+                autoFocus
+                type="text"
+                required
+                value={name}
+                onChange={e => setName(e.target.value)}
+                maxLength="60"
+              />
+            </Form.Group>
 
-          <Form.Group controlId="date">
-            <div>
-              Select Due Date:{" "}
-              <DatePicker onChange={updateDue} value={new Date(due)} />
-            </div>
-          </Form.Group>
+            <Form.Group controlId="date">
+              <div>
+                Select Due Date:{" "}
+                <DatePicker onChange={updateDue} value={new Date(due)} />
+              </div>
+            </Form.Group>
 
-          <Form.Group controlId="tagline">
-            <Form.Label>Tagline</Form.Label>
+            <Form.Group controlId="tagline">
+              <Form.Label>Tagline</Form.Label>
 
-            <Form.Control
-              type="text"
-              placeholder="Enter Task Tagline"
-              required
-              as="textarea"
-              rows="3"
-              value={tagline}
-              maxLength="60"
-              onChange={updateTagline}
-            />
-          </Form.Group>
-        </Col>
-
-        <Col xs={6} s={6} lg={6}>
-          <Card bg="light" className="w-100 mt-4">
-            <Card.Header />
-            <Card.Body>
-              <Card.Title>{name}</Card.Title>
-              <Card.Text>{tagline}</Card.Text>
-              <Card.Text>
-                Due On:{" "}
-                {moment(new Date(due)).format("MMMM Do YYYY, h:mm:ss a")}
-              </Card.Text>
-            </Card.Body>
+              <Form.Control
+                type="text"
+                required
+                as="textarea"
+                rows="3"
+                value={tagline}
+                maxLength="60"
+                onChange={e => setTagline(e.target.value)}
+              />
+            </Form.Group>
           </Card>
         </Col>
       </Row>
 
-      <hr />
+      <Card className="p-3 mt-3">
+        <Editor onChange={setMarkdown} markdown={markdown} />
+      </Card>
 
-      <TitleBanner
-        heading="Enter Markdown"
-        content={`Use the box on the left to start writing markdown, as you type
-      the output will render on the right. This will be shown on the
-      tasks homepage.`}
-        type="info"
-      />
-
-      <Editor onChange={updateMarkdown} markdown={markdown} />
-
-      <hr />
-
-      {error && <ErrorBanner error={error} />}
-      {validationError && <ErrorBanner error={validationError} />}
-      {loading && <LoadingBanner />}
+      <div>
+        {error && <Alert variant="danger">{error}</Alert>}{" "}
+        {validationError && <Alert variant="danger">{validationError}</Alert>}
+        {loading && (
+          <div className="mb-5">
+            <LoadingBanner />
+          </div>
+        )}
+      </div>
 
       <Button variant="primary" type="submit" block className="mt-3 mb-3">
         Submit

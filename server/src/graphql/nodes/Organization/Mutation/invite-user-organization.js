@@ -1,7 +1,10 @@
-const { v4: uuid } = require("uuid");
-const { User, Organization } = require("../../../../models/index.js");
+const {
+    User,
+    Organization,
+    Notification
+} = require("../../../../models/index.js");
+const { CLIENT_URL } = require("../../../../config.js");
 const redis = require("../../../../redis.js");
-const { API_URL } = require("../../../../config.js");
 
 async function inviteUserOrganization(root, args, ctx) {
     const {
@@ -30,16 +33,16 @@ async function inviteUserOrganization(root, args, ctx) {
         return true;
     }
 
-    const token = uuid();
-
-    await redis.dbs.invite.set(
-        token,
-        JSON.stringify({
-            organization: id,
-            host: ctx.user._id.toString(),
-            invitee: user._id.toString()
-        })
-    );
+    const notification = await Notification.create({
+        creator: ctx.user,
+        invitee: user._id,
+        type: "invitation",
+        subject: {
+            id: org._id,
+            type: "organization",
+            name: org.name
+        }
+    });
 
     await redis.queues.email.add({
         to: user.email,
@@ -47,7 +50,7 @@ async function inviteUserOrganization(root, args, ctx) {
         html: `
             <p>
                 ${ctx.user.username} Invited you to Organization '${org.name}'
-                Click <a href="${API_URL}/api/invite/organization?code=${token}">Here</a> to join,
+                Click <a href="${CLIENT_URL}/invite/${notification._id.toString()}">Here</a> to join,
                 otherwise ignore this email.
             </p>
         `

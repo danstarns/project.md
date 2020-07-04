@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import { Row, Col, ListGroup, Form, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AuthContext } from "../../../contexts/index.js";
@@ -16,47 +16,27 @@ function ProjectsFilter(props) {
   const [page, setPage] = useState(1);
   const [limit] = useState(6);
 
-  function onChange() {
+  useEffect(() => {
     props.onChange({ selected, dateDirection, search, page, limit });
-  }
+  }, [selected, dateDirection, search, page, limit]);
 
-  useEffect(onChange, [selected, dateDirection, search, page, limit]);
-
-  function updateDirection() {
-    let newDirection;
-
-    if (dateDirection === "desc") {
-      newDirection = "asc";
-    } else {
-      newDirection = "desc";
-    }
-
-    setDateDirection(newDirection);
-  }
-
-  function updateSearch(e) {
-    setSearch(e.target.value);
-  }
-
-  function updateSelected(type) {
-    return () => {
-      setSelected(type);
-    };
-  }
-
-  function updatePage(direction) {
-    return () => {
-      let newPageNum;
-
-      if (direction === "back") {
-        newPageNum = page - 1;
-      } else {
-        newPageNum = page + 1;
+  const updateDirection = useCallback(() => {
+    setDateDirection(d => {
+      if (d === "desc") {
+        return "asc";
       }
 
-      setPage(newPageNum);
-    };
-  }
+      return "desc";
+    });
+  });
+
+  const updatePage = useCallback(direction => () => {
+    if (direction === "back") {
+      setPage(p => p - 1);
+    } else {
+      setPage(p => p + 1);
+    }
+  });
 
   return (
     <Row>
@@ -64,7 +44,7 @@ function ProjectsFilter(props) {
         <ListGroup>
           {isLoggedIn && (
             <ListGroup.Item
-              onClick={updateSelected("user")}
+              onClick={() => setSelected("user")}
               className="project-filter-card"
               style={{
                 ...(selected === "user" ? selectedStyle : {})
@@ -75,7 +55,7 @@ function ProjectsFilter(props) {
           )}
 
           <ListGroup.Item
-            onClick={updateSelected("public")}
+            onClick={() => setSelected("public")}
             className="project-filter-card"
             style={{
               ...(selected === "public" ? selectedStyle : {})
@@ -92,7 +72,7 @@ function ProjectsFilter(props) {
                   placeholder="Search"
                   className="mt-3"
                   value={search}
-                  onChange={updateSearch}
+                  onChange={e => setSearch(e.target.value)}
                 />
               </Form.Group>
             </Container>

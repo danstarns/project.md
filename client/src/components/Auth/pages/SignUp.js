@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import { Form, Button } from "react-bootstrap";
 import { AuthContext } from "../../../contexts/index.js";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
@@ -11,40 +11,43 @@ function SignUp({ history }) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  function updateEmail(event) {
+  const updateEmail = useCallback(event => {
     setError(null);
 
     setEmail(event.target.value);
-  }
+  }, []);
 
-  function updateUsername(event) {
+  const updateUsername = useCallback(event => {
     setError(null);
 
     setUsername(event.target.value);
-  }
+  }, []);
 
-  function updatePassword(event) {
+  const updatePassword = useCallback(event => {
     setError(null);
 
     setPassword(event.target.value);
-  }
+  }, []);
 
-  async function submit(event) {
-    setError(null);
-    setLoading(true);
+  const submit = useCallback(
+    async event => {
+      setError(null);
+      setLoading(true);
 
-    event.preventDefault();
+      event.preventDefault();
 
-    try {
-      await Auth.signUp({ email, username, password });
+      try {
+        await Auth.signUp({ email, username, password });
 
-      history.push("/dashboard");
-    } catch (e) {
-      setError(e.message);
-    }
+        history.push("/dashboard");
+      } catch (e) {
+        setError(e.message);
+      }
 
-    setLoading(false);
-  }
+      setLoading(false);
+    },
+    [email, username, password]
+  );
 
   return (
     <>

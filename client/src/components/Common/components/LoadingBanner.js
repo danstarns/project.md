@@ -1,15 +1,11 @@
 import React from "react";
-import { Row, Col, Alert } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 
 function LoadingBanner() {
   return (
-    <Row>
-      <Col>
-        <Alert show className="mt-3" variant="info">
-          Loading...
-        </Alert>
-      </Col>
-    </Row>
+    <div className="d-flex flex-column align-items-center">
+      <Spinner className="mt-5" animation="border" size="6x" />
+    </div>
   );
 }
 

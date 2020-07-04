@@ -8,7 +8,13 @@ import {
   faSortDown,
   faChevronLeft,
   faChevronRight,
-  faUserLock
+  faUserLock,
+  faGlasses,
+  faTrash,
+  faRobot,
+  faExclamation,
+  faCheck,
+  faBuilding
 } from "@fortawesome/free-solid-svg-icons";
 import {
   Home,
@@ -18,11 +24,25 @@ import {
   Task,
   Project,
   Organization,
-  Routes
+  Routes,
+  Notification,
+  NotFound
 } from "./components/index.js";
 import { AuthContext, GraphQL } from "./contexts/index.js";
 
-library.add(faSortUp, faSortDown, faChevronLeft, faChevronRight, faUserLock);
+library.add(
+  faSortUp,
+  faSortDown,
+  faChevronLeft,
+  faChevronRight,
+  faUserLock,
+  faGlasses,
+  faTrash,
+  faRobot,
+  faExclamation,
+  faCheck,
+  faBuilding
+);
 
 function App() {
   return (
@@ -40,6 +60,8 @@ function App() {
               <Route exact path="/logout" component={Auth.Logout} />
               <Route exact path="/forgot-password" component={Auth.ForgotPassword} />
               <Route exact path="/password-reset/:token" component={Auth.PasswordReset} />
+              <Routes.Protected exact path="/notifications" component={Notification.Notifications} />
+              <Routes.Protected exact path="/invite/:id" component={Notification.Invite} />
 
               <Routes.Protected path="/project/create/:organization?" component={Project.CreateProject} />
               <Route exact path="/projects" component={Project.Projects} />
@@ -55,7 +77,7 @@ function App() {
               <Route exact path="/organization/:id" component={Organization.Organization} />
               <Routes.Protected exact path="/organization/edit/:id" component={Organization.EditOrganization} />
 
-              <Route component={Home} />
+              <Route component={NotFound} />
             </Switch>
           </Container>
         </Router>
