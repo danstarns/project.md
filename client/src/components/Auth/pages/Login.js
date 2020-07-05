@@ -55,7 +55,7 @@ function Login({ history, location }) {
 
   return (
     <Row className="center">
-      <Card className="p-5">
+      <Card className="pt-2 pb-3 pl-4 pr-4">
         <h1 className="m-0">Login</h1>
         <hr />
         <Form onSubmit={submit}>
@@ -81,19 +81,22 @@ function Login({ history, location }) {
               onChange={updatePassword}
             />
           </Form.Group>
-          <Button variant="secondary" onClick={() => history.push("/signup")}>
-            Signup
+          <Button
+            variant="outline-secondary"
+            onClick={() => history.push("/signup")}
+          >
+            SignUp
           </Button>
           <Button
             className="ml-3"
-            variant="warning"
+            variant="outline-danger"
             onClick={gotForgotPassword}
           >
             Forgot Password
           </Button>
           <div>
             <Button block className="mt-3" variant="primary" type="submit">
-              Submit
+              Login
             </Button>
           </div>
           {error && <ErrorBanner error={error} />}

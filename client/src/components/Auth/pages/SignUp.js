@@ -73,8 +73,8 @@ function SignUp({ history }) {
 
   return (
     <Row className="center">
-      <Form onSubmit={submit} className="mt-3">
-        <Card className="p-5">
+      <Form onSubmit={submit} className="mt-3 pb-3">
+        <Card className="pt-2 pb-3 pl-4 pr-4">
           <h1 className="m-0">SignUp</h1>
           <hr />
           <Card className="mx-auto">
@@ -132,13 +132,13 @@ function SignUp({ history }) {
           </Form.Group>
           <Button
             block
-            variant="secondary"
+            variant="outline-secondary"
             onClick={() => history.push("/login")}
           >
             Login
           </Button>
           <Button className="mt-3" variant="primary" type="submit">
-            Submit
+            SignUp
           </Button>
           {loading && <LoadingBanner />}
           {error && <ErrorBanner error={error} />}

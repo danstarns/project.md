@@ -79,7 +79,7 @@ function ForgotPassword({ history }) {
 
   return (
     <Row className="center">
-      <Card className="p-5">
+      <Card className="pt-2 pb-3 pl-4 pr-4">
         <h1 className="m-0">Forgot Password</h1>
         <hr />
         <SuccessModal />
