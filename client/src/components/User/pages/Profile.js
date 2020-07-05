@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Card, Row, Col, Tab, Tabs } from "react-bootstrap";
 import "../User.css";
 import gql from "graphql-tag";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GraphQL } from "../../../contexts/index.js";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
 
@@ -66,11 +67,17 @@ function Profile({ match }) {
         <Col xs={12} sm={12} md={3} lg={3}>
           <Card className="p-3">
             <Card className="profile-pic mb-3 mx-auto">
-              <img
-                className="profile-pic"
-                src={`data:${profile.profilePic.mimetype};base64, ${profile.profilePic.data}`}
-                alt="Profile Pic"
-              />
+              {profile.profilePic ? (
+                <img
+                  className="profile-pic"
+                  src={`data:${profile.profilePic.mimetype};base64, ${profile.profilePic.data}`}
+                  alt="Profile Pic"
+                />
+              ) : (
+                <div className="profile-icon">
+                  <FontAwesomeIcon icon="user" size="6x" />
+                </div>
+              )}
             </Card>
             <p>{profile.username}</p>
             <p>{profile.email}</p>

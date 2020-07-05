@@ -1,5 +1,5 @@
 function profilePic(root) {
-    if (!root.profilePic) {
+    if (!root.profilePic.data) {
         return null;
     }
 
