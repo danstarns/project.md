@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 import { REACT_APP_JWT_KEY } from "../../../config.js";
 
-const Mutation = gql`
+const SIGN_IN_MUTATION = gql`
   mutation signIn($email: String!, $password: String!) {
     signIn(input: { email: $email, password: $password }) {
       error {
@@ -17,7 +17,7 @@ const Mutation = gql`
 function login({ client, setValue }) {
   return async ({ email, password }) => {
     const result = await client.mutate({
-      mutation: Mutation,
+      mutation: SIGN_IN_MUTATION,
       variables: { email, password }
     });
 

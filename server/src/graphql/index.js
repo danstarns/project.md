@@ -14,7 +14,8 @@ const server = new ApolloServer({
     typeDefs,
     resolvers,
     schemaDirectives,
-    context
+    context,
+    uploads: false
 });
 
 module.exports = server;

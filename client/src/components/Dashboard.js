@@ -22,18 +22,13 @@ function Dashboard({ history }) {
         <h1 className="mt-0">Dashboard</h1>
         {loading && <Spinner animation="border" className="ml-3 mt-1" />}
       </div>
-
-      {error && <Alert variant="danger">{error}</Alert>}
-
       <Row className="mt-3">
-        {Boolean(!loading && !error) && (
-          <Col xs={12} s={12} lg={12}>
-            <Alert show variant="success">
-              <Alert.Heading>How's it going {data.me.username}?!</Alert.Heading>
-              <p>Welcome Back!</p>
-            </Alert>
-          </Col>
-        )}
+        <Col xs={12} s={12} lg={12}>
+          <Alert show variant="success">
+            <Alert.Heading>How's it going {data.me.username}?!</Alert.Heading>
+            <p>Welcome Back!</p>
+          </Alert>
+        </Col>
         <Col xs={12} s={12} lg={6}>
           <Jumbotron>
             <h1>Projects</h1>

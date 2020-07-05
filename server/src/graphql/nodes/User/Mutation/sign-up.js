@@ -1,7 +1,14 @@
+/* eslint-disable no-restricted-syntax */
 const { User } = require("../../../../models/index.js");
 const { createJWT, hashPassword } = require("../../../../utils/index.js");
 
-async function signUp(root, { input: { username, email, password } }) {
+async function signUp(
+    root,
+    { input: { username, email, password, profilePic } }
+) {
+    let contentType;
+    let buffers = [];
+
     try {
         const existingByUName = await User.findOne({ username });
 
@@ -17,10 +24,27 @@ async function signUp(root, { input: { username, email, password } }) {
 
         const hash = await hashPassword(password);
 
+        if (profilePic) {
+            const file = await profilePic;
+            contentType = file.contentType;
+
+            for await (const chunk of file.createReadStream()) {
+                buffers.push(chunk);
+            }
+        }
+
         const user = await User.create({
             username,
             email,
-            password: hash
+            password: hash,
+            ...(profilePic
+                ? {
+                      profilePic: {
+                          data: Buffer.concat(buffers),
+                          contentType
+                      }
+                  }
+                : {})
         });
 
         const jwt = await createJWT({ sub: user._id.toString() });

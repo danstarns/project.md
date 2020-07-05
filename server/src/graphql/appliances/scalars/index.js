@@ -1,3 +1,4 @@
 const GraphQLDateTime = require("./GraphQLDateTime.js");
+const Upload = require("./Upload.js");
 
-module.exports = [GraphQLDateTime];
+module.exports = [GraphQLDateTime, Upload];

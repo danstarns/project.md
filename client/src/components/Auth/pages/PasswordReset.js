@@ -1,8 +1,9 @@
 import React, { useState, useContext, useCallback } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Card, Row } from "react-bootstrap";
 import gql from "graphql-tag";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
 import { GraphQL } from "../../../contexts/index.js";
+import "../auth.css";
 
 const Mutation = gql`
   mutation forgotPasswordCallback($token: String!, $password: String!) {
@@ -67,42 +68,37 @@ function PasswordReset({ history, match }) {
   );
 
   return (
-    <>
-      <br />
-      <h1>Forgot Password</h1>
-      <br />
-      {error && <ErrorBanner error={error} />}
-      {loading && <LoadingBanner />}
-      <br />
-      <Form onSubmit={submit}>
-        <Form.Group controlId="password">
-          <Form.Label>New Password</Form.Label>
-
-          <Form.Control
-            type="password"
-            placeholder="Enter password"
-            required
-            value={password1}
-            onChange={updatePassword1}
-          />
-        </Form.Group>
-        <Form.Group controlId="password-confirm">
-          <Form.Label>Password Conformation</Form.Label>
-
-          <Form.Control
-            type="password"
-            placeholder="Enter password conformation"
-            required
-            value={password2}
-            onChange={updatePassword2}
-          />
-        </Form.Group>
-
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
-      </Form>
-    </>
+    <Row className="center">
+      <Card className="p-5">
+        <h1 className="m-0">Forgot Password</h1>
+        <hr />
+        <Form onSubmit={submit}>
+          <Form.Group controlId="password">
+            <Form.Label>New Password</Form.Label>
+            <Form.Control
+              type="password"
+              required
+              value={password1}
+              onChange={updatePassword1}
+            />
+          </Form.Group>
+          <Form.Group controlId="password-confirm">
+            <Form.Label>Password Conformation</Form.Label>
+            <Form.Control
+              type="password"
+              required
+              value={password2}
+              onChange={updatePassword2}
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+          {error && <ErrorBanner error={error} />}
+          {loading && <LoadingBanner />}
+        </Form>
+      </Card>
+    </Row>
   );
 }
 

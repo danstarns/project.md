@@ -14,7 +14,8 @@ import {
   faRobot,
   faExclamation,
   faCheck,
-  faBuilding
+  faBuilding,
+  faUser
 } from "@fortawesome/free-solid-svg-icons";
 import {
   Home,
@@ -41,7 +42,8 @@ library.add(
   faRobot,
   faExclamation,
   faCheck,
-  faBuilding
+  faBuilding,
+  faUser
 );
 
 function App() {

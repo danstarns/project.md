@@ -2,6 +2,12 @@ type User {
     _id: ID!
     username: String!
     email: String!
+    profilePic: ProfilePic
+}
+
+type ProfilePic {
+    data: String!
+    contentType: String!
 }
 
 type AuthResponse {
@@ -15,6 +21,7 @@ input SignUpInput {
     username: String!
     email: String!
     password: String!
+    profilePic: Upload
 }
 
 type SignUpResponse {
