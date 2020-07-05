@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import gql from "graphql-tag";
-import { Col, Row, Button, Card } from "react-bootstrap";
+import { Col, Row, Button, Card, Tab, Tabs } from "react-bootstrap";
 import { GraphQL, AuthContext } from "../../../contexts/index.js";
 import { Markdown } from "../../Markdown/index.js";
 import {
@@ -76,6 +76,7 @@ function Project({ match, history }) {
   const [hasNextTasks, setHasNextTasks] = useState(false);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState("InProgress");
+  const [key, setKey] = useState("tasks");
 
   useEffect(() => {
     (async () => {
@@ -155,54 +156,62 @@ function Project({ match, history }) {
           <h1 className="mt-3 mb-0">Project: {project.name}</h1>
           <p className="ml-1 mt-0 font-italic">{project.tagline}</p>
           <Card className="p-3 mt-3">
-            <div className="d-inline">
-              <Button
-                className="mr-3"
-                onClick={() => history.push(`/project/edit/${match.params.id}`)}
-              >
-                Edit
-              </Button>
-              <StatusDropdown
-                onSelect={updateStatus}
-                status={status}
-                title="Select Status"
-              />
-            </div>
-            <div className="mt-3">
+            {isLoggedIn && (
+              <div className="d-inline">
+                <Button
+                  className="mr-3"
+                  onClick={() =>
+                    history.push(`/project/edit/${match.params.id}`)
+                  }
+                >
+                  Edit
+                </Button>
+                <StatusDropdown
+                  onSelect={updateStatus}
+                  status={status}
+                  title="Select Status"
+                />
+              </div>
+            )}
+            <div className={isLoggedIn ? "mt-3" : ""}>
               <StatusProgressBar status={status} />
             </div>
           </Card>
         </Col>
       </Row>
-      <Card className="p-3">
-        <h1 className="m-0">Markdown</h1>
-        <hr />
+
+      <Tabs activeKey={key} onSelect={k => setKey(k)} className="mt-3">
+        <Tab eventKey="tasks" title="Tasks">
+          <Card className="p-3 mt-3">
+            <Row>
+              <Col sm={12} md={12} lg={2}>
+                {isLoggedIn && (
+                  <Button
+                    className="mt-3 mb-3 w-100"
+                    onClick={() =>
+                      history.push(`/task/create/${match.params.id}`)
+                    }
+                  >
+                    Create Task
+                  </Button>
+                )}
+                <TasksFilter onChange={setTasksFilter} />
+              </Col>
+              <Col sm={12} md={12} lg={10} className="mt-3">
+                <TasksList
+                  tasks={tasks}
+                  history={history}
+                  hasNextPage={hasNextTasks}
+                />
+              </Col>
+            </Row>
+          </Card>
+        </Tab>
+      </Tabs>
+
+      <section className="mt-3">
         <Markdown markdown={project.markdown} />
-      </Card>
-      <Card className="p-3 mt-3">
-        <h1 className="m-0">Tasks</h1>
-        <hr />
-        <Row>
-          <Col sm={12} md={12} lg={2}>
-            {isLoggedIn && (
-              <Button
-                className="mt-3 mb-3 w-100"
-                onClick={() => history.push(`/task/create/${match.params.id}`)}
-              >
-                Create Task
-              </Button>
-            )}
-            <TasksFilter onChange={setTasksFilter} />
-          </Col>
-          <Col sm={12} md={12} lg={10} className="mt-3">
-            <TasksList
-              tasks={tasks}
-              history={history}
-              hasNextPage={hasNextTasks}
-            />
-          </Col>
-        </Row>
-      </Card>
+      </section>
     </div>
   );
 }
