@@ -63,4 +63,5 @@ type Mutation {
 
 type Query {
     me: User! @Auth(input: {required: true, populate: true})
+    user(id: ID!): User
 }

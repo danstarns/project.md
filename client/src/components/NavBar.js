@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../contexts/index.js";
@@ -37,8 +37,11 @@ function LoggedOut() {
 
 function NavBar() {
   const { isLoggedIn, getId } = useContext(AuthContext.Context);
+  const [userId, setId] = useState(getId());
 
-  const userId = getId();
+  useEffect(() => {
+    setId(getId());
+  }, [isLoggedIn]);
 
   return (
     <Navbar bg="light" expand="lg">

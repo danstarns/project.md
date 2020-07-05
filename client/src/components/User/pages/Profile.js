@@ -5,9 +5,9 @@ import gql from "graphql-tag";
 import { GraphQL } from "../../../contexts/index.js";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
 
-const ME_QUERY = gql`
-  {
-    me {
+const USER_QUERY = gql`
+  query($id: ID!) {
+    user(id: $id) {
       username
       email
       profilePic {
@@ -29,7 +29,7 @@ function Profile({ match }) {
     (async () => {
       try {
         const response = await client.query({
-          query: ME_QUERY,
+          query: USER_QUERY,
           variables: {
             id: match.params.id
           }
@@ -39,11 +39,11 @@ function Profile({ match }) {
           throw new Error(response.errors[0].message);
         }
 
-        if (!response.data.me) {
+        if (!response.data.user) {
           throw new Error("user not found");
         }
 
-        setProfile(response.data.me);
+        setProfile(response.data.user);
       } catch (e) {
         setError(e.message);
       }
@@ -72,8 +72,8 @@ function Profile({ match }) {
                 alt="Profile Pic"
               />
             </Card>
-            <p>Daniel</p>
-            <p>DanielStarns@hotmail.com</p>
+            <p>{profile.username}</p>
+            <p>{profile.email}</p>
           </Card>
         </Col>
         <Col xs={4} sm={4} md={3} lg={3}>
