@@ -7,7 +7,7 @@ async function organization(root, args, ctx) {
         return null;
     }
 
-    if (!org.public) {
+    if (org.private) {
         if (args.key) {
             const notification = await Notification.findById(args.key);
 

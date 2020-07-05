@@ -7,11 +7,13 @@ async function project(root, { id }, ctx) {
         return null;
     }
 
-    if (foundProject.private && ctx.user !== foundProject.creator.toString()) {
-        throw new Error("Forbidden");
+    if (foundProject.private) {
+        if (ctx.user !== foundProject.creator.toString()) {
+            throw new Error("Forbidden");
+        }
     }
 
-    if (foundProject.organization) {
+    if (foundProject.organization && foundProject.private) {
         const organization = await Organization.findById(
             foundProject.organization
         );
