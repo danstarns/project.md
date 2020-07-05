@@ -30,7 +30,7 @@ function TaskForm({
     }
 
     setDue(new Date(date));
-  });
+  }, []);
 
   const submit = useCallback(
     e => {
@@ -48,7 +48,6 @@ function TaskForm({
           <Card className="p-3">
             <Form.Group controlId="name">
               <Form.Label>Name</Form.Label>
-
               <Form.Control
                 autoFocus
                 type="text"
@@ -58,17 +57,14 @@ function TaskForm({
                 maxLength="60"
               />
             </Form.Group>
-
             <Form.Group controlId="date">
               <div>
                 Select Due Date:{" "}
                 <DatePicker onChange={updateDue} value={new Date(due)} />
               </div>
             </Form.Group>
-
             <Form.Group controlId="tagline">
               <Form.Label>Tagline</Form.Label>
-
               <Form.Control
                 type="text"
                 required
@@ -82,11 +78,9 @@ function TaskForm({
           </Card>
         </Col>
       </Row>
-
       <Card className="p-3 mt-3">
         <Editor onChange={setMarkdown} markdown={markdown} />
       </Card>
-
       <div>
         {error && <Alert variant="danger">{error}</Alert>}{" "}
         {validationError && <Alert variant="danger">{validationError}</Alert>}
@@ -96,7 +90,6 @@ function TaskForm({
           </div>
         )}
       </div>
-
       <Button variant="primary" type="submit" block className="mt-3 mb-3">
         Submit
       </Button>

@@ -115,7 +115,7 @@ function EditTask({ match, history }) {
     }
 
     setLoadingCreate(false);
-  });
+  }, []);
 
   if (LoadingTask) {
     return <LoadingBanner />;

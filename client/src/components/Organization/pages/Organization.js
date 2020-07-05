@@ -1,9 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import gql from "graphql-tag";
 import { Col, Row, Button, Card } from "react-bootstrap";
-import ReactMarkdown from "react-markdown";
 import { GraphQL, AuthContext } from "../../../contexts/index.js";
-import { Code } from "../../Markdown/index.js";
+import { Markdown } from "../../Markdown/index.js";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
 import { ProjectList, ProjectFilter } from "../../Project/index.js";
 import { InviteUserModal } from "../components/index.js";
@@ -200,10 +199,7 @@ function Organization({ match, history }) {
         <Card className="p-3 mt-3">
           <h1 className="m-0">Markdown</h1>
           <hr />
-          <ReactMarkdown
-            source={organization.markdown}
-            renderers={{ code: Code }}
-          />
+          <Markdown markdown={organization.markdown} />
         </Card>
       </section>
     </div>

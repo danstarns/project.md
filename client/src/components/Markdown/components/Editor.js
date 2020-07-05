@@ -1,8 +1,7 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
-import ReactMarkdown from "react-markdown";
 import Input from "./Input.js";
-import Code from "./Code.js";
+import Markdown from "./Markdown.js";
 import "../markdown.css";
 
 function Editor(props) {
@@ -21,11 +20,7 @@ function Editor(props) {
         />
       </Col>
       <Col xs={6} s={6} lg={6}>
-        <ReactMarkdown
-          className="editor-output"
-          source={props.markdown}
-          renderers={{ code: Code }}
-        />
+        <Markdown markdown={props.markdown} />
       </Col>
     </Row>
   );

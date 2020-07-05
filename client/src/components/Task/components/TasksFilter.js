@@ -27,7 +27,7 @@ function TasksFilter(props) {
       }
       return "desc";
     });
-  });
+  }, []);
 
   const updatePage = useCallback(direction => {
     return () => {
@@ -38,7 +38,7 @@ function TasksFilter(props) {
         return p + 1;
       });
     };
-  });
+  }, []);
 
   return (
     <Row>
@@ -64,7 +64,6 @@ function TasksFilter(props) {
           >
             All
           </ListGroup.Item>
-
           <ListGroup.Item className="p-0">
             <Container>
               <Form.Group>

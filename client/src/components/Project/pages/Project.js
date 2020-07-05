@@ -1,9 +1,8 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import gql from "graphql-tag";
 import { Col, Row, Button, Card } from "react-bootstrap";
-import ReactMarkdown from "react-markdown";
 import { GraphQL, AuthContext } from "../../../contexts/index.js";
-import { Code } from "../../Markdown/index.js";
+import { Markdown } from "../../Markdown/index.js";
 import {
   ErrorBanner,
   LoadingBanner,
@@ -139,7 +138,7 @@ function Project({ match, history }) {
     } catch (e) {
       setError(e.message);
     }
-  });
+  }, []);
 
   if (loading) {
     return <LoadingBanner />;
@@ -150,8 +149,8 @@ function Project({ match, history }) {
   }
 
   return (
-    <div>
-      <Row className="pb-3">
+    <div className="pb-3">
+      <Row className="mb-3">
         <Col>
           <h1 className="mt-3 mb-0">Project: {project.name}</h1>
           <p className="ml-1 mt-0 font-italic">{project.tagline}</p>
@@ -175,12 +174,14 @@ function Project({ match, history }) {
           </Card>
         </Col>
       </Row>
-
       <Card className="p-3">
-        <ReactMarkdown source={project.markdown} renderers={{ code: Code }} />
+        <h1 className="m-0">Markdown</h1>
+        <hr />
+        <Markdown markdown={project.markdown} />
       </Card>
-
       <Card className="p-3 mt-3">
+        <h1 className="m-0">Tasks</h1>
+        <hr />
         <Row>
           <Col sm={12} md={12} lg={2}>
             {isLoggedIn && (
@@ -193,7 +194,6 @@ function Project({ match, history }) {
             )}
             <TasksFilter onChange={setTasksFilter} />
           </Col>
-
           <Col sm={12} md={12} lg={10} className="mt-3">
             <TasksList
               tasks={tasks}

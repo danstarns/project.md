@@ -28,15 +28,18 @@ function ProjectsFilter(props) {
 
       return "desc";
     });
-  });
+  }, []);
 
-  const updatePage = useCallback(direction => () => {
-    if (direction === "back") {
-      setPage(p => p - 1);
-    } else {
-      setPage(p => p + 1);
-    }
-  });
+  const updatePage = useCallback(
+    direction => () => {
+      if (direction === "back") {
+        setPage(p => p - 1);
+      } else {
+        setPage(p => p + 1);
+      }
+    },
+    []
+  );
 
   return (
     <Row>
@@ -53,7 +56,6 @@ function ProjectsFilter(props) {
               Mine
             </ListGroup.Item>
           )}
-
           <ListGroup.Item
             onClick={() => setSelected("public")}
             className="project-filter-card"

@@ -123,7 +123,7 @@ function EditProject({ match, history }) {
     } catch (e) {
       setError(e.message);
     }
-  });
+  }, []);
 
   if (loadingProject) {
     return <LoadingBanner />;

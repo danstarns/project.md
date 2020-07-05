@@ -71,7 +71,7 @@ function CreateProject({ history, match }) {
     } catch (e) {
       setError(e.message);
     }
-  });
+  }, []);
 
   return (
     <div>
