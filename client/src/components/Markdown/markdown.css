@@ -1,10 +1,15 @@
 .editor-input {
-  font-size: 1.1rem !important;
-  position: inherit !important;
+  font-size: 1.2rem !important;
 }
 
-.editor-output {
+.hljs {
   font-size: 1.0rem !important;
+  line-height: 1.4rem;
+  padding: 0.3rem;
+}
+
+code {
+  font-weight: 100;
 }
 
 .CodeMirror-lines {
@@ -12,9 +17,27 @@
 }
 
 .editor-output > h1, h2, h3, h4, h5 {
-  margin: initial;
-  font-size: inherit;
-  margin-top: 0.3rem;
+  margin-top: 0.1rem;
+  margin-bottom: 0.1rem;
+} 
+
+.editor-output > h1 {
+  font-size: 1.3rem;
+}
+.editor-output > h2 {
+  font-size: 1.2rem;
+}
+.editor-output > h3 {
+  font-size: 1.1rem;
+}
+.editor-output > h4 {
+  font-size: 1.0rem;
+}
+.editor-output > h5 {
+  font-size: 0.9rem;
+}
+.editor-output > h6 {
+  font-size: 0.8rem;
 }
 
 .CodeMirror {
