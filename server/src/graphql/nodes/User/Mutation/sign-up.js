@@ -26,7 +26,7 @@ async function signUp(
 
         if (profilePic) {
             const file = await profilePic;
-            contentType = file.contentType;
+            contentType = file.mimetype;
 
             for await (const chunk of file.createReadStream()) {
                 buffers.push(chunk);
