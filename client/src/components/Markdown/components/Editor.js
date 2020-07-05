@@ -5,10 +5,6 @@ import Markdown from "./Markdown.js";
 import "../markdown.css";
 
 function Editor(props) {
-  function onChange(event) {
-    props.onChange(event.target.value);
-  }
-
   return (
     <Row>
       <Col xs={6} s={6} lg={6}>
@@ -16,7 +12,7 @@ function Editor(props) {
           mode="markdown"
           theme="light"
           value={props.markdown}
-          onChange={onChange}
+          onChange={e => props.onChange(e.target.value)}
         />
       </Col>
       <Col xs={6} s={6} lg={6}>
