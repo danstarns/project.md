@@ -47,7 +47,7 @@ function OrganizationForm({ defaults = {}, onChange, loading, error }) {
           <Form.Check
             type="checkbox"
             label="Select To Make Private"
-            onChange={e => setPrivate(e.target.value)}
+            onChange={e => setPrivate(e.target.checked)}
             checked={_private}
             className="ml-3"
           />
