@@ -6,7 +6,7 @@ async function signUp(
     root,
     { input: { username, email, password, profilePic } }
 ) {
-    let contentType;
+    let mimetype;
     let buffers = [];
 
     try {
@@ -26,7 +26,7 @@ async function signUp(
 
         if (profilePic) {
             const file = await profilePic;
-            contentType = file.mimetype;
+            mimetype = file.mimetype;
 
             for await (const chunk of file.createReadStream()) {
                 buffers.push(chunk);
@@ -41,7 +41,7 @@ async function signUp(
                 ? {
                       profilePic: {
                           data: Buffer.concat(buffers),
-                          contentType
+                          mimetype
                       }
                   }
                 : {})

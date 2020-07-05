@@ -7,7 +7,7 @@ type User {
 
 type ProfilePic {
     data: String!
-    contentType: String!
+    mimetype: String!
 }
 
 type AuthResponse {

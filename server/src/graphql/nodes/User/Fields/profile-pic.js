@@ -5,7 +5,7 @@ function profilePic(root) {
 
     return {
         data: root.profilePic.data.toString("base64"),
-        contentType: root.profilePic.contentType
+        mimetype: root.profilePic.mimetype
     };
 }
 
