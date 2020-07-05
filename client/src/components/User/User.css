@@ -11,3 +11,10 @@
     font-weight: bold;
     font-size: 1.2rem;
 }
+
+.profile-pic {
+    min-height: 200px;
+    max-height: 200px;
+    min-width: 200px;
+    max-width: 200px;
+}

@@ -8,6 +8,7 @@ import Organization from "./Organization/index.js";
 import * as Routes from "./Routes/index.js";
 import Notification from "./Notification";
 import NotFound from "./NotFound.js";
+import User from "./User/index.js";
 
 export {
   Home,
@@ -19,5 +20,6 @@ export {
   Organization,
   Routes,
   Notification,
-  NotFound
+  NotFound,
+  User
 };

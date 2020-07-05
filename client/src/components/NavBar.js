@@ -3,11 +3,11 @@ import { Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../contexts/index.js";
 
-function LoggedIn() {
+function LoggedIn({ userId }) {
   return (
     <>
       <Nav.Link as="span">
-        <Link to="/account">My Account</Link>
+        <Link to={`/profile/${userId}`}>My Account</Link>
       </Nav.Link>
       <Nav.Link as="span">
         <Link to="/dashboard">Dashboard</Link>
@@ -36,7 +36,9 @@ function LoggedOut() {
 }
 
 function NavBar() {
-  const { isLoggedIn } = useContext(AuthContext.Context);
+  const { isLoggedIn, getId } = useContext(AuthContext.Context);
+
+  const userId = getId();
 
   return (
     <Navbar bg="light" expand="lg">
@@ -47,7 +49,7 @@ function NavBar() {
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
-        {isLoggedIn ? LoggedIn() : LoggedOut()}
+        {isLoggedIn ? <LoggedIn userId={userId} /> : <LoggedOut />}
       </Navbar.Collapse>
     </Navbar>
   );
