@@ -55,11 +55,21 @@ input ForgotPasswordCallbackInput {
     password: String!
 }
 
+# EDIT PROFILE
+# ------------------------------------
+input EditProfileInput {
+    username: String
+    email: String
+    password: String
+    profilePic: Upload
+}
+
 type Mutation {
     signUp(input: SignUpInput): SignUpResponse!
     signIn(input: SignInInput): SignInResponse!
     forgotPasswordRequest(input: ForgotPasswordRequestInput!): Boolean!
     forgotPasswordCallback(input: ForgotPasswordCallbackInput!): Boolean!
+    editProfile(input: EditProfileInput!): User! @Auth(input: {required: true})
 }
 
 type Query {
