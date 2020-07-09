@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from "react";
 import { Card, Row, Col, Tab, Tabs } from "react-bootstrap";
 import "../User.css";
 import gql from "graphql-tag";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GraphQL } from "../../../contexts/index.js";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
 import { ProfilePic } from "../components/index.js";
@@ -16,6 +15,7 @@ const USER_QUERY = gql`
         data
         mimetype
       }
+      isRequester
     }
   }
 `;

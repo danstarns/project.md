@@ -28,3 +28,7 @@
     max-height: 200px;
     max-width: 200px;
 }
+
+.profile-box-text {
+    font-size: 0.8rem;
+}

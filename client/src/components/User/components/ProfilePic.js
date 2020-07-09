@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../User.css";
 
@@ -19,8 +19,20 @@ function ProfilePic(props) {
           </div>
         )}
       </Card>
-      <p>{props.profile.username}</p>
-      <p>{props.profile.email}</p>
+      <p className="pl-3 pr-3 profile-box-text">
+        <FontAwesomeIcon icon="user-tag" />
+        <span className="ml-1">{props.profile.username}</span>
+      </p>
+      <p className="pl-3 pr-3 profile-box-text">
+        {" "}
+        <FontAwesomeIcon icon="at" />
+        <span className="ml-1">{props.profile.email}</span>
+      </p>
+      {props.profile.isRequester && (
+        <Button className="m-0 mb-3" variant="primary">
+          Edit
+        </Button>
+      )}
     </Card>
   );
 }
