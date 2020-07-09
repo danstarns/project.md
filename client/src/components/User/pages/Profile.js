@@ -5,6 +5,7 @@ import gql from "graphql-tag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GraphQL } from "../../../contexts/index.js";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
+import { ProfilePic } from "../components/index.js";
 
 const USER_QUERY = gql`
   query($id: ID!) {
@@ -65,23 +66,7 @@ function Profile({ match }) {
     <div>
       <Row className="mt-3">
         <Col xs={12} sm={12} md={3} lg={3}>
-          <Card className="p-3">
-            <Card className="profile-pic mb-3 mx-auto">
-              {profile.profilePic ? (
-                <img
-                  className="profile-pic"
-                  src={`data:${profile.profilePic.mimetype};base64, ${profile.profilePic.data}`}
-                  alt="Profile Pic"
-                />
-              ) : (
-                <div className="profile-icon">
-                  <FontAwesomeIcon icon="user" size="6x" />
-                </div>
-              )}
-            </Card>
-            <p>{profile.username}</p>
-            <p>{profile.email}</p>
-          </Card>
+          <ProfilePic profile={profile} />
         </Col>
         <Col xs={4} sm={4} md={3} lg={3}>
           <Card>Total Organizations</Card>
@@ -93,7 +78,6 @@ function Profile({ match }) {
           <Card>Total Tasks</Card>
         </Col>
       </Row>
-
       <Tabs activeKey={key} onSelect={k => setKey(k)} className="mt-3">
         <Tab eventKey="projects" title="Projects">
           <Card className="p-3 mt-3">
