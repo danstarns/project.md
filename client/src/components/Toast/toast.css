@@ -1,10 +1,16 @@
-.toast-item {
-    width: 400px;
+.toasts-outer {
+    position: relative
+}
+
+.toasts-inner {
     position: absolute;
     top: 0;
     right: 0;
-    width: 400px;
     z-index: 100;
+}
+
+.toast-item {
+    width: 400px;
     margin-right: 30px;
     text-align: center;
 }
@@ -20,4 +26,4 @@
         width: 300px;
         margin-right: 10px;
     }
-  }
+}
