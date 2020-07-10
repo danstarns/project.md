@@ -48,6 +48,14 @@ function EditProfileModal(props) {
   const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
+    setProfilePic(
+      props.profile.profilePic
+        ? `data:${props.profile.profilePic.mimetype};base64, ${props.profile.profilePic.data}`
+        : false
+    );
+  }, [props]);
+
+  useEffect(() => {
     if (password !== password2) {
       setError("Passwords don't match");
     }
@@ -123,8 +131,21 @@ function EditProfileModal(props) {
     [email, username, password]
   );
 
+  const onHide = useCallback(() => {
+    setEmail();
+    setUsername();
+    setError();
+    setImageError();
+    setPassword();
+    setPassword2();
+    setBlob();
+    setProfilePic();
+
+    props.onHide();
+  }, []);
+
   return (
-    <Modal show={props.show} onHide={props.onHide}>
+    <Modal show={props.show} onHide={onHide}>
       <Modal.Header closeButton>
         <Modal.Title>Edit Profile</Modal.Title>
       </Modal.Header>
@@ -203,7 +224,7 @@ function EditProfileModal(props) {
               {error || imageError}
             </Alert>
           )}
-          <Button onClick={props.onHide} className="mt-3" variant="secondary">
+          <Button onClick={onHide} className="mt-3" variant="secondary">
             Cancel
           </Button>
           <Button
