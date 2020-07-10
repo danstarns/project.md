@@ -15,6 +15,7 @@ function SignUp({ history }) {
   const [loading, setLoading] = useState(false);
   const [profilePic, setProfilePic] = useState();
   const [blob, setBlob] = useState();
+  const [imageError, setImageError] = useState(false);
 
   const updateEmail = useCallback(event => {
     setError(null);
@@ -36,10 +37,13 @@ function SignUp({ history }) {
 
   const submit = useCallback(
     async event => {
-      setError(null);
-      setLoading(true);
-
       event.preventDefault();
+
+      if (error || imageError) {
+        return;
+      }
+
+      setLoading(true);
 
       try {
         await Auth.signUp({ email, username, password, profilePic: blob });
@@ -49,7 +53,7 @@ function SignUp({ history }) {
         setError(e.message);
       }
     },
-    [email, username, password]
+    [email, username, password, blob, error]
   );
 
   if (Auth.isLoggedIn) {
@@ -58,11 +62,18 @@ function SignUp({ history }) {
 
   const changePic = useCallback(
     event => {
-      const image = new Image();
-      setBlob(event.target.files[0]);
+      setImageError(false);
 
+      const acceptedTypes = ["image/png", "image/jpeg"];
+      if (!acceptedTypes.includes(event.target.files[0].type)) {
+        setImageError("Invalid file type");
+        return;
+      }
+
+      const image = new Image();
       const url = URL.createObjectURL(event.target.files[0]);
       image.src = url;
+      setBlob(event.target.files[0]);
 
       image.onload = () => {
         if (image.naturalWidth > 200 || image.naturalHeight > 200) {
