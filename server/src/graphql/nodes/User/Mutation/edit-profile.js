@@ -1,6 +1,8 @@
 /* eslint-disable no-restricted-syntax */
 const { User } = require("../../../../models/index.js");
 const { hashPassword } = require("../../../../utils/index.js");
+const redis = require("../../../../redis.js");
+const { CLIENT_URL } = require("../../../../config.js");
 
 async function editProfile(
     root,
@@ -56,7 +58,26 @@ async function editProfile(
         updates.profilePic.data = Buffer.concat(buffers);
     }
 
-    return User.findOneAndUpdate(ctx.user, { $set: updates }, { new: true });
+    const updated = await User.findOneAndUpdate(
+        ctx.user,
+        { $set: updates },
+        { new: true }
+    );
+
+    if (password) {
+        await redis.queues.email.add({
+            to: updated.email,
+            subject: "Password Change",
+            html: `
+                <p>
+                    You recently changed your password, if it was not you go <a href="${CLIENT_URL}/forgot-password">Here</a> to change it back,
+                    otherwise ignore this email.
+                </p>
+            `
+        });
+    }
+
+    return updated;
 }
 
 module.exports = editProfile;
