@@ -30,9 +30,10 @@ import {
   Routes,
   Notification,
   NotFound,
-  User
+  User,
+  Toasts
 } from "./components/index.js";
-import { AuthContext, GraphQL } from "./contexts/index.js";
+import { AuthContext, GraphQL, ToastContext } from "./contexts/index.js";
 
 library.add(
   faSortUp,
@@ -54,9 +55,11 @@ library.add(
 function App() {
   return (
     <GraphQL.Provider>
+      <ToastContext.Provider>
       <AuthContext.Provider>
         <Router>
           <NavBar />
+          <Toasts />
           <Container>
             <Switch>
               <Route exact path="/" component={Home} />
@@ -90,6 +93,7 @@ function App() {
           </Container>
         </Router>
       </AuthContext.Provider>
+      </ToastContext.Provider>
     </GraphQL.Provider>
   );
 }

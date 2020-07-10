@@ -9,6 +9,7 @@ import * as Routes from "./Routes/index.js";
 import Notification from "./Notification";
 import NotFound from "./NotFound.js";
 import User from "./User/index.js";
+import Toasts from "./Toast/index.js";
 
 export {
   Home,
@@ -21,5 +22,6 @@ export {
   Routes,
   Notification,
   NotFound,
-  User
+  User,
+  Toasts
 };

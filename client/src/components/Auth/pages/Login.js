@@ -1,11 +1,13 @@
 import React, { useState, useContext, useCallback } from "react";
 import { Form, Button, Card, Row } from "react-bootstrap";
-import { AuthContext } from "../../../contexts/index.js";
+import { AuthContext, ToastContext } from "../../../contexts/index.js";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
 import "../auth.css";
 
 function Login({ history, location }) {
   const Auth = useContext(AuthContext.Context);
+  const { addToast } = useContext(ToastContext.Context);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -33,9 +35,13 @@ function Login({ history, location }) {
       try {
         await Auth.login({ email, password });
 
+        const toast = { message: "Logged In", variant: "success" };
+
         if (location.state && location.state.redirect) {
+          addToast(toast);
           history.push(location.state.redirect);
         } else {
+          addToast(toast);
           history.push("/dashboard");
         }
       } catch (e) {

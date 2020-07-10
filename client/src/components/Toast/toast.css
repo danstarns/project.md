@@ -1,0 +1,23 @@
+.toast-item {
+    width: 400px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 400px;
+    z-index: 100;
+    margin-right: 30px;
+    text-align: center;
+}
+
+.toast-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+    .toast-item {
+        width: 300px;
+        margin-right: 10px;
+    }
+  }
