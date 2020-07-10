@@ -65,6 +65,19 @@ function EditProfileModal(props) {
     setError(null);
   }, [email, username, password]);
 
+  const onHide = useCallback(() => {
+    setEmail();
+    setUsername();
+    setError();
+    setImageError();
+    setPassword();
+    setPassword2();
+    setBlob();
+    setProfilePic();
+
+    props.onHide();
+  }, []);
+
   const onSubmit = useCallback(
     async event => {
       event.preventDefault();
@@ -95,7 +108,7 @@ function EditProfileModal(props) {
 
         props.setProfile(data.editProfile);
 
-        props.onHide();
+        onHide();
       } catch (e) {
         setError(e.message);
       }
@@ -130,19 +143,6 @@ function EditProfileModal(props) {
     },
     [email, username, password]
   );
-
-  const onHide = useCallback(() => {
-    setEmail();
-    setUsername();
-    setError();
-    setImageError();
-    setPassword();
-    setPassword2();
-    setBlob();
-    setProfilePic();
-
-    props.onHide();
-  }, []);
 
   return (
     <Modal show={props.show} onHide={onHide}>
