@@ -7,14 +7,16 @@
         "prettier/react"
     ],
     "plugins": [
+        "react",
+        "react-hooks",
         "jsx-a11y",
         "prettier"
     ],
     "rules": {
-        "no-underscore-dangle": [
+        "react-hooks/exhaustive-deps": [
             0
         ],
-        "react-hooks/exhaustive-deps": [
+        "no-underscore-dangle": [
             0
         ],
         "import/prefer-default-export": [

@@ -4,7 +4,7 @@ import "../User.css";
 import gql from "graphql-tag";
 import { GraphQL } from "../../../contexts/index.js";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
-import { ProfilePic } from "../components/index.js";
+import { ProfilePic, EditProfileModal } from "../components/index.js";
 
 const USER_QUERY = gql`
   query($id: ID!) {
@@ -26,6 +26,7 @@ function Profile({ match }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [profile, setProfile] = useState(false);
+  const [editUserModal, setEditUserModal] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -64,9 +65,18 @@ function Profile({ match }) {
 
   return (
     <div>
+      <EditProfileModal
+        show={editUserModal}
+        onHide={() => setEditUserModal(false)}
+        profile={profile}
+        setProfile={setProfile}
+      />
       <Row className="mt-3">
         <Col xs={12} sm={12} md={3} lg={3}>
-          <ProfilePic profile={profile} />
+          <ProfilePic
+            profile={profile}
+            setEditUserModal={() => setEditUserModal(true)}
+          />
         </Col>
         <Col xs={4} sm={4} md={3} lg={3}>
           <Card>Total Organizations</Card>

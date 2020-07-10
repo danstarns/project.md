@@ -24,12 +24,15 @@ function ProfilePic(props) {
         <span className="ml-1">{props.profile.username}</span>
       </p>
       <p className="pl-3 pr-3 profile-box-text">
-        {" "}
         <FontAwesomeIcon icon="at" />
         <span className="ml-1">{props.profile.email}</span>
       </p>
       {props.profile.isRequester && (
-        <Button className="m-0 mb-3" variant="primary">
+        <Button
+          className="m-0 mb-3"
+          variant="primary"
+          onClick={props.setEditUserModal}
+        >
           Edit
         </Button>
       )}
