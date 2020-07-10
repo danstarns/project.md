@@ -2,7 +2,7 @@ import React, { useState, useContext, useCallback } from "react";
 import { Form, Button, Card, Row } from "react-bootstrap";
 import gql from "graphql-tag";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
-import { GraphQL } from "../../../contexts/index.js";
+import { GraphQL, AuthContext } from "../../../contexts/index.js";
 import "../auth.css";
 
 const Mutation = gql`
@@ -13,6 +13,8 @@ const Mutation = gql`
 
 function PasswordReset({ history, match }) {
   const { client } = useContext(GraphQL.Context);
+  const Auth = useContext(AuthContext.Context);
+
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
   const [error, setError] = useState(null);
@@ -66,6 +68,10 @@ function PasswordReset({ history, match }) {
     },
     [password1, password2]
   );
+
+  if (Auth.isLoggedIn) {
+    history.push("/dashboard");
+  }
 
   return (
     <Row className="center">

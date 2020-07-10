@@ -52,6 +52,10 @@ function SignUp({ history }) {
     [email, username, password]
   );
 
+  if (Auth.isLoggedIn) {
+    history.push("/dashboard");
+  }
+
   const changePic = useCallback(
     event => {
       const image = new Image();

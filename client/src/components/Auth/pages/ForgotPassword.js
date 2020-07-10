@@ -2,7 +2,7 @@ import React, { useState, useContext, useCallback } from "react";
 import { Form, Button, Card, Row, Modal } from "react-bootstrap";
 import gql from "graphql-tag";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
-import { GraphQL } from "../../../contexts/index.js";
+import { GraphQL, AuthContext } from "../../../contexts/index.js";
 import "../auth.css";
 
 const Mutation = gql`
@@ -13,6 +13,8 @@ const Mutation = gql`
 
 function ForgotPassword({ history }) {
   const { client } = useContext(GraphQL.Context);
+  const Auth = useContext(AuthContext.Context);
+
   const [search, setSearch] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -58,6 +60,10 @@ function ForgotPassword({ history }) {
     },
     [search]
   );
+
+  if (Auth.isLoggedIn) {
+    history.push("/dashboard");
+  }
 
   function SuccessModal() {
     return (
