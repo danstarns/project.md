@@ -1,0 +1,49 @@
+type Message {
+    content: String!
+    creator: User
+    type: MessageTypeEnum!
+    subject: ID!
+}
+
+enum MessageTypeEnum {
+    user
+    task
+    organization
+    project
+}
+
+type MessagesResponse {
+    hasNextPage: Boolean!
+    messages: [Message]!
+}
+
+input MessagesInput {
+    type: MessageTypeEnum!
+    subject: ID!
+    page: Int!
+    limit: Int!
+    sort: DateSortEnum!
+}
+
+input SubscribeMessageInput {
+    type: MessageTypeEnum!
+    subject: ID!
+}
+
+input SendMessageInput {
+    type: MessageTypeEnum!
+    subject: ID!
+    content: String!
+}
+
+type Query {
+    messages(input: MessagesInput!): MessagesResponse!
+}
+
+type Mutation {
+    sendMessage(input: SendMessageInput!): MessagesResponse! @Auth(input: {required: true})
+}
+
+type Subscription {
+    message(input: SubscribeMessageInput!): Message!
+}

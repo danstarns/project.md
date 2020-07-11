@@ -4,6 +4,7 @@ const Task = require("./Task.js");
 const Organization = require("./Organization.js");
 const Recent = require("./Recent.js");
 const Notification = require("./Notification.js");
+const Message = require("./Message.js");
 
 module.exports = {
     User,
@@ -11,5 +12,6 @@ module.exports = {
     Task,
     Organization,
     Recent,
-    Notification
+    Notification,
+    Message
 };
