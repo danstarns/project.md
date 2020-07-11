@@ -16,19 +16,18 @@ function createClient(db) {
     return (type) => {
         switch (type) {
             case "client":
-                return new Redis(REDIS_URI, { enableReadyCheck: true, db });
+                return new Redis(REDIS_URI, { db });
             case "subscriber":
-                return new Redis(REDIS_URI, { enableReadyCheck: true, db });
+                return new Redis(REDIS_URI, { db });
             default:
-                return new Redis(REDIS_URI, { enableReadyCheck: true, db });
+                return new Redis(REDIS_URI, { db });
         }
     };
 }
 
 const dbs = {
     passwordReset: new Redis(REDIS_URI, { keyPrefix: "password-reset", db: 0 }),
-    invite: new Redis(REDIS_URI, { keyPrefix: "invite", db: 0 }),
-    emailConfirm: new Redis(REDIS_URI, { keyPrefix: "email-confirm", db: 0 })
+    onlineUsers: new Redis(REDIS_URI, { keyPrefix: "online-users", db: 0 })
 };
 
 const queues = {

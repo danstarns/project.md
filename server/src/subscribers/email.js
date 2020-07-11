@@ -23,6 +23,8 @@ async function process(/** @type {import("bull").Job} */ job) {
         text: job.data.html.replace(/(<([^>]+)>)/g, "")
     });
 
+    await job.remove();
+
     debug("Email sent");
 }
 

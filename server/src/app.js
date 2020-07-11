@@ -1,3 +1,4 @@
+const http = require("http");
 const express = require("express");
 const cors = require("cors");
 const { express: voyagerMiddleware } = require("graphql-voyager/middleware");
@@ -8,13 +9,15 @@ const debug = require("./debug.js")("App: ");
 const graphql = require("./graphql/index.js");
 
 const app = express();
+const httpApp = http.createServer(app);
+
 app.use(express.json());
 app.use(cors());
 app.use(
     "/graphql",
     graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 })
 );
-graphql.applyMiddleware({ app });
+graphql.server.applyMiddleware({ app });
 
 if (NODE_ENV === "production") {
     app.use("/", express.static("./build"));
@@ -35,12 +38,14 @@ function start() {
     }
 
     return new Promise((resolve, reject) => {
-        app.listen(Number(HTTP_PORT), (err) => {
+        httpApp.listen(Number(HTTP_PORT), (err) => {
             if (err) {
                 return reject(err);
             }
 
             debug("App Started");
+
+            graphql.startSubscriptions({ http: httpApp });
 
             return resolve(app);
         });

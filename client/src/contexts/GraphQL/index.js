@@ -1,15 +1,34 @@
 /* eslint-disable new-cap */
-import React, { useState } from "react";
+import React from "react";
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { onError } from "apollo-link-error";
+import { WebSocketLink } from "apollo-link-ws";
 import { ApolloLink } from "apollo-link";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { setContext } from "apollo-link-context";
 import { createUploadLink } from "apollo-upload-client";
-import { REACT_APP_API_URL, REACT_APP_JWT_KEY } from "../../config.js";
+import {
+  REACT_APP_API_URL,
+  REACT_APP_JWT_KEY,
+  REACT_APP_WS_URL
+} from "../../config.js";
 
 const Context = React.createContext();
+
+const wsLink = new WebSocketLink({
+  uri: `${REACT_APP_WS_URL}/graphql`,
+  options: {
+    reconnect: true,
+    connectionParams: () => {
+      const token = localStorage.getItem(REACT_APP_JWT_KEY);
+
+      return {
+        authorization: token ? `Bearer ${token}` : ""
+      };
+    }
+  }
+});
 
 const httpLink = new createUploadLink({
   uri: `${REACT_APP_API_URL}/graphql`,
@@ -39,17 +58,16 @@ const client = new ApolloClient({
           }
         });
     }),
-    authLink.concat(httpLink)
+    authLink.concat(httpLink),
+    wsLink
   ]),
   cache: new InMemoryCache({ dataIdFromObject: object => object._id || null })
 });
 
 function Provider(props) {
-  const [value] = useState({ client });
-
   return (
     <ApolloProvider client={client}>
-      <Context.Provider value={value}>{props.children}</Context.Provider>
+      <Context.Provider value={{ client }}>{props.children}</Context.Provider>
     </ApolloProvider>
   );
 }
