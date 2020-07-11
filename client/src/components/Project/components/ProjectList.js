@@ -13,7 +13,7 @@ function ProjectList({ projects, history }) {
   return (
     <Row>
       {projects.map(project => (
-        <Col xs={12} s={4} lg={4} key={project.name} className="w-100 mb-2">
+        <Col xs={12} s={4} lg={4} key={project.name} className="p-2">
           <Card
             className="w-100 h-100 project-list-item"
             onClick={() => history.push(`/project/${project._id}`)}
