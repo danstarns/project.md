@@ -109,10 +109,10 @@ function Organizations({ history }) {
       <h1 className="mt-3">Organizations</h1>
       <hr />
       <Row>
-        <Col sm={12} md={12} lg={2}>
+        <Col sm={12} md={12} lg={12}>
           {isLoggedIn && (
             <Button
-              className="mt-3 mb-3 w-100"
+              className="mt-3 mb-3"
               onClick={() => history.push("/organization/create")}
             >
               Create
@@ -120,7 +120,7 @@ function Organizations({ history }) {
           )}
           <OrganizationsFilter onChange={setFilter} hasNextPage={hasNextPage} />
         </Col>
-        <Col sm={12} md={12} lg={10} className="mt-3">
+        <Col sm={12} md={12} lg={12} className="mt-3">
           <OrganizationList organizations={organizations} history={history} />
         </Col>
       </Row>
