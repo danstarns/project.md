@@ -1,7 +1,9 @@
 import React from "react";
-import { Row, Col, Card, Button } from "react-bootstrap";
+import { Row, Col, Card } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
 import { TitleBanner } from "../../Common/index.js";
+import "../project.css";
 
 function ProjectList({ projects, history }) {
   if (!projects.length) {
@@ -11,22 +13,27 @@ function ProjectList({ projects, history }) {
   return (
     <Row>
       {projects.map(project => (
-        <Col xs={12} s={6} lg={6} key={project.name}>
-          <Card className="w-100 mb-4">
+        <Col xs={12} s={4} lg={4} key={project.name} className="w-100 mb-2">
+          <Card
+            className="w-100 h-100 project-list-item"
+            onClick={() => history.push(`/project/${project._id}`)}
+          >
             <Card.Header>
-              <Card.Title>{project.name}</Card.Title>
+              <div className="d-flex">
+                <Card.Title>{project.name}</Card.Title>
+                {project.private ? (
+                  <FontAwesomeIcon icon="lock" className="ml-auto" />
+                ) : (
+                  <FontAwesomeIcon icon="lock-open" className="ml-auto" />
+                )}
+              </div>
+              <p className="font-italic">{project.tagline.substr(0, 60)}</p>
             </Card.Header>
             <Card.Body>
               <Card.Text>
-                <p>Private: {JSON.stringify(project.private)}</p>
-                <p>Tagline: {project.tagline.substr(0, 60)}</p>
-                <hr />
                 {project.due && (
                   <p>Due: {moment(new Date(project.due)).calendar()}</p>
                 )}
-                <Button onClick={() => history.push(`/project/${project._id}`)}>
-                  Enter
-                </Button>
               </Card.Text>
             </Card.Body>
           </Card>

@@ -17,7 +17,10 @@ import {
   faBuilding,
   faUser,
   faAt,
-  faUserTag
+  faUserTag,
+  faLock,
+  faLockOpen,
+  faBan
 } from "@fortawesome/free-solid-svg-icons";
 import {
   Home,
@@ -49,7 +52,10 @@ library.add(
   faBuilding,
   faUser,
   faAt,
-  faUserTag
+  faUserTag,
+  faLock,
+  faLockOpen,
+  faBan
 );
 
 function App() {

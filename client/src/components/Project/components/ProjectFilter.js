@@ -43,29 +43,40 @@ function ProjectsFilter(props) {
 
   return (
     <Row>
-      <Col>
-        <ListGroup>
+      <Col className="d-flex justify-content-center">
+        <ListGroup horizontal className="w-100 project-filter">
           {isLoggedIn && (
             <ListGroup.Item
               onClick={() => setSelected("user")}
-              className="project-filter-card"
+              className="d-flex justify-content-center align-items-center p-3 project-filter-card w-30"
               style={{
                 ...(selected === "user" ? selectedStyle : {})
               }}
             >
-              Mine
+              <p className="m-0">Mine</p>
             </ListGroup.Item>
           )}
           <ListGroup.Item
             onClick={() => setSelected("public")}
-            className="project-filter-card"
+            className="d-flex justify-content-center align-items-center project-filter-card w-30"
             style={{
               ...(selected === "public" ? selectedStyle : {})
             }}
           >
-            Public
+            <p className="m-0">Public</p>
           </ListGroup.Item>
-          <ListGroup.Item className="p-0">
+          <ListGroup.Item
+            className="d-flex flex-row justify-content-center align-items-center project-filter-card-date w-30"
+            onClick={updateDirection}
+          >
+            <p className="m-0">Created</p>
+            {dateDirection === "desc" ? (
+              <FontAwesomeIcon icon="sort-down" className="ml-2" size="1x" />
+            ) : (
+              <FontAwesomeIcon icon="sort-up" className="ml-2" size="1x" />
+            )}
+          </ListGroup.Item>
+          <ListGroup.Item className="d-flex justify-content-center align-items-center p-0 w-100">
             <Container>
               <Form.Group>
                 <Form.Control
@@ -79,57 +90,32 @@ function ProjectsFilter(props) {
               </Form.Group>
             </Container>
           </ListGroup.Item>
-          <ListGroup.Item
-            className="project-filter-card-date"
-            onClick={updateDirection}
-          >
-            Date
-            {dateDirection === "desc" ? (
-              <FontAwesomeIcon
-                icon="sort-down"
-                className="ml-2 float-right"
-                size="2x"
-              />
-            ) : (
-              <FontAwesomeIcon
-                icon="sort-up"
-                className="ml-2 float-right"
-                size="2x"
-              />
-            )}
+          <ListGroup.Item className="d-flex justify-content-center align-items-center w-30">
+            <Col>
+              {page > 1 ? (
+                <FontAwesomeIcon
+                  icon="chevron-left"
+                  size="2x"
+                  onClick={updatePage("back")}
+                  className="project-filter-card-arrow mx-auto"
+                />
+              ) : (
+                <FontAwesomeIcon icon="ban" size="2x" />
+              )}
+            </Col>
+            <Col>
+              {props.hasNextPage ? (
+                <FontAwesomeIcon
+                  icon="chevron-right"
+                  size="2x"
+                  onClick={updatePage("next")}
+                  className="project-filter-card-arrow mx-auto"
+                />
+              ) : (
+                <FontAwesomeIcon icon="ban" size="2x" />
+              )}
+            </Col>
           </ListGroup.Item>
-          {Boolean(props.hasNextPage || page > 1) && (
-            <ListGroup.Item>
-              <Container>
-                <Row className="text-center">
-                  {page > 1 && (
-                    <Col
-                      onClick={updatePage("back")}
-                      xm={6}
-                      sm={6}
-                      md={6}
-                      lg={6}
-                      className="project-filter-card-arrow mx-auto"
-                    >
-                      <FontAwesomeIcon icon="chevron-left" size="2x" />
-                    </Col>
-                  )}
-                  {props.hasNextPage && (
-                    <Col
-                      onClick={updatePage("next")}
-                      xm={6}
-                      sm={6}
-                      md={6}
-                      lg={6}
-                      className="project-filter-card-arrow mx-auto"
-                    >
-                      <FontAwesomeIcon icon="chevron-right" size="2x" />
-                    </Col>
-                  )}
-                </Row>
-              </Container>
-            </ListGroup.Item>
-          )}
         </ListGroup>
       </Col>
     </Row>

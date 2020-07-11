@@ -127,23 +127,37 @@ function Organization({ match, history }) {
         />
         <h1 className="mt-3 mb-0">Organization: {organization.name}</h1>
         <p className="ml-1 mt-0 font-italic">{organization.tagline}</p>
-        {organization.isUserAdmin && (
+        {Boolean(organization.isUserAdmin || isLoggedIn) && (
           <Card className="p-3 mt-3">
             <div className="d-flex align-items-start">
-              <Button
-                onClick={() =>
-                  history.push(`/organization/edit/${match.params.id}`)
-                }
-              >
-                Edit
-              </Button>
+              {organization.isUserAdmin && (
+                <>
+                  <Button
+                    onClick={() =>
+                      history.push(`/organization/edit/${match.params.id}`)
+                    }
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    className="ml-3"
+                    onClick={() => setIsInviteUserModal(true)}
+                  >
+                    Invite User
+                  </Button>
+                </>
+              )}
 
-              <Button
-                className="ml-3"
-                onClick={() => setIsInviteUserModal(true)}
-              >
-                Invite User
-              </Button>
+              {isLoggedIn && (
+                <Button
+                  className="ml-3"
+                  onClick={() =>
+                    history.push(`/project/create/${match.params.id}`)
+                  }
+                >
+                  Create Project
+                </Button>
+              )}
             </div>
           </Card>
         )}
@@ -152,23 +166,13 @@ function Organization({ match, history }) {
         <Tab eventKey="projects" title="Projects">
           <Card className="p-3 mt-3">
             <Row>
-              <Col sm={12} md={12} lg={2}>
-                {isLoggedIn && (
-                  <Button
-                    className="mt-3 mb-3 w-100"
-                    onClick={() =>
-                      history.push(`/project/create/${match.params.id}`)
-                    }
-                  >
-                    Create Project
-                  </Button>
-                )}
+              <Col sm={12} md={12} lg={12}>
                 <ProjectFilter
                   onChange={setProjectsFilter}
                   hasNextPage={hasNextProjects}
                 />
               </Col>
-              <Col sm={12} md={12} lg={10} className="mt-3">
+              <Col sm={12} md={12} lg={12} className="pt-3">
                 <ProjectList projects={projects} history={history} />
               </Col>
             </Row>

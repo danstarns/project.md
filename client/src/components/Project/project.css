@@ -1,10 +1,15 @@
+
+.project-filter {
+    max-height: 50px;
+}
+
 .project-filter-card:hover {
     background-color: #007BFF;
     cursor: pointer;
     color: white;
 }
 
-.project-filter-card-date:hover {
+.project-filter-card-date {
     cursor: pointer;
 }
 
@@ -14,8 +19,11 @@
 }
 
 .project-list-item {
-    height: 300px;
-    max-height: 300px;
-    min-height: 300px;
-    overflow: hidden;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.project-list-item:hover {
+    cursor: pointer;
+    border-color: #007BFF;
 }
