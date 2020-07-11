@@ -1,47 +1,53 @@
 const Redis = require("ioredis");
 const Queue = require("bull");
-const util = require("util");
 const { REDIS_URI } = require("./config.js");
 const debug = require("./debug.js")("Redis: ");
 
-const sleep = util.promisify(setTimeout);
+/**
+ * DBS MATRIX
+[
+    [0, "dbs"],
+    [1, "queues"],
+    [2, "pubsub"]
+]
+*/
 
-const options = { enableReadyCheck: true };
-
-const client = new Redis(REDIS_URI, options);
-const subscriber = new Redis(REDIS_URI, options);
-
-function createClient(type) {
-    switch (type) {
-        case "client":
-            return client;
-        case "subscriber":
-            return subscriber;
-        default:
-            return new Redis(REDIS_URI, options);
-    }
+function createClient(db) {
+    return (type) => {
+        switch (type) {
+            case "client":
+                return new Redis(REDIS_URI, { enableReadyCheck: true, db });
+            case "subscriber":
+                return new Redis(REDIS_URI, { enableReadyCheck: true, db });
+            default:
+                return new Redis(REDIS_URI, { enableReadyCheck: true, db });
+        }
+    };
 }
 
 const dbs = {
-    passwordReset: new Redis(REDIS_URI, { keyPrefix: "password-reset" }),
-    invite: new Redis(REDIS_URI, { keyPrefix: "invite" })
+    passwordReset: new Redis(REDIS_URI, { keyPrefix: "password-reset", db: 0 }),
+    invite: new Redis(REDIS_URI, { keyPrefix: "invite", db: 0 }),
+    emailConfirm: new Redis(REDIS_URI, { keyPrefix: "email-confirm", db: 0 })
 };
 
 const queues = {
-    email: new Queue("email", { createClient })
+    email: new Queue("email", { createClient: createClient(1) })
 };
+
+const pubsub = new Redis(REDIS_URI, {
+    keyPrefix: "pubsub",
+    db: 2,
+    lazyConnect: true
+});
 
 async function connect() {
     debug(`Connecting to Redis: '${REDIS_URI}'`);
 
-    await Promise.all([client.connect, subscriber.connect]);
+    /* Deliberate connect to 1 and assume the others ok, will change if I use other Redis DB's */
+    await pubsub.connect();
 
-    while (client.status !== "ready") {
-        // eslint-disable-next-line no-await-in-loop
-        await sleep(100);
-        // eslint-disable-next-line no-continue
-        continue;
-    }
+    debug("Connected");
 }
 
-module.exports = { connect, dbs, queues };
+module.exports = { connect, dbs, queues, pubsub };
