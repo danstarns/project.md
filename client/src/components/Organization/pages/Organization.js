@@ -24,13 +24,28 @@ const ORGANIZATION_QUERY = gql`
       markdown
       isUserAdmin
       users {
+        _id
         username
+        profilePic {
+          mimetype
+          data
+        }
       }
       admins {
+        _id
         username
+        profilePic {
+          mimetype
+          data
+        }
       }
       creator {
+        _id
         username
+        profilePic {
+          mimetype
+          data
+        }
       }
       projects(
         input: {

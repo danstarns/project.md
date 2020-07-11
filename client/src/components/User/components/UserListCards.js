@@ -1,16 +1,29 @@
 import React from "react";
-import { Row, Card } from "react-bootstrap";
+import { Row, Card, Col } from "react-bootstrap";
 import "../User.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 
 function UserListCards(props) {
   return (
-    <Row className="d-flex flex-row w-100 justify-content-left user-list-container">
+    <Row>
       {props.users.map(user => (
-        <Card key={user.username} className="m-4 user-list-card">
-          <div className="row h-100 justify-content-center align-items-center">
-            {user.username}
-          </div>
-        </Card>
+        <Col xs={12} s={3} lg={3} key={user.username}>
+          <Card className="m-4 profile-pic">
+            {user.profilePic ? (
+              <img
+                className="profile-pic"
+                src={`data:${user.profilePic.mimetype};base64, ${user.profilePic.data}`}
+                alt="Profile Pic"
+              />
+            ) : (
+              <div className="profile-icon">
+                <FontAwesomeIcon icon="user" size="6x" />
+              </div>
+            )}
+            <Link to={`/profile/${user._id}`}>{user.username}</Link>
+          </Card>
+        </Col>
       ))}
     </Row>
   );
