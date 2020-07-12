@@ -3,10 +3,7 @@ function isRequester(root, args, ctx) {
         return false;
     }
 
-    return Boolean(
-        root._id.toString() === ctx.user ||
-            root._id.toString() === ctx.user._id.toString()
-    );
+    return Boolean(root._id.toString() === ctx.user.toString());
 }
 
 module.exports = isRequester;
