@@ -96,19 +96,18 @@ async function messages(root, { input }, ctx) {
     }
 
     const query = { type, subject };
-    const messageCount = await Message.countDocuments(query);
-    const pages = Math.round(messageCount / limit);
-    const actualPage = pages + page;
 
     const { docs, hasNextPage } = await Message.paginate(query, {
-        page: actualPage === 1 ? 1 : actualPage - 1,
+        page,
         limit,
-        sort: { createdAt: "asc" }
+        sort: { createdAt: "desc" }
     });
 
     return {
         hasNextPage,
-        messages: docs
+        messages: docs.sort(
+            (x, y) => new Date(x.createdAt) - new Date(y.createdAt)
+        )
     };
 }
 
