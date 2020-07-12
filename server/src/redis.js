@@ -53,7 +53,7 @@ async function connect() {
     /* Deliberate connect to 1 and assume the others ok, will change if I use other Redis DB's */
     await pubsub.sub.connect();
     await pubsub.pub.connect();
-    await pubsub.sub.subscribe("chat");
+    await pubsub.sub.psubscribe("chat:*");
 
     debug("Connected");
 }

@@ -104,11 +104,8 @@ async function sendMessage(root, { input }, ctx) {
     });
 
     await redis.pubsub.pub.publish(
-        "chat",
-        JSON.stringify({
-            message: message._id.toString(),
-            entity: entity._id.toString()
-        })
+        `chat:${entity._id.toString()}`,
+        message._id.toString()
     );
 
     return true;

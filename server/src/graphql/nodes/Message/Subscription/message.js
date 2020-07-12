@@ -13,17 +13,18 @@ const redis = require("../../../../redis.js");
 
 const sleep = util.promisify(setTimeout);
 
-async function* messageGenerator(topic) {
+async function* messageGenerator(topic, ctx) {
     let messages = [];
 
-    /* TODO unsubscribe */
-    redis.pubsub.sub.on(`message`, (chn, msg) => {
-        const { message, entity } = JSON.parse(msg);
+    const sub = redis.pubsub.sub.on(`pmessage`, (pattern, channel, message) => {
+        const [, id] = channel.split(":");
 
-        if (entity === topic) {
+        if (id === topic) {
             messages.push(message);
         }
     });
+
+    ctx.subscriptions.push(sub);
 
     while (true) {
         const [message, ...rest] = messages;
@@ -134,7 +135,7 @@ const message = {
                 break;
         }
 
-        return messageGenerator(entity._id.toString());
+        return messageGenerator(entity._id.toString(), ctx);
     }
 };
 
