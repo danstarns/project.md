@@ -6,18 +6,16 @@
 # About
 Tired of complicated project management systems? What something that speaks to the Markdown 🐱‍👤 inside of you? Project.md is designed with simplicity at its heart, letting you manage projects & present your ideas with pure Markdown. No longer shall you recursively search nested 'sub tasks' to oblivion 🌌🤯.
 
-# To Do
-2. User Profiles
-3. Task/Project Comments
-4. Notifications/Emails
-5. Auth/LockDown routes
-6. Invite Users to Projects/Tasks/Organisation
-7. Live Demo
-8. Recents
-9. Audits
-10. Favourites 
-11. Home Page
-12. Logo/Styling
+
+\***ALPHA SCREENSHOTS**\*
+
+> Demo Coming Soon ⌛
+
+![title](assets/signup.png)
+![title](assets/org-chat.png)
+![title](assets/org-projects.png)
+
+\***ALPHA SCREENSHOTS**\*
 
 # Tech Stack
 > 🍻 To all the unmentioned technologies 
@@ -29,6 +27,8 @@ Tired of complicated project management systems? What something that speaks to t
             * `idio-graphql`
             * `apollo-server-express`
             * `graphql-voyager`
+            * `graphql-subscriptions`
+            * `graphql-upload`
         3. `mongoose`
         4. `jsonwebtoken`
         5. `ioredis`
@@ -56,7 +56,7 @@ Recommended to open `server` & `client` folders in separate instances of your ed
 5. `npm run start`
 
 ### Emails
-This project uses [Nodemailer](https://nodemailer.com/about/) to send emails, you will need to adjust the config in either `./server/.env` or if you are using [Docker](#docker) adjust the variables in `./docker-compose.yml`
+This project uses [Nodemailer](https://nodemailer.com/about/) to send emails, you will need to adjust the config in either `./server/.env` or if you are using [Docker](#docker) adjust the variables in `./docker-compose.yml`.
 
 ```
 EMAIL_HOST=smtp.ethereal.email
