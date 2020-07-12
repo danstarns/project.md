@@ -99,7 +99,7 @@ function OrganizationChat(props) {
     setLoading(false);
   }, [page]);
 
-  const loadMore = useEffect(async () => {
+  const loadMore = useEffect(() => {
     setPage(p => p + 1);
   }, []);
 
