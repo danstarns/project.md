@@ -5,7 +5,7 @@ async function onConnect(connectionParams) {
     const { authorization } = connectionParams;
 
     if (!connectionParams.authorization) {
-        return { user: null };
+        return { user: null, subscriptions: [] };
     }
 
     const [, jwt] = authorization.split("Bearer ");
@@ -17,7 +17,8 @@ async function onConnect(connectionParams) {
     }
 
     return {
-        user: sub
+        user: sub,
+        subscriptions: []
     };
 }
 

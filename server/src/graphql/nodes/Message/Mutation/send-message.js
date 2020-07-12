@@ -103,7 +103,15 @@ async function sendMessage(root, { input }, ctx) {
         content
     });
 
-    await redis.pubsub.publish("message", message._id.toString());
+    await redis.pubsub.pub.publish(
+        "chat",
+        JSON.stringify({
+            message: message._id.toString(),
+            entity: entity._id.toString()
+        })
+    );
+
+    return true;
 }
 
 module.exports = sendMessage;

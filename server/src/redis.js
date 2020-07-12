@@ -34,17 +34,26 @@ const queues = {
     email: new Queue("email", { createClient: createClient(1) })
 };
 
-const pubsub = new Redis(REDIS_URI, {
-    keyPrefix: "pubsub",
-    db: 2,
-    lazyConnect: true
-});
+const pubsub = {
+    sub: new Redis(REDIS_URI, {
+        keyPrefix: "pub",
+        db: 2,
+        lazyConnect: true
+    }),
+    pub: new Redis(REDIS_URI, {
+        keyPrefix: "sub",
+        db: 2,
+        lazyConnect: true
+    })
+};
 
 async function connect() {
     debug(`Connecting to Redis: '${REDIS_URI}'`);
 
     /* Deliberate connect to 1 and assume the others ok, will change if I use other Redis DB's */
-    await pubsub.connect();
+    await pubsub.sub.connect();
+    await pubsub.pub.connect();
+    await pubsub.sub.subscribe("chat");
 
     debug("Connected");
 }

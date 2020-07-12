@@ -5,7 +5,7 @@ import { GraphQL, AuthContext } from "../../../contexts/index.js";
 import { Markdown } from "../../Markdown/index.js";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
 import { ProjectList, ProjectFilter } from "../../Project/index.js";
-import { InviteUserModal } from "../components/index.js";
+import { InviteUserModal, OrganizationChat } from "../components/index.js";
 import { UserListCards } from "../../User/index";
 
 const ORGANIZATION_QUERY = gql`
@@ -202,6 +202,11 @@ function Organization({ match, history }) {
                 ...(organization.creator ? [organization.creator] : [])
               ]}
             />
+          </Card>
+        </Tab>
+        <Tab eventKey="chat" title="Chat">
+          <Card className="p-0 mt-3">
+            <OrganizationChat organization={match.params.id} />
           </Card>
         </Tab>
       </Tabs>

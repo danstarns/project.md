@@ -8,7 +8,7 @@ const {
 } = require("../../../../models/index.js");
 
 async function messages(root, { input }, ctx) {
-    const { type, subject, page, limit, sort } = input;
+    const { type, subject, page, limit } = input;
 
     let entity;
 
@@ -96,11 +96,14 @@ async function messages(root, { input }, ctx) {
     }
 
     const query = { type, subject };
+    const messageCount = await Message.countDocuments(query);
+    const pages = Math.round(messageCount / limit);
+    const actualPage = pages + page;
 
     const { docs, hasNextPage } = await Message.paginate(query, {
-        page,
+        page: actualPage === 1 ? 1 : actualPage - 1,
         limit,
-        sort: { createdAt: sort }
+        sort: { createdAt: "asc" }
     });
 
     return {

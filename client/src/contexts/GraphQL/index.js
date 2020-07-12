@@ -4,10 +4,11 @@ import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { onError } from "apollo-link-error";
 import { WebSocketLink } from "apollo-link-ws";
-import { ApolloLink } from "apollo-link";
+import { ApolloLink, split } from "apollo-link";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { setContext } from "apollo-link-context";
 import { createUploadLink } from "apollo-upload-client";
+import { SubscriptionClient } from "subscriptions-transport-ws";
 import {
   REACT_APP_API_URL,
   REACT_APP_JWT_KEY,
@@ -16,19 +17,18 @@ import {
 
 const Context = React.createContext();
 
-const wsLink = new WebSocketLink({
-  uri: `${REACT_APP_WS_URL}/graphql`,
-  options: {
-    reconnect: true,
-    connectionParams: () => {
-      const token = localStorage.getItem(REACT_APP_JWT_KEY);
+const subClient = new SubscriptionClient(`${REACT_APP_WS_URL}/graphql`, {
+  reconnect: true,
+  connectionParams: () => {
+    const token = localStorage.getItem(REACT_APP_JWT_KEY);
 
-      return {
-        authorization: token ? `Bearer ${token}` : ""
-      };
-    }
+    return {
+      authorization: token ? `Bearer ${token}` : ""
+    };
   }
 });
+
+const wsLink = new WebSocketLink(subClient);
 
 const httpLink = new createUploadLink({
   uri: `${REACT_APP_API_URL}/graphql`,
@@ -58,8 +58,15 @@ const client = new ApolloClient({
           }
         });
     }),
-    authLink.concat(httpLink),
-    wsLink
+    split(
+      ({ query: { definitions } }) =>
+        definitions.some(
+          ({ kind, operation }) =>
+            kind === "OperationDefinition" && operation === "subscription"
+        ),
+      wsLink,
+      authLink.concat(httpLink)
+    )
   ]),
   cache: new InMemoryCache({ dataIdFromObject: object => object._id || null })
 });

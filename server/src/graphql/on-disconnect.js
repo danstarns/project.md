@@ -1,8 +1,9 @@
 const redis = require("../redis.js");
 
 async function onDisconnect(ws, ctx) {
-    const { user } = await ctx.initPromise;
-    await redis.dbs.onlineUsers.del(user);
+    const context = await ctx.initPromise;
+
+    await Promise.all([redis.dbs.onlineUsers.del(context.user)]);
 }
 
 module.exports = onDisconnect;

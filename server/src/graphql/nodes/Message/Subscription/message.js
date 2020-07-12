@@ -1,5 +1,7 @@
+/* eslint-disable no-continue */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable default-case */
+const util = require("util");
 const {
     User,
     Organization,
@@ -9,24 +11,34 @@ const {
 } = require("../../../../models/index.js");
 const redis = require("../../../../redis.js");
 
+const sleep = util.promisify(setTimeout);
+
 async function* messageGenerator(topic) {
     let messages = [];
 
     /* TODO unsubscribe */
-    redis.pubsub.subscribe(topic, (chn, msg) => {
-        messages.push(msg);
+    redis.pubsub.sub.on(`message`, (chn, msg) => {
+        const { message, entity } = JSON.parse(msg);
+
+        if (entity === topic) {
+            messages.push(message);
+        }
     });
 
     while (true) {
         const [message, ...rest] = messages;
 
         if (!message) {
-            break;
+            await sleep();
+
+            continue;
         }
 
         messages = rest;
 
         yield { message: await Message.findById(message) };
+
+        await sleep();
     }
 }
 
@@ -54,6 +66,7 @@ const message = {
         if (!entity) {
             throw new Error(`${type} not found`);
         }
+
         switch (type) {
             case "user":
                 if (!ctx.user) {
@@ -77,6 +90,7 @@ const message = {
                         throw new Error("Forbidden");
                     }
                 }
+
                 break;
             case "project":
                 if (entity.private) {
@@ -94,6 +108,7 @@ const message = {
                         throw new Error("Forbidden");
                     }
                 }
+
                 break;
             case "organization":
                 if (entity.private) {
@@ -115,6 +130,7 @@ const message = {
                         throw new Error("Forbidden");
                     }
                 }
+
                 break;
         }
 

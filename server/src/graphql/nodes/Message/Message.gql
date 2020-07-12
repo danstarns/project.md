@@ -1,8 +1,10 @@
 type Message {
+    _id: ID!
     content: String!
-    creator: User
+    creator: User!
     type: MessageTypeEnum!
     subject: ID!
+    createdAt: GraphQLDateTime!
 }
 
 enum MessageTypeEnum {
@@ -22,7 +24,6 @@ input MessagesInput {
     subject: ID!
     page: Int!
     limit: Int!
-    sort: DateSortEnum!
 }
 
 input SubscribeMessageInput {
@@ -41,7 +42,7 @@ type Query {
 }
 
 type Mutation {
-    sendMessage(input: SendMessageInput!): MessagesResponse! @Auth(input: {required: true})
+    sendMessage(input: SendMessageInput!): Boolean! @Auth(input: {required: true})
 }
 
 type Subscription {
