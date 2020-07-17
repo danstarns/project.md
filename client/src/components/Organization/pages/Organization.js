@@ -85,7 +85,7 @@ function Organization({ match, history }) {
   const [hasNextProjects, setHasNextProjects] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isInviteUserModal, setIsInviteUserModal] = useState(false);
-  const [key, setKey] = useState("projects");
+  const [key, setKey] = useState("chat");
 
   useEffect(() => {
     (async () => {

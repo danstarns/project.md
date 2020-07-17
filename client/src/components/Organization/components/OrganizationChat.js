@@ -1,4 +1,10 @@
-import React, { useState, useContext, useEffect, useCallback } from "react";
+import React, {
+  useState,
+  useContext,
+  useEffect,
+  useCallback,
+  useRef
+} from "react";
 import { Alert, Spinner } from "react-bootstrap";
 import gql from "graphql-tag";
 import { GraphQL, AuthContext } from "../../../contexts/index.js";
@@ -33,6 +39,7 @@ const ORGANIZATION_MESSAGE_QUERY = gql`
     messages(
       input: { type: $type, subject: $subject, page: $page, limit: $limit }
     ) {
+      hasNextPage
       messages {
         _id
         content
@@ -67,7 +74,7 @@ function OrganizationChat(props) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [messages, setMessages] = useState([]);
-  const [user, setUser] = useState(getId());
+  const user = useRef(getId());
   const [page, setPage] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(false);
 
@@ -81,7 +88,7 @@ function OrganizationChat(props) {
           type: "organization",
           subject: props.organization,
           page,
-          limit: 100
+          limit: 30
         },
         fetchPolicy: "no-cache"
       });
@@ -90,48 +97,53 @@ function OrganizationChat(props) {
         throw new Error(response.errors[0].message);
       }
 
-      setMessages(m => [...m, ...response.data.messages.messages]);
       setHasNextPage(response.data.messages.hasNextPage);
+
+      setMessages(m => {
+        const merged = [...m, ...response.data.messages.messages];
+
+        const mergedSet = [...new Set([...merged.map(x => x._id)])];
+
+        return mergedSet
+          .map(x => merged.find(y => y._id === x))
+          .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+      });
     } catch (e) {
       setError(e.message);
     }
 
-    setLoading(false);
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
   }, [page]);
 
-  const loadMore = useEffect(() => {
+  useEffect(() => {
+    getMessages();
+  }, [page, getMessages]);
+
+  const loadMore = useCallback(() => {
     setPage(p => p + 1);
   }, []);
 
   useEffect(() => {
-    let subscription;
+    getMessages();
 
-    (async () => {
-      try {
-        await getMessages();
-
-        subscription = client
-          .subscribe({
-            query: ORGANIZATION_CHAT_SUBSCRIPTION,
-            variables: {
-              type: "organization",
-              subject: props.organization
-            }
-          })
-          .subscribe(
-            msg => {
-              setMessages(m => [...m, msg.data.message]);
-            },
-            e => {
-              setError(e.message);
-            }
-          );
-
-        setLoading(false);
-      } catch (e) {
-        setError(e.message);
-      }
-    })();
+    const subscription = client
+      .subscribe({
+        query: ORGANIZATION_CHAT_SUBSCRIPTION,
+        variables: {
+          type: "organization",
+          subject: props.organization
+        }
+      })
+      .subscribe(
+        msg => {
+          setMessages(m => [...m, msg.data.message]);
+        },
+        e => {
+          setError(e.message);
+        }
+      );
 
     return () => {
       if (subscription) {
@@ -139,10 +151,6 @@ function OrganizationChat(props) {
       }
     };
   }, []);
-
-  useEffect(() => {
-    setUser(getId());
-  }, [props]);
 
   const onSubmit = useCallback(async ({ message }) => {
     try {
@@ -171,21 +179,15 @@ function OrganizationChat(props) {
     );
   }
 
-  if (loading) {
-    return (
-      <div className="loading-messages">
-        <Spinner className="m-5" animation="border" size="6x" />
-      </div>
-    );
-  }
-
   return (
     <Chat
       messages={messages}
-      user={user}
+      user={user.current}
       onSubmit={onSubmit}
       hasNextPage={hasNextPage}
-      loadMore={loadMore}
+      loadMore={() => loadMore()}
+      loading={loading}
+      page={page}
     />
   );
 }

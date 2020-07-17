@@ -1,7 +1,8 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import "../chat.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
+import { Alert, Spinner } from "react-bootstrap";
 import { LoadingBanner } from "../../Common/index.js";
 
 function MessageList(props) {
@@ -51,11 +52,45 @@ function MessageList(props) {
 
 function Chat(props) {
   const [message, setMessage] = useState("");
+  const knownHeight = useRef(0);
+  const msgPage = useRef(false);
+  const chat = useRef(false);
 
   useEffect(() => {
-    const chat = document.getElementById("end-of-chat");
-    chat.scrollIntoView();
-  }, [props]);
+    let tempActive = false;
+
+    const sub = msgPage.current.addEventListener("scroll", event => {
+      if (event.target.scrollTop === 0) {
+        if (props.hasNextPage || props.page === 1) {
+          if (!props.loading) {
+            if (!tempActive) {
+              props.loadMore();
+              tempActive = true;
+            }
+          }
+        }
+      }
+    });
+
+    return () => {
+      document.removeEventListener("scroll", sub);
+    };
+  }, [props.loading, props.hasNextPage, props.page, props.loadMore]);
+
+  useEffect(() => {
+    if (!props.loading) {
+      if (knownHeight.current > 0) {
+        const newHeight = msgPage.current.scrollHeight;
+        msgPage.current.scroll({
+          top: newHeight - knownHeight.current
+        });
+      } else {
+        chat.current.scrollIntoView();
+      }
+
+      knownHeight.current = msgPage.current.scrollHeight;
+    }
+  }, [props.loading, props.messages]);
 
   const onSubmit = useCallback(
     e => {
@@ -67,19 +102,17 @@ function Chat(props) {
     [message]
   );
 
-  if (props.loading) {
-    return (
-      <div className="loading-messages">
-        <LoadingBanner />
-      </div>
-    );
-  }
   return (
     <div className="chat-box">
-      <div className="msg-page">
+      <div className="msg-page" id="msg-page" ref={msgPage}>
+        {props.loading && (
+          <div className="mx-auto">
+            <Spinner className="m-5" animation="border" size="6x" />
+          </div>
+        )}
         <MessageList messages={props.messages} user={props.user} />
         <div className="chat-box-bottom">
-          <div id="end-of-chat" />
+          <div id="end-of-chat" ref={chat} />
         </div>
       </div>
       <div className="msg-footer">

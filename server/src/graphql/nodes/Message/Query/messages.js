@@ -106,7 +106,7 @@ async function messages(root, { input }, ctx) {
     return {
         hasNextPage,
         messages: docs.sort(
-            (x, y) => new Date(x.createdAt) - new Date(y.createdAt)
+            (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
         )
     };
 }
