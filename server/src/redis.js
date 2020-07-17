@@ -35,12 +35,12 @@ const queues = {
 };
 
 const pubsub = {
-    sub: new Redis(REDIS_URI, {
+    pub: new Redis(REDIS_URI, {
         keyPrefix: "pub",
         db: 2,
         lazyConnect: true
     }),
-    pub: new Redis(REDIS_URI, {
+    sub: new Redis(REDIS_URI, {
         keyPrefix: "sub",
         db: 2,
         lazyConnect: true
