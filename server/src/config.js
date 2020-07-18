@@ -11,7 +11,12 @@ const {
     EMAIL_PASSWORD,
     EMAIL_SECURE,
     EMAIL_FROM,
-    NODE_ENV
+    NODE_ENV,
+    S3_URL,
+    S3_PORT,
+    S3_USE_SSL,
+    S3_ACCESS_KEY,
+    S3_SECRET_KEY
 } = process.env;
 
 const config = {
@@ -27,7 +32,12 @@ const config = {
     EMAIL_PASSWORD,
     EMAIL_SECURE: JSON.parse(EMAIL_SECURE),
     EMAIL_FROM,
-    NODE_ENV
+    NODE_ENV,
+    S3_URL,
+    S3_PORT: Number(S3_PORT),
+    S3_USE_SSL: JSON.parse(S3_USE_SSL),
+    S3_ACCESS_KEY,
+    S3_SECRET_KEY
 };
 
 Object.entries(config).forEach(([key, value]) => {

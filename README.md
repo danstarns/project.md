@@ -34,6 +34,8 @@ Tired of complicated project management systems? What something that speaks to t
         5. `ioredis`
         6. `bull`
         7. `nodemailer`
+        8. `minio`
+    * Minio/S3
     * MongoDB
     * Redis
 2. Client
@@ -88,4 +90,9 @@ $ docker run -d --publish 27017:27017 --name project-md-mongo mongo
 #### Redis
 ```
 $ docker run -d --publish 6379:6379 --name project-md-redis redis
+```
+
+#### Minio/S3
+```
+$ docker run -d --publish 9000:9000 --name project-md-minio -e MINIO_ACCESS_KEY=accesskey -e MINIO_SECRET_KEY=secretkey minio/minio server /data
 ```
