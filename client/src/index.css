@@ -1,8 +1,18 @@
-.home-jumbo-button {
-    cursor: pointer;
+.home-link-card {
+    height: 100px;
 }
 
-.home-jumbo-button:hover {
-    background-color: #007BFE;
-    color: white;
+.home-link-icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    padding: 10px;
+}
+
+.home-link-card-text {
+    font-size: 1.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -20,7 +20,9 @@ import {
   faUserTag,
   faLock,
   faLockOpen,
-  faBan
+  faBan,
+  faKey,
+  faClipboard
 } from "@fortawesome/free-solid-svg-icons";
 import {
   Home,
@@ -55,7 +57,9 @@ library.add(
   faUserTag,
   faLock,
   faLockOpen,
-  faBan
+  faBan,
+  faKey,
+  faClipboard
 );
 
 function App() {
