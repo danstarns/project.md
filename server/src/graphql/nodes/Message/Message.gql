@@ -34,7 +34,7 @@ input SubscribeMessageInput {
 input SendMessageInput {
     type: MessageTypeEnum!
     subject: ID!
-    content: String!
+    content: String! @constraint(minLength: 1, maxLength: 3000)
 }
 
 type Query {

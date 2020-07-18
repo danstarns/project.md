@@ -3,6 +3,7 @@
     flex-direction: column;
     height: 584px;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .chat-box-bottom {

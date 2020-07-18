@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from "react";
 import "../chat.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
-import { Spinner, Button, Row, Col } from "react-bootstrap";
+import { Spinner, Button, Row, Col, Alert } from "react-bootstrap";
 
 function MessageList(props) {
   return props.messages.map(message => {
@@ -54,7 +54,6 @@ function Chat(props) {
   const knownHeight = useRef(0);
   const msgPage = useRef(false);
   const chat = useRef(false);
-  const [trackBottom, setTrackBotton] = useState(false);
 
   useEffect(() => {
     let tempActive = false;
@@ -123,27 +122,54 @@ function Chat(props) {
         </div>
       </div>
       <div className="p-3 pt-0">
-        <form onSubmit={onSubmit}>
-          <Row>
-            <Col sm={12} md={10} lg={10} className="mt-3">
-              <div className="card w-100">
-                <input
-                  type="text"
-                  className="w-100 p-3 border-0"
-                  placeholder="Type message"
-                  value={message}
-                  onChange={e => setMessage(e.target.value)}
-                  required
-                />
-              </div>
-            </Col>
-            <Col sm={12} md={2} lg={2} className="mt-3">
-              <Button variant="primary" className="h-100" block type="submit">
-                Send
-              </Button>
-            </Col>
-          </Row>
-        </form>
+        {props.error && (
+          <div>
+            <Alert
+              variant="danger"
+              className="m-0"
+              onClose={() => props.setError(false)}
+              dismissible
+            >
+              {props.error}
+            </Alert>
+          </div>
+        )}
+        {props.canSend ? (
+          <form onSubmit={onSubmit}>
+            <Row>
+              <Col sm={12} md={10} lg={10} className="mt-3">
+                <div className="card w-100">
+                  <input
+                    type="text"
+                    className="w-100 p-3 border-0"
+                    placeholder="Type message"
+                    value={message}
+                    onChange={e => setMessage(e.target.value)}
+                    required
+                    maxLength={3000}
+                  />
+                </div>
+              </Col>
+              <Col sm={12} md={2} lg={2} className="mt-3">
+                <Button
+                  variant="primary"
+                  className="h-100"
+                  block
+                  type="submit"
+                  disabled={!!props.error}
+                >
+                  Send
+                </Button>
+              </Col>
+            </Row>
+          </form>
+        ) : (
+          <div>
+            <Alert variant="warning" className="m-0">
+              You do not have access to send messages here
+            </Alert>
+          </div>
+        )}
       </div>
     </div>
   );

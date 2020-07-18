@@ -3,11 +3,13 @@ const isUserAdmin = require("./is-user-admin.js");
 const admins = require("./admins.js");
 const users = require("./users.js");
 const creator = require("./creator.js");
+const userCanChat = require("./user-can-chat.js");
 
 module.exports = {
     projects,
     isUserAdmin,
     admins,
     users,
-    creator
+    creator,
+    userCanChat
 };

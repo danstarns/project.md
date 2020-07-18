@@ -61,7 +61,7 @@ const ORGANIZATION_SEND_MESSAGE_MUTATION = gql`
   mutation sendOrganizationMessage(
     $type: MessageTypeEnum!
     $subject: ID!
-    $content: String!
+    $content: content_String_NotNull_minLength_1_maxLength_3000!
   ) {
     sendMessage(input: { type: $type, subject: $subject, content: $content })
   }
@@ -77,6 +77,7 @@ function OrganizationChat(props) {
   const user = useRef(getId());
   const [page, setPage] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(false);
+  const [sendError, setSendError] = useState(false);
 
   const getMessages = useCallback(async () => {
     setLoading(true);
@@ -86,7 +87,7 @@ function OrganizationChat(props) {
         query: ORGANIZATION_MESSAGE_QUERY,
         variables: {
           type: "organization",
-          subject: props.organization,
+          subject: props.organization._id,
           page,
           limit: 30
         },
@@ -133,7 +134,7 @@ function OrganizationChat(props) {
         query: ORGANIZATION_CHAT_SUBSCRIPTION,
         variables: {
           type: "organization",
-          subject: props.organization
+          subject: props.organization._id
         }
       })
       .subscribe(
@@ -154,11 +155,13 @@ function OrganizationChat(props) {
 
   const onSubmit = useCallback(async ({ message }) => {
     try {
+      setSendError(false);
+
       const { errors } = await client.mutate({
         mutation: ORGANIZATION_SEND_MESSAGE_MUTATION,
         variables: {
           type: "organization",
-          subject: props.organization,
+          subject: props.organization._id,
           content: message
         }
       });
@@ -167,14 +170,16 @@ function OrganizationChat(props) {
         throw new Error(errors[0].message);
       }
     } catch (e) {
-      setError(e.message);
+      setSendError(e.message);
     }
   }, []);
 
   if (error) {
     return (
       <div className="d-flex align-items-center justify-content-center mt-3">
-        <Alert variant="danger">{error}</Alert>
+        <Alert variant="danger" onClose={() => setError(false)} dismissible>
+          {error}
+        </Alert>
       </div>
     );
   }
@@ -188,6 +193,9 @@ function OrganizationChat(props) {
       loadMore={() => loadMore()}
       loading={loading}
       page={page}
+      canSend={props.organization.userCanChat}
+      error={sendError}
+      setError={setSendError}
     />
   );
 }

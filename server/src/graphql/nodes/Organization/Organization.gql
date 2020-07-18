@@ -11,6 +11,7 @@ type Organization {
     updatedAt: GraphQLDateTime!
     projects(input: OrganizationProjectsInput!): OrganizationProjectsConnection!
     isUserAdmin: Boolean!
+    userCanChat: Boolean!
 }
 
 type OrganizationProjectsConnection {

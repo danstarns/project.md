@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/danstarns/project.md#readme",
   "dependencies": {
+    "@graphql-tools/schema": "^6.0.14",
     "apollo-server-express": "^2.16.0",
     "bcrypt": "^4.0.1",
     "bull": "^3.16.0",
@@ -37,6 +38,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "graphql": "^15.3.0",
+    "graphql-constraint-directive": "^2.0.3",
     "graphql-iso-date": "^3.6.1",
     "graphql-playground-middleware-express": "^1.7.18",
     "graphql-tools": "^6.0.14",

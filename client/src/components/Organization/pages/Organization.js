@@ -23,6 +23,7 @@ const ORGANIZATION_QUERY = gql`
       tagline
       markdown
       isUserAdmin
+      userCanChat
       users {
         _id
         username
@@ -206,7 +207,7 @@ function Organization({ match, history }) {
         </Tab>
         <Tab eventKey="chat" title="Chat">
           <Card className="p-0 mt-3">
-            <OrganizationChat organization={match.params.id} />
+            <OrganizationChat organization={organization} />
           </Card>
         </Tab>
       </Tabs>
