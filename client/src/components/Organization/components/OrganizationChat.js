@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useRef
 } from "react";
-import { Alert, Spinner } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 import gql from "graphql-tag";
 import { GraphQL, AuthContext } from "../../../contexts/index.js";
 import "../organization.css";

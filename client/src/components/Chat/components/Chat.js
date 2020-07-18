@@ -2,8 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from "react";
 import "../chat.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
-import { Alert, Spinner } from "react-bootstrap";
-import { LoadingBanner } from "../../Common/index.js";
+import { Spinner, Button, Row, Col } from "react-bootstrap";
 
 function MessageList(props) {
   return props.messages.map(message => {
@@ -55,6 +54,7 @@ function Chat(props) {
   const knownHeight = useRef(0);
   const msgPage = useRef(false);
   const chat = useRef(false);
+  const [trackBottom, setTrackBotton] = useState(false);
 
   useEffect(() => {
     let tempActive = false;
@@ -110,7 +110,7 @@ function Chat(props) {
   );
 
   return (
-    <div className="chat-box">
+    <div className="h-auto">
       <div className="msg-page" id="msg-page" ref={msgPage}>
         {props.loading && (
           <div className="mx-auto">
@@ -122,18 +122,27 @@ function Chat(props) {
           <div id="end-of-chat" ref={chat} />
         </div>
       </div>
-      <div className="msg-footer">
-        <form className="message-form" onSubmit={onSubmit}>
-          <div className="input-group">
-            <input
-              type="text"
-              className="w-100 p-3"
-              placeholder="Type something"
-              value={message}
-              onChange={e => setMessage(e.target.value)}
-              required
-            />
-          </div>
+      <div className="p-3 pt-0">
+        <form onSubmit={onSubmit}>
+          <Row>
+            <Col sm={12} md={10} lg={10} className="mt-3">
+              <div className="card w-100">
+                <input
+                  type="text"
+                  className="w-100 p-3 border-0"
+                  placeholder="Type message"
+                  value={message}
+                  onChange={e => setMessage(e.target.value)}
+                  required
+                />
+              </div>
+            </Col>
+            <Col sm={12} md={2} lg={2} className="mt-3">
+              <Button variant="primary" className="h-100" block type="submit">
+                Send
+              </Button>
+            </Col>
+          </Row>
         </form>
       </div>
     </div>
