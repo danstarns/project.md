@@ -138,7 +138,7 @@ function OrganizationChat(props) {
       })
       .subscribe(
         msg => {
-          setMessages(m => [...m, msg.data.message]);
+          setMessages(m => [...m, { ...msg.data.message, subscription: true }]);
         },
         e => {
           setError(e.message);

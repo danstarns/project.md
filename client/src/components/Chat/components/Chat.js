@@ -79,7 +79,14 @@ function Chat(props) {
 
   useEffect(() => {
     if (!props.loading) {
-      if (knownHeight.current > 0) {
+      const recent = props.messages[props.messages.length - 1];
+
+      if (recent.subscription) {
+        // don't move the scroll
+        // this line is a hack
+        // eslint-disable-next-line no-param-reassign
+        props.messages[props.messages.length - 1].subscription = false;
+      } else if (knownHeight.current > 0) {
         const newHeight = msgPage.current.scrollHeight;
         msgPage.current.scroll({
           top: newHeight - knownHeight.current
