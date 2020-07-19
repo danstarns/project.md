@@ -5,7 +5,7 @@ function ErrorBanner({ error }) {
   return (
     <Row>
       <Col>
-        <Alert show className="mt-3" variant="warning">
+        <Alert show className="mt-3" variant="danger">
           {error}
         </Alert>
       </Col>
