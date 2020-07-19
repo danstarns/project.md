@@ -22,7 +22,9 @@ import {
   faLockOpen,
   faBan,
   faKey,
-  faClipboard
+  faClipboard,
+  faBell,
+  faSignOutAlt
 } from "@fortawesome/free-solid-svg-icons";
 import {
   Home,
@@ -59,7 +61,9 @@ library.add(
   faLockOpen,
   faBan,
   faKey,
-  faClipboard
+  faClipboard,
+  faBell,
+  faSignOutAlt
 );
 
 function App() {

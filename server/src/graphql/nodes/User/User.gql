@@ -4,6 +4,7 @@ type User {
     email: String!
     profilePic: String
     isRequester: Boolean
+    notificationCount: Int
 }
 
 type AuthResponse {
