@@ -95,75 +95,9 @@ $ docker run -d --publish 9000:9000 --name project-md-minio -e MINIO_ACCESS_KEY=
 \`\`\`
 `;
 
-function Home({ history }) {
-  const { isLoggedIn } = useContext(AuthContext.Context);
-
+function Home() {
   return (
     <div>
-      <Row>
-        <Col className="p-2">
-          <Card className="home-link-card">
-            <Button
-              className="h-100 w-100 m-0"
-              variant="outline-primary"
-              onClick={() => history.push("/projects")}
-            >
-              <span className="home-link-card-text">
-                <FontAwesomeIcon size="2x" icon="clipboard" className="mr-3" />
-                Projects
-              </span>
-            </Button>
-          </Card>
-        </Col>
-        <Col className="p-2">
-          <Card className="home-link-card">
-            <Button
-              className="h-100 w-100 m-0"
-              variant="outline-primary"
-              onClick={() => history.push("/organizations")}
-            >
-              <span className="home-link-card-text">
-                <FontAwesomeIcon size="2x" icon="building" className="mr-3" />
-                Organizations
-              </span>
-            </Button>
-          </Card>
-        </Col>
-      </Row>
-
-      {!isLoggedIn && (
-        <Row>
-          <Col className="p-2">
-            <Card className="home-link-card">
-              <Button
-                className="h-100 w-100 m-0"
-                variant="outline-primary"
-                onClick={() => history.push("/login")}
-              >
-                <span className="home-link-card-text">
-                  <FontAwesomeIcon size="2x" icon="key" className="mr-3" />
-                  Login
-                </span>
-              </Button>
-            </Card>
-          </Col>
-          <Col className="p-2">
-            <Card className="home-link-card">
-              <Button
-                className="h-100 w-100 m-0"
-                variant="outline-primary"
-                onClick={() => history.push("/signup")}
-              >
-                <span className="home-link-card-text">
-                  <FontAwesomeIcon size="2x" icon="user" className="mr-3" />
-                  SignUp
-                </span>
-              </Button>
-            </Card>
-          </Col>
-        </Row>
-      )}
-
       <Row className="p-2">
         <Card className="m-0 p-3">
           <Markdown
