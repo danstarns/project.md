@@ -153,37 +153,30 @@ function Organization({ match, history }) {
             </div>
           )}
         </Card>
-        {Boolean(organization.isUserAdmin || isLoggedIn) && (
+        {organization.isUserAdmin && (
           <Card className="p-3 mt-3">
             <div className="d-flex align-items-start">
-              {organization.isUserAdmin && (
-                <>
-                  <Button
-                    onClick={() =>
-                      history.push(`/organization/edit/${match.params.id}`)
-                    }
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    className="ml-3"
-                    onClick={() => setIsInviteUserModal(true)}
-                  >
-                    Invite User
-                  </Button>
-                </>
-              )}
-
-              {isLoggedIn && (
-                <Button
-                  className="ml-3"
-                  onClick={() =>
-                    history.push(`/project/create/${match.params.id}`)
-                  }
-                >
-                  Create Project
-                </Button>
-              )}
+              <Button
+                onClick={() =>
+                  history.push(`/organization/edit/${match.params.id}`)
+                }
+              >
+                Edit
+              </Button>
+              <Button
+                className="ml-3"
+                onClick={() => setIsInviteUserModal(true)}
+              >
+                Invite User
+              </Button>
+              <Button
+                className="ml-3"
+                onClick={() =>
+                  history.push(`/project/create/${match.params.id}`)
+                }
+              >
+                Create Project
+              </Button>
             </div>
           </Card>
         )}
