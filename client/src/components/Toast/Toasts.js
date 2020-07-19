@@ -6,7 +6,7 @@ function Toasts() {
   const { toasts, removeToast } = useContext(ToastContext.Context);
 
   return (
-    <div aria-live="polite" aria-atomic="true" className="toasts-outer">
+    <div aria-live="polite" aria-atomic="true" className="toasts-outer mt-3">
       <div className="toasts-inner">
         {toasts.length
           ? toasts.map(t => <Toast toast={t} removeToast={removeToast} />)

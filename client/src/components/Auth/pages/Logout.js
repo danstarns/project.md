@@ -1,25 +1,19 @@
 import React, { useContext, useEffect } from "react";
-import { Alert } from "react-bootstrap";
-import { AuthContext } from "../../../contexts/index.js";
+import { AuthContext, ToastContext } from "../../../contexts/index.js";
 
-/**
- * Use window.redirect if GraphQL returns 401.
- * GraphQL context is wrapping Auth context.
- */
 function Logout() {
-  const { logout, isLoggedIn } = useContext(AuthContext.Context);
+  const { logout } = useContext(AuthContext.Context);
+  const { addToast } = useContext(ToastContext.Context);
 
   useEffect(() => {
-    setTimeout(() => {
-      logout();
-    }, 500);
-  }, [isLoggedIn, logout]);
+    const toast = { message: "Logged Out", variant: "warning" };
 
-  return (
-    <Alert variant="warning" className="mt-3">
-      Logging out...
-    </Alert>
-  );
+    logout();
+
+    addToast(toast);
+  }, [logout]);
+
+  return <></>;
 }
 
 export default Logout;
