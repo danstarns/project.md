@@ -1,7 +1,7 @@
 import React, { useState, useContext, useCallback } from "react";
 import gql from "graphql-tag";
-import { Button } from "react-bootstrap";
-import { GraphQL } from "../../../contexts/index.js";
+import { Card } from "react-bootstrap";
+import { GraphQL, ToastContext } from "../../../contexts/index.js";
 import { OrganizationForm } from "../components/index.js";
 
 const CREATE_ORGANIZATION_MUTATION = gql`
@@ -31,6 +31,7 @@ const CREATE_ORGANIZATION_MUTATION = gql`
 
 function CreateOrganization({ history }) {
   const { client } = useContext(GraphQL.Context);
+  const { addToast } = useContext(ToastContext.Context);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -59,6 +60,13 @@ function CreateOrganization({ history }) {
         throw new Error(createOrganization.error.message);
       }
 
+      const toast = {
+        message: `Organization '${organization.name}' created`,
+        variant: "success"
+      };
+
+      addToast(toast);
+
       history.push(`/organization/${createOrganization.organization._id}`);
     } catch (e) {
       setError(e.message);
@@ -68,22 +76,18 @@ function CreateOrganization({ history }) {
   }, []);
 
   return (
-    <div>
-      <h1>Create Organization</h1>
-      <OrganizationForm
-        onChange={submit}
-        error={error}
-        loading={loading}
-        defaults={{ markdown: `# Hi World Look At My Organization 👀` }}
-      />
-      <Button
-        block
-        variant="warning"
-        onClick={() => history.goBack()}
-        className="mb-3"
-      >
-        Cancel
-      </Button>
+    <div className="d-flex justify-content-center align-items-center">
+      <Card className="p-3 w-100">
+        <h1 className="m-0">Create Organization</h1>
+        <hr />
+        <OrganizationForm
+          onChange={submit}
+          error={error}
+          loading={loading}
+          defaults={{ markdown: `# Hi World Look At My Organization 👀` }}
+          cancel={() => history.goBack()}
+        />
+      </Card>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect, useCallback } from "react";
 import gql from "graphql-tag";
-import { Button } from "react-bootstrap";
-import { GraphQL } from "../../../contexts/index.js";
+import { Card } from "react-bootstrap";
+import { GraphQL, ToastContext } from "../../../contexts/index.js";
 import { OrganizationForm } from "../components/index.js";
 import { LoadingBanner } from "../../Common/index.js";
 
@@ -46,6 +46,7 @@ const EDIT_ORGANIZATION_MUTATION = gql`
 
 function EditOrganization({ history, match }) {
   const { client } = useContext(GraphQL.Context);
+  const { addToast } = useContext(ToastContext.Context);
   const [loading, setLoading] = useState(false);
   const [loadingOrganization, setLoadingOrganization] = useState(true);
   const [error, setError] = useState(false);
@@ -109,6 +110,13 @@ function EditOrganization({ history, match }) {
         throw new Error(editOrganization.error.message);
       }
 
+      const toast = {
+        message: `Organization '${newOrganization.name}' updated`,
+        variant: "success"
+      };
+
+      addToast(toast);
+
       history.push(`/organization/${editOrganization.organization._id}`);
     } catch (e) {
       setError(e.message);
@@ -122,22 +130,18 @@ function EditOrganization({ history, match }) {
   }
 
   return (
-    <div>
-      <h1>Edit Organization: {organization.name}</h1>
-      <OrganizationForm
-        onChange={submit}
-        error={error}
-        loading={loading}
-        defaults={organization}
-      />
-      <Button
-        block
-        variant="warning"
-        onClick={() => history.goBack()}
-        className="mb-3"
-      >
-        Cancel
-      </Button>
+    <div className="d-flex justify-content-center align-items-center">
+      <Card className="p-3 w-100">
+        <h1 className="m-0">Edit Organization: {organization.name}</h1>
+        <hr />
+        <OrganizationForm
+          onChange={submit}
+          error={error}
+          loading={loading}
+          defaults={organization}
+          cancel={() => history.goBack()}
+        />
+      </Card>
     </div>
   );
 }
