@@ -91,7 +91,9 @@ function Chat(props) {
           top: newHeight - knownHeight.current
         });
       } else {
-        chat.current.scrollIntoView();
+        msgPage.current.scroll({
+          top: msgPage.current.scrollHeight
+        });
       }
 
       knownHeight.current = msgPage.current.scrollHeight;
