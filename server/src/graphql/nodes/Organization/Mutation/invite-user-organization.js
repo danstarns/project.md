@@ -46,7 +46,7 @@ async function inviteUserOrganization(root, args, ctx) {
 
     await redis.queues.email.add({
         to: user.email,
-        subject: `Project.md Project (${org.name}) Invite`,
+        subject: `Project.md Organization (${org.name}) Invite`,
         html: `
             <p>
                 ${ctx.user.username} Invited you to Organization '${org.name}'
