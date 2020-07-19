@@ -77,6 +77,20 @@ input InviteUserCallbackOrganizationInput {
     approve: Boolean
 }
 
+# ASSIGN ADMIN
+# ------------------------------------
+input AssignAdminOrganizationInput {
+    id: ID!
+    user: ID!
+}
+
+# REVOKE ADMIN
+# ------------------------------------
+input RevokeAdminOrganizationInput {
+    id: ID!
+    user: ID!
+}
+
 type OgranizationsResponse {
     hasNextPage: Boolean!
     organizations: [Organization]!
@@ -93,4 +107,6 @@ type Mutation {
     editOrganization(input: EditOrganizationInput!): EditOrganizationResponse! @Auth(input: {required: true})
     inviteUserOrganization(input: InviteUserOrganizationInput!): Boolean! @Auth(input: {required: true, populate: true})
     inviteUserOrganizationCallback(input: InviteUserCallbackOrganizationInput!): Boolean! @Auth(input: {required: true})
+    assignAdminOrganization(input: AssignAdminOrganizationInput!): Boolean! @Auth(input: {required: true})
+    revokeAdminOrganization(input: RevokeAdminOrganizationInput!): Boolean! @Auth(input: {required: true})
 }
