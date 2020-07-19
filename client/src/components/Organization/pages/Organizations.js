@@ -22,6 +22,7 @@ const USER_ORGANIZATIONS_QUERY = gql`
         tagline
         private
         markdown
+        logo
       }
     }
   }
@@ -44,6 +45,7 @@ const PUBLIC_ORGANIZATIONS_QUERY = gql`
         tagline
         private
         markdown
+        logo
       }
     }
   }

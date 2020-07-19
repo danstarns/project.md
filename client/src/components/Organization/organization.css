@@ -24,3 +24,20 @@
     cursor: pointer;
     border-color: #007BFF;
 }
+
+.organization-logo {
+    min-height: 200px;
+    max-height: 200px;
+    min-width: 200px;
+    max-width: 200px;
+}
+
+.organization-logo-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    min-width: 200px;
+    max-height: 200px;
+    max-width: 200px;
+}

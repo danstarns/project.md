@@ -4,6 +4,7 @@ const admins = require("./admins.js");
 const users = require("./users.js");
 const creator = require("./creator.js");
 const userCanChat = require("./user-can-chat.js");
+const logo = require("./logo.js");
 
 module.exports = {
     projects,
@@ -11,5 +12,6 @@ module.exports = {
     admins,
     users,
     creator,
-    userCanChat
+    userCanChat,
+    logo
 };

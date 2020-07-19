@@ -103,31 +103,28 @@ function EditProfileModal(props) {
     [email, username, password, blob, error]
   );
 
-  const changePic = useCallback(
-    event => {
-      setImageError(false);
+  const changePic = useCallback(event => {
+    setImageError(false);
 
-      const acceptedTypes = ["image/png", "image/jpeg"];
-      if (!acceptedTypes.includes(event.target.files[0].type)) {
-        setImageError("Invalid file type");
-        return;
+    const acceptedTypes = ["image/png", "image/jpeg"];
+    if (!acceptedTypes.includes(event.target.files[0].type)) {
+      setImageError("Invalid file type");
+      return;
+    }
+
+    const image = new Image();
+    const url = URL.createObjectURL(event.target.files[0]);
+    image.src = url;
+    setBlob(event.target.files[0]);
+
+    image.onload = () => {
+      if (image.naturalWidth > 200 || image.naturalHeight > 200) {
+        setImageError("200px 200px Dimensions");
+      } else {
+        setProfilePic(url);
       }
-
-      const image = new Image();
-      const url = URL.createObjectURL(event.target.files[0]);
-      image.src = url;
-      setBlob(event.target.files[0]);
-
-      image.onload = () => {
-        if (image.naturalWidth > 200 || image.naturalHeight > 200) {
-          setImageError("200px 200px Dimensions");
-        } else {
-          setProfilePic(url);
-        }
-      };
-    },
-    [email, username, password]
-  );
+    };
+  }, []);
 
   return (
     <Modal show={props.show} onHide={onHide}>

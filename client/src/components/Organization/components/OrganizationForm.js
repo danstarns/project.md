@@ -1,25 +1,67 @@
 import React, { useState, useCallback } from "react";
-import { Form, Button, Card } from "react-bootstrap";
+import { Form, Button, Card, Alert } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Editor } from "../../Markdown/index.js";
-import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
+import { LoadingBanner } from "../../Common/index.js";
 
 function OrganizationForm({ defaults = {}, onChange, loading, error, cancel }) {
   const [name, setName] = useState(defaults.name);
   const [tagline, setTagline] = useState(defaults.tagline);
   const [_private, setPrivate] = useState(defaults.private);
   const [markdown, setMarkdown] = useState(defaults.markdown);
+  const [logo, setLogo] = useState(defaults.logo);
+  const [blob, setBlob] = useState();
+  const [imageError, setImageError] = useState(false);
 
   const submit = useCallback(
     e => {
       e.preventDefault();
 
-      onChange({ name, tagline, private: _private, markdown });
+      onChange({ name, tagline, private: _private, markdown, logo: blob });
     },
-    [name, tagline, _private, markdown]
+    [name, tagline, _private, markdown, blob]
   );
+
+  const changePic = useCallback(event => {
+    setImageError(false);
+
+    const acceptedTypes = ["image/png", "image/jpeg"];
+    if (!acceptedTypes.includes(event.target.files[0].type)) {
+      setImageError("Invalid file type");
+      return;
+    }
+
+    const image = new Image();
+    const url = URL.createObjectURL(event.target.files[0]);
+    image.src = url;
+    setBlob(event.target.files[0]);
+
+    image.onload = () => {
+      if (image.naturalWidth > 200 || image.naturalHeight > 200) {
+        setImageError("200px 200px Dimensions");
+      } else {
+        setLogo(url);
+      }
+    };
+  }, []);
 
   return (
     <Form onSubmit={submit}>
+      <Card className="organization-logo mx-auto">
+        {logo ? (
+          <img className="organization-logo" src={logo} alt="Profile Pic" />
+        ) : (
+          <div className="organization-logo-icon">
+            <FontAwesomeIcon icon="user" size="6x" />
+          </div>
+        )}
+      </Card>
+      <Form.Group>
+        <Form.Label>Logo</Form.Label>
+        <div>
+          <input type="file" onChange={changePic} accept="image/*" />
+        </div>
+      </Form.Group>
       <Form.Group controlId="name">
         <Form.Label>Name</Form.Label>
         <Form.Control
@@ -48,7 +90,11 @@ function OrganizationForm({ defaults = {}, onChange, loading, error, cancel }) {
           <Editor onChange={setMarkdown} markdown={markdown} />
         </Card>
       </Form.Group>
-      {error && <ErrorBanner error={error} />}
+      {Boolean(error || imageError) && (
+        <Alert variant="danger text-center" className="mt-3">
+          {error || imageError}
+        </Alert>
+      )}
       {loading && <LoadingBanner />}
       <div className="d-flex justify-content-end">
         <Form.Group controlId="private">
@@ -63,7 +109,12 @@ function OrganizationForm({ defaults = {}, onChange, loading, error, cancel }) {
         <Button variant="warning" onClick={cancel}>
           Cancel
         </Button>
-        <Button variant="primary" type="submit" className="ml-2">
+        <Button
+          variant="primary"
+          type="submit"
+          className="ml-2"
+          disabled={!!loading || !!error || !!imageError}
+        >
           Submit
         </Button>
       </div>

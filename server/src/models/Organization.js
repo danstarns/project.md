@@ -23,7 +23,12 @@ const Organization = new mongoose.Schema(
             }
         ],
         private: { type: Boolean, required: true },
-        markdown: { type: String, required: true }
+        markdown: { type: String, required: true },
+        logo: {
+            etag: String,
+            fileName: String,
+            bucket: String
+        }
     },
     { timestamps: true }
 );

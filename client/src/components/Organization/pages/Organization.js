@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import gql from "graphql-tag";
 import { Col, Row, Button, Card, Tab, Tabs } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GraphQL, AuthContext } from "../../../contexts/index.js";
 import { Markdown } from "../../Markdown/index.js";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
@@ -24,6 +25,7 @@ const ORGANIZATION_QUERY = gql`
       markdown
       isUserAdmin
       userCanChat
+      logo
       users {
         _id
         username
@@ -132,8 +134,25 @@ function Organization({ match, history }) {
           onHide={() => setIsInviteUserModal(false)}
           organization={organization}
         />
-        <h1 className="mt-3 mb-0">Organization: {organization.name}</h1>
-        <p className="ml-1 mt-0 font-italic">{organization.tagline}</p>
+        <h1 className="mt-3 mb-0 text-center">
+          Organization: {organization.name}
+        </h1>
+        <p className="ml-1 mt-0 font-italic text-center">
+          {organization.tagline}
+        </p>
+        <Card className="organization-logo mx-auto">
+          {organization.logo ? (
+            <img
+              className="organization-logo"
+              src={organization.logo}
+              alt="Profile Pic"
+            />
+          ) : (
+            <div className="organization-logo-icon">
+              <FontAwesomeIcon icon="user" size="6x" />
+            </div>
+          )}
+        </Card>
         {Boolean(organization.isUserAdmin || isLoggedIn) && (
           <Card className="p-3 mt-3">
             <div className="d-flex align-items-start">

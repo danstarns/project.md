@@ -13,6 +13,7 @@ const ORGANIZATION_QUERY = gql`
       tagline
       private
       markdown
+      logo
     }
   }
 `;
@@ -24,6 +25,7 @@ const EDIT_ORGANIZATION_MUTATION = gql`
     $tagline: String!
     $private: Boolean!
     $markdown: String!
+    $logo: Upload
   ) {
     editOrganization(
       input: {
@@ -32,14 +34,10 @@ const EDIT_ORGANIZATION_MUTATION = gql`
         tagline: $tagline
         private: $private
         markdown: $markdown
+        logo: $logo
       }
     ) {
-      error {
-        message
-      }
-      organization {
-        _id
-      }
+      _id
     }
   }
 `;
@@ -95,7 +93,8 @@ function EditOrganization({ history, match }) {
         name: newOrganization.name,
         tagline: newOrganization.tagline,
         private: Boolean(newOrganization.private),
-        markdown: newOrganization.markdown
+        markdown: newOrganization.markdown,
+        ...(newOrganization.logo ? { logo: newOrganization.logo } : {})
       };
 
       const response = await client.mutate({
@@ -104,10 +103,10 @@ function EditOrganization({ history, match }) {
         fetchPolicy: "no-cache"
       });
 
-      const { data: { editOrganization = {} } = {} } = response;
+      const { errors, data } = response;
 
-      if (editOrganization.error) {
-        throw new Error(editOrganization.error.message);
+      if (errors && errors.length) {
+        throw new Error(errors[0].message);
       }
 
       const toast = {
@@ -117,7 +116,7 @@ function EditOrganization({ history, match }) {
 
       addToast(toast);
 
-      history.push(`/organization/${editOrganization.organization._id}`);
+      history.push(`/organization/${data.editOrganization._id}`);
     } catch (e) {
       setError(e.message);
     }

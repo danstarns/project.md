@@ -12,6 +12,7 @@ type Organization {
     projects(input: OrganizationProjectsInput!): OrganizationProjectsConnection!
     isUserAdmin: Boolean!
     userCanChat: Boolean!
+    logo: String
 }
 
 type OrganizationProjectsConnection {
@@ -34,11 +35,7 @@ input CreateOrganizationInput {
     tagline: String!
     private: Boolean!
     markdown: String!
-}
-
-type CreateOrganizationResponse {
-    organization: Organization
-    error: Error
+    logo: Upload
 }
 
 # EDIT ORGANIZATION
@@ -49,11 +46,7 @@ input EditOrganizationInput {
     tagline: String!
     private: Boolean!
     markdown: String!
-}
-
-type EditOrganizationResponse {
-    organization: Organization
-    error: Error
+    logo: Upload
 }
 
 # ORGANIZATIONS
@@ -103,8 +96,8 @@ type Query {
 }
 
 type Mutation {
-    createOrganization(input: CreateOrganizationInput!): CreateOrganizationResponse! @Auth(input: {required: true})
-    editOrganization(input: EditOrganizationInput!): EditOrganizationResponse! @Auth(input: {required: true})
+    createOrganization(input: CreateOrganizationInput!): Organization! @Auth(input: {required: true})
+    editOrganization(input: EditOrganizationInput!): Organization! @Auth(input: {required: true})
     inviteUserOrganization(input: InviteUserOrganizationInput!): Boolean! @Auth(input: {required: true, populate: true})
     inviteUserOrganizationCallback(input: InviteUserCallbackOrganizationInput!): Boolean! @Auth(input: {required: true})
     assignAdminOrganization(input: AssignAdminOrganizationInput!): Boolean! @Auth(input: {required: true})

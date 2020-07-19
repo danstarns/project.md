@@ -30,6 +30,19 @@ function OrganizationList({ organizations, history }) {
                 {organization.tagline.substr(0, 60)}
               </p>
             </Card.Header>
+            <Card.Body className="d-flex justify-content-center align-items-center">
+              {organization.logo ? (
+                <img
+                  className="organization-logo"
+                  src={organization.logo}
+                  alt="Logo"
+                />
+              ) : (
+                <div className="organization-logo d-flex justify-content-center align-items-center">
+                  <FontAwesomeIcon icon="building" size="7x" />
+                </div>
+              )}
+            </Card.Body>
           </Card>
         </Col>
       ))}
