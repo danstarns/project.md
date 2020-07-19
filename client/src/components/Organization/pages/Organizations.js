@@ -106,21 +106,27 @@ function Organizations({ history }) {
 
   return (
     <>
-      <h1 className="mt-3">Organizations</h1>
-      <hr />
-      <Row>
-        <Col sm={12} md={12} lg={12}>
-          {isLoggedIn && (
-            <Button
-              className="mt-3 mb-3"
-              onClick={() => history.push("/organization/create")}
-            >
-              Create
-            </Button>
-          )}
-          <OrganizationsFilter onChange={setFilter} hasNextPage={hasNextPage} />
+      <Row className="m-0 d-flex p-0 px-2">
+        <h1 className="mt-3 mr-auto">Organizations</h1>
+        {isLoggedIn && (
+          <Button
+            className="mt-3 mb-3"
+            onClick={() => history.push("/organization/create")}
+          >
+            Create
+          </Button>
+        )}
+      </Row>
+      <Row className="m-0">
+        <Col className="m-0 p-2">
+          <OrganizationsFilter
+            onChange={f => setFilter(f)}
+            hasNextPage={hasNextPage}
+          />
         </Col>
-        <Col sm={12} md={12} lg={12} className="mt-3">
+      </Row>
+      <Row className="m-0 mb-2">
+        <Col className="m-0 p-0">
           <OrganizationList organizations={organizations} history={history} />
         </Col>
       </Row>

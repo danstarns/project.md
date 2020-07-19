@@ -1,18 +1,16 @@
 import React from "react";
-import { Row, Col, Card } from "react-bootstrap";
+import { Row, Col, Card, Alert } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { TitleBanner } from "../../Common/index.js";
 import "../organization.css";
 
 function OrganizationList({ organizations, history }) {
-  if (!organizations.length) {
-    return (
-      <TitleBanner heading="No organizations found" type="warning" noStyle />
-    );
-  }
-
   return (
-    <Row>
+    <Row className="m-0 p-0">
+      {!organizations.length && (
+        <Col xs={12} className="p-2">
+          <Alert variant="warning">No organizations found</Alert>
+        </Col>
+      )}
       {organizations.map(organization => (
         <Col xs={12} s={4} lg={4} key={organization.name} className="p-2">
           <Card
