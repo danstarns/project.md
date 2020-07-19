@@ -9,12 +9,16 @@ async function userOrganizations(
 
     const { docs, hasNextPage } = await Organization.paginate(
         {
-            $or: [
-                { creator: ctx.user },
-                { admins: ctx.user },
-                { users: ctx.user },
+            $and: [
+                {
+                    $or: [
+                        { creator: ctx.user },
+                        { admins: ctx.user },
+                        { users: ctx.user }
+                    ]
+                },
                 ...(search
-                    ? [{ name: regexMatch }, { tagline: regexMatch }]
+                    ? [{ $or: [{ name: regexMatch }, { tagline: regexMatch }] }]
                     : [])
             ]
         },
