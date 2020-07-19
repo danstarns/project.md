@@ -1,8 +1,8 @@
-/* eslint-disable no-restricted-syntax */
 const { User } = require("../../../../models/index.js");
-const { hashPassword } = require("../../../../utils/index.js");
+const { hashPassword, constants } = require("../../../../utils/index.js");
 const redis = require("../../../../redis.js");
 const { CLIENT_URL } = require("../../../../config.js");
+const storage = require("../../../../storage.js");
 
 async function editProfile(
     root,
@@ -44,18 +44,34 @@ async function editProfile(
 
     if (profilePic) {
         const file = await profilePic;
-        const buffers = [];
+        const mimetype = file.mimetype;
 
-        updates.profilePic = {
-            mimetype: file.mimetype,
-            data: null
-        };
+        const bucket = `user-${ctx.user.toString()}`;
+        const fileName = `profile-pic${
+            mimetype.includes("png") ? ".png" : ".jpeg"
+        }`;
 
-        for await (const chunk of file.createReadStream()) {
-            buffers.push(chunk);
-        }
+        const etag = await storage.client.putObject(
+            bucket,
+            fileName,
+            file.createReadStream()
+        );
 
-        updates.profilePic.data = Buffer.concat(buffers);
+        const url = await storage.client.presignedUrl(
+            "GET",
+            bucket,
+            fileName,
+            constants.IMAGE_URL_EXPIRE_SECONDS
+        );
+
+        await redis.dbs.imageUrls.set(
+            etag,
+            JSON.stringify({ etag, url }),
+            "EX",
+            constants.IMAGE_URL_EXPIRE_SECONDS - 100
+        );
+
+        updates.profilePic = { etag, fileName, bucket };
     }
 
     const updated = await User.findOneAndUpdate(

@@ -11,10 +11,7 @@ const USER_QUERY = gql`
     user(id: $id) {
       username
       email
-      profilePic {
-        data
-        mimetype
-      }
+      profilePic
       isRequester
     }
   }

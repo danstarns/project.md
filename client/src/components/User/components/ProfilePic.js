@@ -10,7 +10,7 @@ function ProfilePic(props) {
         {props.profile.profilePic ? (
           <img
             className="profile-pic"
-            src={`data:${props.profile.profilePic.mimetype};base64, ${props.profile.profilePic.data}`}
+            src={props.profile.profilePic}
             alt="Profile Pic"
           />
         ) : (

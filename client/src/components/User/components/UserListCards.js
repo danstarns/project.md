@@ -13,7 +13,7 @@ function UserListCards(props) {
             {user.profilePic ? (
               <img
                 className="profile-pic"
-                src={`data:${user.profilePic.mimetype};base64, ${user.profilePic.data}`}
+                src={user.profilePic}
                 alt="Profile Pic"
               />
             ) : (

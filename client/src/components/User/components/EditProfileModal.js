@@ -21,10 +21,7 @@ const EDIT_PROFILE_MUTATION = gql`
     ) {
       username
       email
-      profilePic {
-        data
-        mimetype
-      }
+      profilePic
       isRequester
     }
   }
@@ -40,21 +37,9 @@ function EditProfileModal(props) {
   const [password2, setPassword2] = useState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [profilePic, setProfilePic] = useState(
-    props.profile.profilePic
-      ? `data:${props.profile.profilePic.mimetype};base64, ${props.profile.profilePic.data}`
-      : false
-  );
+  const [profilePic, setProfilePic] = useState(props.profile.profilePic);
   const [blob, setBlob] = useState();
   const [imageError, setImageError] = useState(false);
-
-  useEffect(() => {
-    setProfilePic(
-      props.profile.profilePic
-        ? `data:${props.profile.profilePic.mimetype};base64, ${props.profile.profilePic.data}`
-        : false
-    );
-  }, [props]);
 
   useEffect(() => {
     if (password !== password2) {
@@ -73,8 +58,6 @@ function EditProfileModal(props) {
     setImageError();
     setPassword();
     setPassword2();
-    setBlob();
-    setProfilePic();
 
     props.onHide();
   }, []);

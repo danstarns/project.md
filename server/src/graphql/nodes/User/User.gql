@@ -2,13 +2,8 @@ type User {
     _id: ID!
     username: String!
     email: String!
-    profilePic: ProfilePic
+    profilePic: String
     isRequester: Boolean
-}
-
-type ProfilePic {
-    data: String!
-    mimetype: String!
 }
 
 type AuthResponse {

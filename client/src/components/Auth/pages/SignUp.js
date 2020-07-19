@@ -52,6 +52,8 @@ function SignUp({ history }) {
       } catch (e) {
         setError(e.message);
       }
+
+      setLoading(false);
     },
     [email, username, password, blob, error]
   );

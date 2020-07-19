@@ -26,7 +26,7 @@ function MessageList(props) {
         {message.creator.profilePic ? (
           <img
             className="avatar"
-            src={`data:${message.creator.profilePic.mimetype};base64, ${message.creator.profilePic.data}`}
+            src={message.creator.profilePic}
             alt="Profile Pic"
           />
         ) : (
@@ -80,7 +80,7 @@ function Chat(props) {
     if (!props.loading) {
       const recent = props.messages[props.messages.length - 1];
 
-      if (recent.subscription) {
+      if (recent && recent.subscription) {
         // don't move the scroll
         // this line is a hack
         // eslint-disable-next-line no-param-reassign
@@ -116,7 +116,18 @@ function Chat(props) {
             <Spinner className="m-5" animation="border" size="6x" />
           </div>
         )}
-        <MessageList messages={props.messages} user={props.user} />
+        {props.messages.length ? (
+          <MessageList messages={props.messages} user={props.user} />
+        ) : (
+          <>
+            {!props.loading && (
+              <div className="mx-auto pt-3">
+                <Alert variant="info">No messages found</Alert>
+              </div>
+            )}
+          </>
+        )}
+
         <div className="chat-box-bottom">
           <div id="end-of-chat" ref={chat} />
         </div>

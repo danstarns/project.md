@@ -19,10 +19,7 @@ const ORGANIZATION_CHAT_SUBSCRIPTION = gql`
       creator {
         _id
         username
-        profilePic {
-          mimetype
-          data
-        }
+        profilePic
       }
       createdAt
     }
@@ -46,10 +43,7 @@ const ORGANIZATION_MESSAGE_QUERY = gql`
         creator {
           _id
           username
-          profilePic {
-            mimetype
-            data
-          }
+          profilePic
         }
         createdAt
       }

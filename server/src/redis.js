@@ -27,7 +27,8 @@ function createClient(db) {
 
 const dbs = {
     passwordReset: new Redis(REDIS_URI, { keyPrefix: "password-reset", db: 0 }),
-    onlineUsers: new Redis(REDIS_URI, { keyPrefix: "online-users", db: 0 })
+    onlineUsers: new Redis(REDIS_URI, { keyPrefix: "online-users", db: 0 }),
+    imageUrls: new Redis(REDIS_URI, { keyPrefix: "image-urls", db: 0 })
 };
 
 const queues = {

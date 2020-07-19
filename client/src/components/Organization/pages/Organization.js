@@ -27,26 +27,17 @@ const ORGANIZATION_QUERY = gql`
       users {
         _id
         username
-        profilePic {
-          mimetype
-          data
-        }
+        profilePic
       }
       admins {
         _id
         username
-        profilePic {
-          mimetype
-          data
-        }
+        profilePic
       }
       creator {
         _id
         username
-        profilePic {
-          mimetype
-          data
-        }
+        profilePic
       }
       projects(
         input: {
