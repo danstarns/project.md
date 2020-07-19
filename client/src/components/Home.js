@@ -94,6 +94,7 @@ $ docker run -d --publish 6379:6379 --name project-md-redis redis
 $ docker run -d --publish 9000:9000 --name project-md-minio -e MINIO_ACCESS_KEY=accesskey -e MINIO_SECRET_KEY=secretkey minio/minio server /data
 \`\`\`
 `;
+
 function Home({ history }) {
   const { isLoggedIn } = useContext(AuthContext.Context);
 
