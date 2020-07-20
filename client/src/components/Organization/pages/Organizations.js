@@ -24,6 +24,8 @@ const USER_ORGANIZATIONS_QUERY = gql`
         private
         markdown
         logo
+        userCount
+        projectCount
       }
     }
   }
@@ -47,6 +49,8 @@ const PUBLIC_ORGANIZATIONS_QUERY = gql`
         private
         markdown
         logo
+        userCount
+        projectCount
       }
     }
   }

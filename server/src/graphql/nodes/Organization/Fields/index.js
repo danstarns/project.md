@@ -5,6 +5,8 @@ const users = require("./users.js");
 const creator = require("./creator.js");
 const userCanChat = require("./user-can-chat.js");
 const logo = require("./logo.js");
+const userCount = require("./user-count.js");
+const projectCount = require("./project-count.js");
 
 module.exports = {
     projects,
@@ -13,5 +15,7 @@ module.exports = {
     users,
     creator,
     userCanChat,
-    logo
+    logo,
+    userCount,
+    projectCount
 };

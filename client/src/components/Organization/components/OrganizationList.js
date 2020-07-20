@@ -26,9 +26,9 @@ function OrganizationList({ organizations, history }) {
                   <FontAwesomeIcon icon="lock-open" className="ml-auto" />
                 )}
               </div>
-              <p className="font-italic">
+              <blockquote className="pl-2 blockquote organization-blockquote-text">
                 {organization.tagline.substr(0, 60)}
-              </p>
+              </blockquote>
             </Card.Header>
             <Card.Body className="d-flex justify-content-center align-items-center">
               {organization.logo ? (
@@ -43,6 +43,28 @@ function OrganizationList({ organizations, history }) {
                 </div>
               )}
             </Card.Body>
+            <Card.Footer className="d-flex justify-content-between align-items-center pb-2">
+              <Card className="p-2">
+                <p className="p-0 m-0">
+                  <FontAwesomeIcon icon="user" size="2x" className="p-0 m-0" />
+                  <span className="ml-2 organization-footer-text">
+                    {organization.userCount}
+                  </span>
+                </p>
+              </Card>
+              <Card className="p-2">
+                <p className="p-0 m-0">
+                  <FontAwesomeIcon
+                    icon="clipboard"
+                    size="2x"
+                    className="p-0 m-0"
+                  />
+                  <span className="ml-2 organization-footer-text">
+                    {organization.projectCount}
+                  </span>
+                </p>
+              </Card>
+            </Card.Footer>
           </Card>
         </Col>
       ))}

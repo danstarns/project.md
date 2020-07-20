@@ -13,6 +13,8 @@ type Organization {
     isUserAdmin: Boolean!
     userCanChat: Boolean!
     logo: String
+    projectCount: Int!
+    userCount: Int!
 }
 
 type OrganizationProjectsConnection {

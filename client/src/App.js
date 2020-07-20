@@ -25,7 +25,7 @@ import {
   faClipboard,
   faBell,
   faSignOutAlt,
-  faPlus
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   Home,
@@ -65,7 +65,7 @@ library.add(
   faClipboard,
   faBell,
   faSignOutAlt,
-  faPlus
+  faPlus,
 );
 
 function App() {
