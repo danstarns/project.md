@@ -9,19 +9,26 @@ function UserListCards(props) {
     <Row>
       {props.users.map(user => (
         <Col xs={12} s={3} lg={3} key={user.username}>
-          <Card className="m-4 profile-pic">
-            {user.profilePic ? (
-              <img
-                className="profile-pic"
-                src={user.profilePic}
-                alt="Profile Pic"
-              />
-            ) : (
-              <div className="profile-icon">
-                <FontAwesomeIcon icon="user" size="6x" />
-              </div>
-            )}
-            <Link to={`/profile/${user._id}`}>{user.username}</Link>
+          <Card>
+            <Card.Header>
+              <Card.Title>{user.username}</Card.Title>
+            </Card.Header>
+            <Card.Body className="d-flex justify-content-center align-items-center">
+              {user.profilePic ? (
+                <img
+                  className="profile-pic"
+                  src={user.profilePic}
+                  alt="Profile Pic"
+                />
+              ) : (
+                <div className="profile-icon">
+                  <FontAwesomeIcon icon="user" size="6x" />
+                </div>
+              )}
+            </Card.Body>
+            <Card.Footer>
+              <Link to={`/profile/${user._id}`}>{user.username}</Link>
+            </Card.Footer>
           </Card>
         </Col>
       ))}

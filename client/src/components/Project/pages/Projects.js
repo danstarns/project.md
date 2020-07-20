@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import gql from "graphql-tag";
-import { Button, Row, Col } from "react-bootstrap";
+import { Button, Row, Col, Card } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GraphQL, AuthContext } from "../../../contexts/index.js";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
 import { ProjectFilter, ProjectList } from "../components/index.js";
@@ -110,26 +111,30 @@ function Projects({ history }) {
   }
 
   return (
-    <>
-      <h1 className="mt-3">Projects</h1>
-      <hr />
-      <Row>
-        <Col sm={12} md={12} lg={12}>
-          {isLoggedIn && (
-            <Button
-              className="mt-3 mb-3"
-              onClick={() => history.push("/project/create")}
-            >
-              Create project
-            </Button>
-          )}
+    <Card className="p-2 mb-3">
+      <Row className="m-0 d-flex p-0 pb-1 px-2 mt-1">
+        <h1 className="mr-auto mt-0">Projects</h1>
+        {isLoggedIn && (
+          <Button
+            className="mt-0"
+            onClick={() => history.push("/project/create")}
+          >
+            <FontAwesomeIcon icon="plus" className="mr-2" />
+            Create
+          </Button>
+        )}
+      </Row>
+      <Row className="m-0">
+        <Col className="m-0 p-2">
           <ProjectFilter onChange={setFilter} hasNextPage={hasNextPage} />
         </Col>
-        <Col sm={12} md={12} lg={12} className="mt-3">
+      </Row>
+      <Row className="m-0">
+        <Col className="m-0 p-0">
           <ProjectList projects={projects} history={history} />
         </Col>
       </Row>
-    </>
+    </Card>
   );
 }
 

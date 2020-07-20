@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useCallback } from "react";
 import gql from "graphql-tag";
-import { Row, Col, Button } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { ProjectForm } from "../components/index.js";
 import { GraphQL } from "../../../contexts/index.js";
 import { LoadingBanner } from "../../Common/index.js";
@@ -130,26 +130,18 @@ function EditProject({ match, history }) {
   }
 
   return (
-    <div>
-      <h1>Edit Project: {project.name}</h1>
-      <Row>
-        <Col>
-          <ProjectForm
-            onChange={submit}
-            error={error}
-            loading={loadingCreate}
-            defaults={project}
-          />
-          <Button
-            block
-            variant="warning"
-            onClick={() => history.goBack()}
-            className="mb-3"
-          >
-            Cancel
-          </Button>
-        </Col>
-      </Row>
+    <div className="d-flex justify-content-center align-items-center">
+      <Card className="p-3 w-100">
+        <h1 className="m-0">Edit Project: {project.name}</h1>
+        <hr />
+        <ProjectForm
+          onChange={submit}
+          error={error}
+          loading={loadingCreate}
+          defaults={project}
+          cancel={() => history.goBack()}
+        />
+      </Card>
     </div>
   );
 }

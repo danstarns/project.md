@@ -40,7 +40,7 @@ function OrganizationsFilter(props) {
   });
 
   return (
-    <ListGroup horizontal="md" className="w-100 organization-filter">
+    <ListGroup horizontal="md" className="w-100">
       {isLoggedIn && (
         <ListGroup.Item
           onClick={() => setSelected("user")}

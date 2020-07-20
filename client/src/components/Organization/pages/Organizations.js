@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import gql from "graphql-tag";
-import { Button, Row, Col } from "react-bootstrap";
+import { Button, Row, Col, Card } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GraphQL, AuthContext } from "../../../contexts/index.js";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
 import { OrganizationsFilter, OrganizationList } from "../components/index.js";
@@ -107,15 +108,18 @@ function Organizations({ history }) {
   }
 
   return (
-    <>
-      <Row className="m-0 d-flex p-0 px-2">
-        <h1 className="mt-3 mr-auto">Organizations</h1>
+    <Card className="p-2 mb-3">
+      <Row className="m-0 d-flex p-0 pb-1 px-2 mt-1">
+        <h1 className="mr-auto mt-0">Organizations</h1>
         {isLoggedIn && (
           <Button
-            className="mt-3 mb-3"
+            className="mt-0"
             onClick={() => history.push("/organization/create")}
           >
-            Create
+            <p className="p-0 m-0">
+              <FontAwesomeIcon icon="plus" className="mr-2" />
+              Create
+            </p>
           </Button>
         )}
       </Row>
@@ -127,12 +131,12 @@ function Organizations({ history }) {
           />
         </Col>
       </Row>
-      <Row className="m-0 mb-2">
+      <Row className="m-0">
         <Col className="m-0 p-0">
           <OrganizationList organizations={organizations} history={history} />
         </Col>
       </Row>
-    </>
+    </Card>
   );
 }
 

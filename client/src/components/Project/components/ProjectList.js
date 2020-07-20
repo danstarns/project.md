@@ -1,17 +1,19 @@
 import React from "react";
-import { Row, Col, Card } from "react-bootstrap";
+import { Row, Col, Card, Alert } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
-import { TitleBanner } from "../../Common/index.js";
 import "../project.css";
 
 function ProjectList({ projects, history }) {
-  if (!projects.length) {
-    return <TitleBanner heading="No projects found" type="warning" noStyle />;
-  }
-
   return (
-    <Row>
+    <Row className="m-0 p-0">
+      {!projects.length && (
+        <Col className="m-0 p-2">
+          <Alert variant="warning" className="m-0 p-2">
+            No projects found
+          </Alert>
+        </Col>
+      )}
       {projects.map(project => (
         <Col xs={12} s={4} lg={4} key={project.name} className="p-2">
           <Card

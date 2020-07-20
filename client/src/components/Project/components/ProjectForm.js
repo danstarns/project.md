@@ -8,7 +8,8 @@ function ProjectForm({
   defaults = { due: new Date() },
   onChange,
   loading,
-  error
+  error,
+  cancel
 }) {
   const [name, setName] = useState(defaults.name);
   const [tagline, setTagline] = useState(defaults.tagline);
@@ -43,63 +44,66 @@ function ProjectForm({
   );
 
   return (
-    <Form onSubmit={submit} className="mt-3">
-      <Card className="p-3">
-        <Form.Group controlId="name">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            autoFocus
-            type="text"
-            placeholder="Enter Project Name"
-            required
-            value={name}
-            onChange={e => setName(e.target.value)}
-            maxLength="60"
-          />
-        </Form.Group>
-        <Form.Group controlId="date">
-          <div>
-            Select Due Date: <DatePicker onChange={updateDue} value={due} />{" "}
-          </div>
-        </Form.Group>
-        <Form.Group controlId="tagline">
-          <Form.Label>Tagline</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter Project Tagline"
-            required
-            as="textarea"
-            rows="3"
-            value={tagline}
-            maxLength="60"
-            onChange={e => setTagline(e.target.value)}
-          />
-        </Form.Group>
+    <Form onSubmit={submit}>
+      <Form.Group controlId="name">
+        <Form.Label>Name</Form.Label>
+        <Form.Control
+          autoFocus
+          type="text"
+          placeholder="Enter Project Name"
+          required
+          value={name}
+          onChange={e => setName(e.target.value)}
+          maxLength="60"
+        />
+      </Form.Group>
+      <Form.Group controlId="date">
+        <div>
+          Select Due Date: <DatePicker onChange={updateDue} value={due} />{" "}
+        </div>
+      </Form.Group>
+      <Form.Group controlId="tagline">
+        <Form.Label>Tagline</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter Project Tagline"
+          required
+          as="textarea"
+          rows="3"
+          value={tagline}
+          maxLength="60"
+          onChange={e => setTagline(e.target.value)}
+        />
+      </Form.Group>
+      <Form.Group controlId="markdown">
+        <Form.Label>Markdown</Form.Label>
+        <Card className="p-3">
+          <Editor onChange={setMarkdown} markdown={markdown} />
+        </Card>
+      </Form.Group>
+      {Boolean(error || validationError) && (
+        <Alert variant="danger text-center" className="mt-3">
+          {error || validationError}
+        </Alert>
+      )}
+      {loading && <LoadingBanner />}
+      <div className="d-flex justify-content-end">
         <Form.Group controlId="private">
           <Form.Check
             type="checkbox"
             label="Select To Make Private"
             onChange={e => setPrivate(e.target.checked)}
             checked={_private}
-            className="ml-1"
+            className="mt-2 mr-3"
           />
         </Form.Group>
-      </Card>
-      <Card className="p-3 mt-3">
-        <Editor onChange={setMarkdown} markdown={markdown} />
-      </Card>
-      <div>
-        {error && <Alert variant="danger">{error}</Alert>}
-        {validationError && <Alert variant="danger">{validationError}</Alert>}
-        {loading && (
-          <div className="mb-5">
-            <LoadingBanner />
-          </div>
-        )}
+        <Button variant="warning" onClick={cancel}>
+          Cancel
+        </Button>
+        <Button variant="primary" type="submit" className="ml-2">
+          Submit
+        </Button>
       </div>
-      <Button variant="primary" type="submit" block className="mt-3 mb-3">
-        Submit
-      </Button>
     </Form>
   );
 }

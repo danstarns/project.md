@@ -44,7 +44,7 @@
     "graphql-tools": "^6.0.14",
     "graphql-upload": "^11.0.0",
     "graphql-voyager": "^1.0.0-rc.31",
-    "idio-graphql": "^3.2.15",
+    "idio-graphql": "^3.2.16",
     "ioredis": "^4.17.3",
     "jsonwebtoken": "^8.5.1",
     "minio": "^7.0.16",

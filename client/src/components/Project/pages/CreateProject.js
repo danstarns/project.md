@@ -1,6 +1,6 @@
 import React, { useState, useContext, useCallback } from "react";
 import gql from "graphql-tag";
-import { Row, Col, Button } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { GraphQL } from "../../../contexts/index.js";
 import { ProjectForm } from "../components/index.js";
 
@@ -74,29 +74,21 @@ function CreateProject({ history, match }) {
   }, []);
 
   return (
-    <div>
-      <h1>Create Project</h1>
-      <Row>
-        <Col>
-          <ProjectForm
-            onChange={submit}
-            error={error}
-            loading={loading}
-            defaults={{
-              due: new Date(),
-              markdown: `# My Project \n look at my super cool project 🍺`
-            }}
-          />
-          <Button
-            block
-            variant="warning"
-            onClick={() => history.goBack()}
-            className="mb-3"
-          >
-            Cancel
-          </Button>
-        </Col>
-      </Row>
+    <div className="d-flex justify-content-center align-items-center">
+      <Card className="p-3 w-100">
+        <h1 className="m-0">Create Project</h1>
+        <hr />
+        <ProjectForm
+          onChange={submit}
+          error={error}
+          loading={loading}
+          defaults={{
+            due: new Date(),
+            markdown: `# My Project \n look at my super cool project 🍺`
+          }}
+          cancel={() => history.goBack()}
+        />
+      </Card>
     </div>
   );
 }

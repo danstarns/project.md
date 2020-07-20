@@ -52,7 +52,7 @@ function OrganizationForm({ defaults = {}, onChange, loading, error, cancel }) {
           <img className="organization-logo" src={logo} alt="Profile Pic" />
         ) : (
           <div className="organization-logo-icon">
-            <FontAwesomeIcon icon="user" size="6x" />
+            <FontAwesomeIcon icon="building" size="6x" />
           </div>
         )}
       </Card>
