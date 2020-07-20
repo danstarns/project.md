@@ -5,6 +5,8 @@ type User {
     profilePic: String
     isRequester: Boolean
     notificationCount: Int
+    projects: [Project]!
+    organizations: [Organization]!
 }
 
 type AuthResponse {

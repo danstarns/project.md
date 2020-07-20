@@ -98,7 +98,7 @@ function App() {
               <Route exact path="/password-reset/:token" component={Auth.PasswordReset} />
               <Routes.Protected exact path="/notifications" component={Notification.Notifications} />
               <Routes.Protected exact path="/invite/:id" component={Notification.Invite} />
-              <Routes.Protected exact path="/profile/:id" component={User.Profile} />
+              <Route path="/profile/:id" component={User.Profile} />
 
               <Routes.Protected path="/project/create/:organization?" component={Project.CreateProject} />
               <Route exact path="/projects" component={Project.Projects} />

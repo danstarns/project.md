@@ -1,10 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Card, Row, Col, Tab, Tabs } from "react-bootstrap";
+import { Tab, Tabs } from "react-bootstrap";
 import "../User.css";
 import gql from "graphql-tag";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GraphQL } from "../../../contexts/index.js";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
+import { OrganizationList } from "../../Organization/components/index.js";
 import { ProfilePic, EditProfileModal } from "../components/index.js";
+import { ProjectList } from "../../Project/index.js";
 
 const USER_QUERY = gql`
   query($id: ID!) {
@@ -13,11 +16,28 @@ const USER_QUERY = gql`
       email
       profilePic
       isRequester
+      projects {
+        _id
+        name
+        tagline
+        due
+        private
+      }
+      organizations {
+        _id
+        name
+        tagline
+        private
+        markdown
+        logo
+        userCount
+        projectCount
+      }
     }
   }
 `;
 
-function Profile({ match }) {
+function Profile({ match, history }) {
   const { client } = useContext(GraphQL.Context);
   const [key, setKey] = useState("projects");
   const [loading, setLoading] = useState(true);
@@ -32,7 +52,8 @@ function Profile({ match }) {
           query: USER_QUERY,
           variables: {
             id: match.params.id
-          }
+          },
+          fetchPolicy: "no-cache"
         });
 
         if (response.errors && response.errors.length) {
@@ -68,35 +89,43 @@ function Profile({ match }) {
         profile={profile}
         setProfile={setProfile}
       />
-      <Row className="mt-3">
-        <Col xs={12} sm={12} md={3} lg={3}>
-          <ProfilePic
-            profile={profile}
-            setEditUserModal={() => setEditUserModal(true)}
-          />
-        </Col>
-        <Col xs={4} sm={4} md={3} lg={3}>
-          <Card>Total Organizations</Card>
-        </Col>
-        <Col xs={4} sm={4} md={3} lg={3}>
-          <Card>Total Projects</Card>
-        </Col>
-        <Col xs={4} sm={4} md={3} lg={3}>
-          <Card>Total Tasks</Card>
-        </Col>
-      </Row>
-      <Tabs activeKey={key} onSelect={k => setKey(k)} className="mt-3">
-        <Tab eventKey="projects" title="Projects">
-          <Card className="p-3 mt-3">
-            <h1>Projects</h1>
-          </Card>
-        </Tab>
-        <Tab eventKey="organizations" title="Organizations">
-          <Card className="p-3 mt-3">
-            <h1>Organizations</h1>
-          </Card>
-        </Tab>
-      </Tabs>
+      <div className="d-flex justify-content-center align-items-center flex-column">
+        <ProfilePic
+          profile={profile}
+          setEditUserModal={() => setEditUserModal(true)}
+        />
+      </div>
+      <div className="mt-2">
+        <Tabs activeKey={key} onSelect={k => setKey(k)} className="p-2">
+          <Tab
+            eventKey="projects"
+            title={
+              <span className="profile-tab-numbers-icon">
+                <FontAwesomeIcon icon="clipboard" size="2x" className="mr-2" />
+                <strong>{profile.projects.length}</strong>
+              </span>
+            }
+            className="p-0"
+          >
+            <ProjectList projects={profile.projects} history={history} />
+          </Tab>
+          <Tab
+            eventKey="organizations"
+            title={
+              <span className="profile-tab-numbers-icon">
+                <FontAwesomeIcon icon="building" size="2x" className="mr-2" />
+                <strong>{profile.organizations.length}</strong>
+              </span>
+            }
+            className="p-0"
+          >
+            <OrganizationList
+              organizations={profile.organizations}
+              history={history}
+            />
+          </Tab>
+        </Tabs>
+      </div>
     </div>
   );
 }

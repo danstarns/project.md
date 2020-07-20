@@ -46,7 +46,7 @@ function OrganizationList({ organizations, history }) {
             <Card.Footer className="d-flex justify-content-between align-items-center pb-2">
               <Card className="p-2">
                 <p className="p-0 m-0">
-                  <FontAwesomeIcon icon="user" size="2x" className="p-0 m-0" />
+                  <FontAwesomeIcon icon="user" size="1x" className="p-0 m-0" />
                   <span className="ml-2 organization-footer-text">
                     {organization.userCount}
                   </span>
@@ -56,7 +56,7 @@ function OrganizationList({ organizations, history }) {
                 <p className="p-0 m-0">
                   <FontAwesomeIcon
                     icon="clipboard"
-                    size="2x"
+                    size="1x"
                     className="p-0 m-0"
                   />
                   <span className="ml-2 organization-footer-text">

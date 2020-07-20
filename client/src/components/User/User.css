@@ -32,3 +32,14 @@
 .profile-box-text {
     font-size: 0.8rem;
 }
+
+.profile-tab-numbers-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 25px;
+    min-width: 25px;
+    max-height: 25px;
+    max-width: 40px;
+    color: black;
+}

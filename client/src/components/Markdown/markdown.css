@@ -44,8 +44,9 @@ code {
     height: auto;
 }
   
-pre {
+.editor-output > pre {
     border: 1px solid #ccc;
+    margin-top: 0.7rem;
 }
   
 blockquote {
