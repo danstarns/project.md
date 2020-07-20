@@ -26,7 +26,12 @@ import {
   faBell,
   faSignOutAlt,
   faPlus,
+  faUsers, 
+  faCommentDots,
+  faUserShield,
+  faCog
 } from "@fortawesome/free-solid-svg-icons";
+import {faMarkdown} from "@fortawesome/free-brands-svg-icons";
 import {
   Home,
   NavBar,
@@ -66,6 +71,11 @@ library.add(
   faBell,
   faSignOutAlt,
   faPlus,
+  faUsers,
+  faMarkdown,
+  faCommentDots,
+  faUserShield,
+  faCog
 );
 
 function App() {

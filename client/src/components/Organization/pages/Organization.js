@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import gql from "graphql-tag";
-import { Col, Row, Button, Card, Tab, Tabs } from "react-bootstrap";
+import { Col, Row, Card, Tab, Tabs, Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GraphQL, AuthContext } from "../../../contexts/index.js";
 import { Markdown } from "../../Markdown/index.js";
@@ -143,63 +143,105 @@ function Organization({ match, history }) {
         onHide={() => setIsInviteUserModal(false)}
         organization={organization}
       />
-      <h1 className="mt-3 mb-0 text-center">{organization.name}</h1>
-      <p className="ml-1 mt-0 font-italic text-center">
-        {organization.tagline}
-      </p>
-      <Card className="organization-logo mx-auto">
-        {organization.logo ? (
-          <img
-            className="organization-logo"
-            src={organization.logo}
-            alt="Profile Pic"
-          />
-        ) : (
-          <div className="organization-logo-icon">
-            <FontAwesomeIcon icon="building" size="6x" />
-          </div>
-        )}
-      </Card>
-      {organization.isUserAdmin && (
-        <Card className="p-3 mt-3">
-          <div className="d-flex align-items-start">
-            <Button
-              onClick={() =>
-                history.push(`/organization/edit/${match.params.id}`)
-              }
-            >
-              Edit
-            </Button>
-            <Button className="ml-3" onClick={() => setIsInviteUserModal(true)}>
-              Invite User
-            </Button>
-            <Button
-              className="ml-3"
-              onClick={() => setIsAssignAdminModal(true)}
-            >
-              Assign Admin
-            </Button>
-            <Button
-              className="ml-3"
-              onClick={() => history.push(`/project/create/${match.params.id}`)}
-            >
-              Create Project
-            </Button>
+      <div className="d-flex justify-content-center align-items-center flex-column">
+        <h1 className="mt-3 mb-0 text-center">{organization.name}</h1>
+        <p className="ml-1 mt-0 font-italic text-center">
+          {organization.tagline}
+        </p>
+        <Card className="p-3 d-flex justify-content-between align-items-center">
+          <Card className="organization-logo">
+            {organization.logo ? (
+              <img
+                className="organization-logo"
+                src={organization.logo}
+                alt="Profile Pic"
+              />
+            ) : (
+              <div className="organization-logo-icon">
+                <FontAwesomeIcon icon="building" size="6x" />
+              </div>
+            )}
+          </Card>
+          <div className="d-flex justify-content-between align-items-center pt-2">
+            {organization.isUserAdmin && (
+              <Dropdown className="m-1">
+                <Dropdown.Toggle
+                  variant="outline-secondary"
+                  id="dropdown-basic"
+                >
+                  <FontAwesomeIcon
+                    icon="user-shield"
+                    size="1x"
+                    className="mr-2"
+                  />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    onClick={() =>
+                      history.push(`/organization/edit/${match.params.id}`)
+                    }
+                  >
+                    Edit
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => setIsInviteUserModal(true)}>
+                    Invite User
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => setIsAssignAdminModal(true)}>
+                    Assign Admin
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() =>
+                      history.push(`/project/create/${match.params.id}`)
+                    }
+                  >
+                    Create Project
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            )}
+            {organization.userCanChat && (
+              <Dropdown className="m-1">
+                <Dropdown.Toggle variant="outline-info" id="dropdown-basic">
+                  <FontAwesomeIcon icon="cog" size="1x" className="mr-2" />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    onClick={() =>
+                      history.push(`/organization/edit/${match.params.id}`)
+                    }
+                  >
+                    Leave
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            )}
           </div>
         </Card>
-      )}
+      </div>
       <Tabs
         activeKey={key}
         onSelect={k => setKey(k)}
         className="mt-3"
         unmountOnExit
       >
-        <Tab eventKey="markdown" title="Markdown">
+        <Tab
+          eventKey="markdown"
+          title={
+            <FontAwesomeIcon
+              icon={["fab", "markdown"]}
+              size="2x"
+              color="black"
+            />
+          }
+        >
           <Card className="p-3 mt-3">
             <Markdown markdown={organization.markdown} />
           </Card>
         </Tab>
-        <Tab eventKey="projects" title="Projects" className="h-auto">
+        <Tab
+          eventKey="projects"
+          title={<FontAwesomeIcon icon="clipboard" size="2x" color="black" />}
+        >
           <Card className="p-2 mt-3">
             <Row className="m-0">
               <Col className="m-0 p-2">
@@ -216,7 +258,10 @@ function Organization({ match, history }) {
             </Row>
           </Card>
         </Tab>
-        <Tab eventKey="users" title="Users">
+        <Tab
+          eventKey="users"
+          title={<FontAwesomeIcon icon="users" size="2x" color="black" />}
+        >
           <Card className="p-3 mt-3">
             <UserListCards
               users={[
@@ -227,7 +272,12 @@ function Organization({ match, history }) {
             />
           </Card>
         </Tab>
-        <Tab eventKey="chat" title="Chat">
+        <Tab
+          eventKey="chat"
+          title={
+            <FontAwesomeIcon icon="comment-dots" size="2x" color="black" />
+          }
+        >
           <Card className="p-0 mt-3">
             <OrganizationChat organization={organization} />
           </Card>
