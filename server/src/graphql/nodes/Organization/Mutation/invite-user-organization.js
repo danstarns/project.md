@@ -44,16 +44,23 @@ async function inviteUserOrganization(root, args, ctx) {
         }
     });
 
+    redis.pubsub.emit(
+        `create:notification:${user._id.toString()}`,
+        notification
+    );
+
     await redis.queues.email.add({
         to: user.email,
         subject: `Project.md Organization (${org.name}) Invite`,
         html: `
-            <p>
-                ${ctx.user.username} Invited you to Organization '${org.name}'
-                Click <a href="${CLIENT_URL}/invite/${notification._id.toString()}">Here</a> to join,
-                otherwise ignore this email.
-            </p>
-        `
+                <p>
+                    ${ctx.user.username} Invited you to Organization '${
+            org.name
+        }'
+                    Click <a href="${CLIENT_URL}/invite/${notification._id.toString()}">Here</a> to join,
+                    otherwise ignore this email.
+                </p>
+            `
     });
 
     return true;

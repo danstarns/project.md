@@ -3,7 +3,7 @@ const redis = require("../../../../redis.js");
 const { constants } = require("../../../../utils/index.js");
 
 async function logo(root, args, ctx) {
-    if (!root.logo.etag) {
+    if (!root.logo || !root.logo.etag) {
         return null;
     }
 

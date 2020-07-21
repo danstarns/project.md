@@ -6,7 +6,7 @@ const ProfilePicLoader = new DataLoader(async (etags) => {
     const parsedUrls = urls.map((x) => JSON.parse(x));
 
     return etags.map((etag) => {
-        const found = parsedUrls.find((x) => x.etag === etag);
+        const found = parsedUrls.find((x) => x && x.etag === etag);
 
         if (!found) {
             return false;

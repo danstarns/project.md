@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Navbar, Nav, NavDropdown, Card } from "react-bootstrap";
 import { useQuery } from "@apollo/react-hooks";
 import { Link, useHistory } from "react-router-dom";
 import gql from "graphql-tag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { AuthContext } from "../contexts/index.js";
+import { AuthContext, GraphQL, ToastContext } from "../contexts/index.js";
 import "../index.css";
 
 const ME_QUERY = gql`
@@ -17,10 +17,48 @@ const ME_QUERY = gql`
   }
 `;
 
+const NOTIFICATION_SUBSCRIPTION = gql`
+  subscription notification {
+    notification {
+      _id
+    }
+  }
+`;
+
 function LoggedIn() {
   const { getId } = useContext(AuthContext.Context);
   const history = useHistory();
-  const { error, data = { me: {} } } = useQuery(ME_QUERY);
+  const { client } = useContext(GraphQL.Context);
+  const { addToast } = useContext(ToastContext.Context);
+  const { error, data = { me: { notificationCount: 0 } } } = useQuery(ME_QUERY);
+  const [count, setCount] = useState(data.me.notificationCount);
+
+  useEffect(() => {
+    setCount(c => c + data.me.notificationCount);
+  }, [data.me.notificationCount]);
+
+  useEffect(() => {
+    const subscription = client
+      .subscribe({
+        query: NOTIFICATION_SUBSCRIPTION
+      })
+      .subscribe(() => {
+        const toast = {
+          message: `New Notification`,
+          variant: "info"
+        };
+
+        addToast(toast);
+
+        setCount(c => c + 1);
+      });
+
+    return () => {
+      if (subscription) {
+        subscription.unsubscribe();
+      }
+    };
+  }, []);
 
   if (error) return `Error! ${error.message}`;
 
@@ -57,7 +95,7 @@ function LoggedIn() {
             <Nav.Item as="span">
               <span className="navbar-notification-icon">
                 <FontAwesomeIcon icon="bell" size="1x" />
-                <strong>{data.me.notificationCount}</strong>
+                <strong>{count}</strong>
               </span>
             </Nav.Item>
           </Card>

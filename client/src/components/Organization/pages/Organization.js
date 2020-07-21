@@ -103,19 +103,14 @@ function Organization({ match, history }) {
           id: match.params.id
         }
       })
-      .subscribe(
-        msg => {
-          const toast = {
-            message: `Organization: ${msg.data.organization.name} updated refresh to update`,
-            variant: "info"
-          };
+      .subscribe(msg => {
+        const toast = {
+          message: `Organization: ${msg.data.organization.name} updated refresh to update`,
+          variant: "info"
+        };
 
-          addToast(toast);
-        },
-        e => {
-          setError(e.message);
-        }
-      );
+        addToast(toast);
+      });
 
     return () => {
       if (subscription) {

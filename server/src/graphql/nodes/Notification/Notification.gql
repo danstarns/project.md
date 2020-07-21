@@ -41,3 +41,7 @@ type Mutation {
     deleteNotifications(ids: [ID]!): Boolean @Auth(input: {required: true})
     viewNotifications(ids: [ID]!): Boolean @Auth(input: {required: true})
 }
+
+type Subscription {
+    notification: Notification! @Auth(input: {required: true})
+}

@@ -107,5 +107,5 @@ type Mutation {
 }
 
 type Subscription {
-    organization(id: ID!): Organization!
+    organization(id: ID!): Organization! @Auth(input: {required: true})
 }
