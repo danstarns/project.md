@@ -103,10 +103,7 @@ async function sendMessage(root, { input }, ctx) {
         content
     });
 
-    redis.pubsub.emit(
-        `chat:${type}:${entity._id.toString()}`,
-        message._id.toString()
-    );
+    redis.pubsub.emit(`chat:${type}:${entity._id.toString()}`, message);
 
     return true;
 }

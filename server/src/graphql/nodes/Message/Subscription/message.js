@@ -6,8 +6,7 @@ const {
     User,
     Organization,
     Project,
-    Task,
-    Message
+    Task
 } = require("../../../../models/index.js");
 const redis = require("../../../../redis.js");
 
@@ -36,7 +35,7 @@ async function* messageGenerator({ topic, entity, ctx }) {
 
         messages = rest;
 
-        yield { message: await Message.findById(message) };
+        yield { message };
 
         await sleep();
     }

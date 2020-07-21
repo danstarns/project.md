@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import gql from "graphql-tag";
 import { Col, Row, Card, Tab, Tabs, Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { GraphQL, AuthContext } from "../../../contexts/index.js";
+import { GraphQL, AuthContext, ToastContext } from "../../../contexts/index.js";
 import { Markdown } from "../../Markdown/index.js";
 import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
 import { ProjectList, ProjectFilter } from "../../Project/index.js";
@@ -12,6 +12,14 @@ import {
   AssignAdminModal
 } from "../components/index.js";
 import { UserListCards } from "../../User/index";
+
+const ORGANIZATION_SUBSCRIPTION = gql`
+  subscription organization($id: ID!) {
+    organization(id: $id) {
+      name
+    }
+  }
+`;
 
 const ORGANIZATION_QUERY = gql`
   query organization(
@@ -70,6 +78,7 @@ const ORGANIZATION_QUERY = gql`
 function Organization({ match, history }) {
   const { client } = useContext(GraphQL.Context);
   const { isLoggedIn } = useContext(AuthContext.Context);
+  const { addToast } = useContext(ToastContext.Context);
   const [organization, setOrganization] = useState();
   const [error, setError] = useState();
   const [projectFilter, setProjectsFilter] = useState({
@@ -85,6 +94,35 @@ function Organization({ match, history }) {
   const [isInviteUserModal, setIsInviteUserModal] = useState(false);
   const [isAssignAdminModal, setIsAssignAdminModal] = useState(false);
   const [key, setKey] = useState("markdown");
+
+  useEffect(() => {
+    const subscription = client
+      .subscribe({
+        query: ORGANIZATION_SUBSCRIPTION,
+        variables: {
+          id: match.params.id
+        }
+      })
+      .subscribe(
+        msg => {
+          const toast = {
+            message: `Organization: ${msg.data.organization.name} updated refresh to update`,
+            variant: "info"
+          };
+
+          addToast(toast);
+        },
+        e => {
+          setError(e.message);
+        }
+      );
+
+    return () => {
+      if (subscription) {
+        subscription.unsubscribe();
+      }
+    };
+  }, []);
 
   useEffect(() => {
     (async () => {

@@ -53,9 +53,13 @@ async function editOrganization(root, args, ctx) {
         updates.logo = { etag, fileName, bucket };
     }
 
-    return Organization.findByIdAndUpdate(id, updates, {
+    const updated = await Organization.findByIdAndUpdate(id, updates, {
         new: true
     });
+
+    redis.pubsub.emit(`update:organization:${id}`, updated);
+
+    return updated;
 }
 
 module.exports = editOrganization;
