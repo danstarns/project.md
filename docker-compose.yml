@@ -64,3 +64,4 @@ services:
       - client
       - mongo
       - redis
+      - minio
