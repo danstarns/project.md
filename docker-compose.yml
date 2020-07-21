@@ -13,6 +13,7 @@ services:
       - SKIP_PREFLIGHT_CHECK=true
       - REACT_APP_JWT_KEY=project-md-token
       - REACT_APP_API_URL=http://localhost:5000
+      - REACT_APP_WS_URL=ws://localhost:5000
       - NODE_ENV=production
   redis:
     image: redis
@@ -24,6 +25,14 @@ services:
       - "27017:27017"
     logging:
       driver: none
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+    environment:
+      - MINIO_ACCESS_KEY=accesskey
+      - MINIO_SECRET_KEY=secretkey
+    command: server /data
   server:
     build:
       context: ./server
@@ -35,14 +44,20 @@ services:
       - MONGODB_URI=mongodb://host.docker.internal:27017/Project-md
       - REDIS_URI=redis://host.docker.internal:6379
       - CLIENT_URL=http://localhost:5000
-      - EMAIL_HOST=smtp.ethereal.email
+      - API_URL=http://localhost:5000
+      - EMAIL_HOST=smtp.gmail.com
       - EMAIL_PORT=587
-      - EMAIL_USER=test@test.com
-      - EMAIL_PASSWORD=password!
+      - EMAIL_USER=test@email.com
+      - EMAIL_PASSWORD=password
       - EMAIL_SECURE=false
       - EMAIL_FROM=no-reply@project-md.com
       - NODE_ENV=production
       - DEBUG=@Project.md:*
+      - S3_URL=host.docker.internal
+      - S3_PORT=9000
+      - S3_USE_SSL=false
+      - S3_ACCESS_KEY=accesskey
+      - S3_SECRET_KEY=secretkey
     ports:
       - "5000:5000"
     depends_on:
