@@ -11,28 +11,11 @@ Tired of complicated project management systems? What something that speaks to t
 
 1. Server
     * Node.JS
-        1. `express`
-        2. `graphql`
-            * `idio-graphql`
-            * `apollo-server-express`
-            * `graphql-voyager`
-            * `graphql-subscriptions`
-            * `graphql-upload`
-        3. `mongoose`
-        4. `jsonwebtoken`
-        5. `ioredis`
-        6. `bull`
-        7. `nodemailer`
-        8. `minio`
     * Minio/S3
     * MongoDB
     * Redis
 2. Client
     * React.JS
-        1. `create-react-app`
-        2. `react-bootstrap`
-        3. `apollo-client`
-        4. `react-markdown`
 
 # Getting Started
 Recommended to open `server` & `client` folders in separate instances of your editor. This will allow the `eslint` plugin's work correctly across both `server` & `client`.
@@ -65,7 +48,7 @@ EMAIL_FROM=no-reply@project-md.com
 3. `npm run start`
 
 ## Docker
-> Use this to start client, server & dependencies all at once, take consideration for any local, conflicting, services 🐳
+> Use this to start client, server & dependencies all at once, take consideration for any conflicting services. Make sure you configure **email** config in docker.compose.yml 🐳
 
 1. `docker-compose up`
 
