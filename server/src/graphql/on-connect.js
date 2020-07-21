@@ -13,7 +13,12 @@ async function onConnect(connectionParams) {
     const { sub } = await decodeJWT(jwt);
 
     if (sub) {
-        await redis.dbs.onlineUsers.set(sub, 1);
+        await redis.dbs.onlineUsers.set(
+            sub,
+            new Date().toISOString(),
+            "EX",
+            600
+        );
     }
 
     return {

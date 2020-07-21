@@ -2,6 +2,7 @@ const Redis = require("ioredis");
 const Queue = require("bull");
 const { REDIS_URI } = require("./config.js");
 const debug = require("./debug.js")("Redis: ");
+const { redisPubSub } = require("./utils/index.js");
 
 /**
  * DBS MATRIX
@@ -35,7 +36,7 @@ const queues = {
     email: new Queue("email", { createClient: createClient(1) })
 };
 
-const pubsub = {
+const pubsubConnections = {
     pub: new Redis(REDIS_URI, {
         keyPrefix: "pub",
         db: 2,
@@ -48,13 +49,16 @@ const pubsub = {
     })
 };
 
+const pubsub = redisPubSub({
+    pub: pubsubConnections.pub,
+    sub: pubsubConnections.sub
+});
+
 async function connect() {
     debug(`Connecting to Redis: '${REDIS_URI}'`);
 
     /* Deliberate connect to 1 and assume the others ok, will change if I use other Redis DB's */
-    await pubsub.sub.connect();
-    await pubsub.pub.connect();
-    await pubsub.sub.psubscribe("chat:*");
+    await pubsubConnections.sub.connect();
 
     debug("Connected");
 }

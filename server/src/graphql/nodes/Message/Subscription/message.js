@@ -13,18 +13,17 @@ const redis = require("../../../../redis.js");
 
 const sleep = util.promisify(setTimeout);
 
-async function* messageGenerator(topic, ctx) {
+async function* messageGenerator({ topic, entity, ctx }) {
     let messages = [];
 
-    const sub = redis.pubsub.sub.on(`pmessage`, (pattern, channel, message) => {
-        const [, id] = channel.split(":");
+    function listener(_, message) {
+        messages.push(message);
+    }
 
-        if (id === topic) {
-            messages.push(message);
-        }
-    });
+    const channel = `chat:${topic}:${entity}`;
+    const sub = redis.pubsub.on(channel, listener);
 
-    ctx.subscriptions.push(sub);
+    ctx.subscriptions.push(() => sub.removeListener(channel, listener));
 
     while (true) {
         const [message, ...rest] = messages;
@@ -135,7 +134,11 @@ const message = {
                 break;
         }
 
-        return messageGenerator(entity._id.toString(), ctx);
+        return messageGenerator({
+            topic: type,
+            entity: entity._id.toString(),
+            ctx
+        });
     }
 };
 
