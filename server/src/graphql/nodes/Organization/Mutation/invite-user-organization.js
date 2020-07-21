@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const {
     User,
     Organization,
@@ -54,9 +55,7 @@ async function inviteUserOrganization(root, args, ctx) {
         subject: `Project.md Organization (${org.name}) Invite`,
         html: `
                 <p>
-                    ${ctx.user.username} Invited you to Organization '${
-            org.name
-        }'
+                    ${ctx.user.username} Invited you to Organization '${org.name}'
                     Click <a href="${CLIENT_URL}/invite/${notification._id.toString()}">Here</a> to join,
                     otherwise ignore this email.
                 </p>
