@@ -87,7 +87,7 @@ function Profile({ match, history }) {
         show={editUserModal}
         onHide={() => setEditUserModal(false)}
         profile={profile}
-        setProfile={setProfile}
+        setProfile={p => setProfile(prof => ({ ...prof, ...p }))}
       />
       <div className="d-flex justify-content-center align-items-center flex-column">
         <ProfilePic
