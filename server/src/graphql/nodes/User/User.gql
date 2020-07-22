@@ -74,3 +74,7 @@ type Query {
     me: User! @Auth(input: {required: true, populate: true})
     user(id: ID!): User
 }
+
+type Subscription {
+    me: User! @Auth(input: {required: true})
+}

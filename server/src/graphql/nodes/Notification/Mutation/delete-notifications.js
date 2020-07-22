@@ -1,4 +1,5 @@
 const { Notification } = require("../../../../models/index.js");
+const redis = require("../../../../redis.js");
 
 async function deleteNotifications(root, { ids }, ctx) {
     const found = await Notification.find({ _id: { $in: ids } });
@@ -10,6 +11,10 @@ async function deleteNotifications(root, { ids }, ctx) {
     });
 
     await Notification.deleteMany({ _id: { $in: found.map((x) => x._id) } });
+
+    redis.pubsub.emit(`update:user:${ctx.user.toString()}`, {
+        _id: ctx.user.toString()
+    });
 
     return true;
 }

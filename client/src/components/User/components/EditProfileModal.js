@@ -2,7 +2,7 @@ import React, { useState, useContext, useCallback, useEffect } from "react";
 import { Modal, Form, Button, Alert, Spinner, Card } from "react-bootstrap";
 import gql from "graphql-tag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { GraphQL, ToastContext } from "../../../contexts/index.js";
+import { GraphQL } from "../../../contexts/index.js";
 
 const EDIT_PROFILE_MUTATION = gql`
   mutation editProfile(
@@ -29,7 +29,6 @@ const EDIT_PROFILE_MUTATION = gql`
 
 function EditProfileModal(props) {
   const { client } = useContext(GraphQL.Context);
-  const { addToast } = useContext(ToastContext.Context);
 
   const [email, setEmail] = useState();
   const [username, setUsername] = useState();
@@ -92,7 +91,6 @@ function EditProfileModal(props) {
 
         props.setProfile(data.editProfile);
 
-        addToast({ message: "Profile Edited", variant: "success" });
         onHide();
       } catch (e) {
         setError(e.message);

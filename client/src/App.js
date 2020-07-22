@@ -17,7 +17,7 @@ import {
   User,
   Toasts
 } from "./components/index.js";
-import { AuthContext, GraphQL, ToastContext } from "./contexts/index.js";
+import { AuthContext, GraphQL, ToastContext, NotificationContext } from "./contexts/index.js";
 import icons from "./icons";
 
 library.add(...icons);
@@ -27,6 +27,7 @@ function App() {
     <GraphQL.Provider>
       <ToastContext.Provider>
         <AuthContext.Provider>
+          <NotificationContext.Provider>
           <Router>
             <NavBar />
             <Toasts />
@@ -62,6 +63,7 @@ function App() {
               </Switch>
             </Container>
           </Router>
+          </NotificationContext.Provider>
         </AuthContext.Provider>
       </ToastContext.Provider>
     </GraphQL.Provider>

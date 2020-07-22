@@ -74,7 +74,7 @@ async function editProfile(
         updates.profilePic = { etag, fileName, bucket };
     }
 
-    const updated = await User.findOneAndUpdate(
+    const updated = await User.findByIdAndUpdate(
         ctx.user,
         { $set: updates },
         { new: true }
@@ -92,6 +92,10 @@ async function editProfile(
             `
         });
     }
+
+    redis.pubsub.emit(`update:user:${ctx.user.toString()}`, {
+        _id: ctx.user.toString()
+    });
 
     return updated;
 }

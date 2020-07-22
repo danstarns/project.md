@@ -4,7 +4,12 @@ import { useQuery } from "@apollo/react-hooks";
 import { Link, useHistory } from "react-router-dom";
 import gql from "graphql-tag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { AuthContext, GraphQL, ToastContext } from "../contexts/index.js";
+import {
+  AuthContext,
+  GraphQL,
+  ToastContext,
+  NotificationContext
+} from "../contexts/index.js";
 import "../index.css";
 
 const ME_QUERY = gql`
@@ -17,47 +22,65 @@ const ME_QUERY = gql`
   }
 `;
 
-const NOTIFICATION_SUBSCRIPTION = gql`
-  subscription notification {
-    notification {
-      _id
+const ME_SUBSCRIPTION = gql`
+  subscription me {
+    me {
+      username
+      profilePic
+      notificationCount
     }
   }
 `;
 
 function LoggedIn() {
   const { getId } = useContext(AuthContext.Context);
+  const { setNotificationCount, notificationCount } = useContext(
+    NotificationContext.Context
+  );
   const history = useHistory();
   const { client } = useContext(GraphQL.Context);
   const { addToast } = useContext(ToastContext.Context);
-  const { error, data = { me: { notificationCount: 0 } } } = useQuery(ME_QUERY);
-  const [count, setCount] = useState(data.me.notificationCount);
-
-  useEffect(() => {
-    setCount(c => c + data.me.notificationCount);
-  }, [data.me.notificationCount]);
+  const [profile, setProfile] = useState({});
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const subscription = client
       .subscribe({
-        query: NOTIFICATION_SUBSCRIPTION
+        query: ME_SUBSCRIPTION
       })
-      .subscribe(() => {
+      .subscribe(msg => {
         const toast = {
-          message: `New Notification`,
-          variant: "info"
+          message: "Account Updated",
+          variant: "success"
         };
 
         addToast(toast);
-
-        setCount(c => c + 1);
+        setProfile(msg.data.me);
+        setNotificationCount(msg.data.me.notificationCount);
       });
 
     return () => {
-      if (subscription) {
-        subscription.unsubscribe();
-      }
+      subscription.unsubscribe();
     };
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const result = await client.query({
+          query: ME_QUERY
+        });
+
+        if (result.errors) {
+          throw new Error(result.errors[0]);
+        }
+
+        setProfile(result.data.me);
+        setNotificationCount(result.data.me.notificationCount);
+      } catch (e) {
+        setError(e.message);
+      }
+    })();
   }, []);
 
   if (error) return `Error! ${error.message}`;
@@ -95,7 +118,7 @@ function LoggedIn() {
             <Nav.Item as="span">
               <span className="navbar-notification-icon">
                 <FontAwesomeIcon icon="bell" size="1x" />
-                <strong>{count}</strong>
+                <strong>{notificationCount}</strong>
               </span>
             </Nav.Item>
           </Card>
@@ -112,11 +135,11 @@ function LoggedIn() {
         <Link to={`/profile/${getId()}`}>
           <Card className="p-1 m-1">
             <Nav.Item as="span">
-              {data.me.profilePic ? (
+              {profile.profilePic ? (
                 <div className="navbar-profile-icon">
                   <img
                     className="navbar-profile m-0 p-0"
-                    src={data.me.profilePic}
+                    src={profile.profilePic}
                     alt="Profile Pic"
                   />
                 </div>
