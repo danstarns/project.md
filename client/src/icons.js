@@ -26,6 +26,7 @@ import {
   faUserShield,
   faCog
 } from "@fortawesome/free-solid-svg-icons";
+import { faMarkdown } from "@fortawesome/free-brands-svg-icons";
 
 export default [
   faSortUp,
@@ -53,5 +54,6 @@ export default [
   faUsers,
   faCommentDots,
   faUserShield,
-  faCog
+  faCog,
+  faMarkdown
 ];
