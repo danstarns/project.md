@@ -1,3 +1,24 @@
 .task-list-item {
-    
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.task-list-item:hover {
+    cursor: pointer;
+    border-color: #007BFF;
+}
+
+.task-filter-card:hover {
+    background-color: #007BFF;
+    cursor: pointer;
+    color: white;
+}
+
+.task-filter-card-date {
+    cursor: pointer;
+}
+
+.task-filter-card-arrow:hover {
+    cursor: pointer;
+    color: #007BFF;
 }

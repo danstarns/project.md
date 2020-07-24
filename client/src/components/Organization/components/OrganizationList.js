@@ -1,9 +1,11 @@
+/* eslint-disable react/no-unescaped-entities */
 import React from "react";
 import { Row, Col, Card, Alert } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../organization.css";
+import { Link } from "react-router-dom";
 
-function OrganizationList({ organizations, history }) {
+function OrganizationList({ organizations }) {
   return (
     <Row className="m-0 p-0">
       {!organizations.length && (
@@ -13,22 +15,23 @@ function OrganizationList({ organizations, history }) {
       )}
       {organizations.map(organization => (
         <Col xs={12} s={4} lg={4} key={organization.name} className="p-2">
-          <Card
-            className="w-100 h-100 organization-list-item"
-            onClick={() => history.push(`/organization/${organization._id}`)}
-          >
+          <Card className="w-100 h-100 organization-list-item">
             <Card.Header>
               <div className="d-flex">
-                <Card.Title>{organization.name}</Card.Title>
+                <Card.Title className="m-0 p-0">
+                  <Link to={`/organization/${organization._id}`}>
+                    {organization.name}
+                  </Link>
+                </Card.Title>
                 {organization.private ? (
                   <FontAwesomeIcon icon="lock" className="ml-auto" />
                 ) : (
                   <FontAwesomeIcon icon="lock-open" className="ml-auto" />
                 )}
               </div>
-              <blockquote className="pl-2 blockquote organization-blockquote-text">
+              <p className="m-0 mt-1 organization-blockquote-text font-italic">
                 {organization.tagline.substr(0, 60)}
-              </blockquote>
+              </p>
             </Card.Header>
             <Card.Body className="d-flex justify-content-center align-items-center">
               {organization.logo ? (
@@ -43,24 +46,22 @@ function OrganizationList({ organizations, history }) {
                 </div>
               )}
             </Card.Body>
-            <Card.Footer className="d-flex justify-content-between align-items-center pb-2">
-              <Card className="p-2">
-                <p className="p-0 m-0">
-                  <FontAwesomeIcon icon="user" size="1x" className="p-0 m-0" />
-                  <span className="ml-2 organization-footer-text">
-                    {organization.userCount}
-                  </span>
+            <Card.Footer className="d-flex flex-row justify-content-center align-items-center">
+              <Card className="p-2 m-1">
+                <p className="p-0 m-0 organization-footer-text">
+                  <FontAwesomeIcon icon="user" size="1x" className="m-0" />
+                  <span className="ml-2">{organization.userCount} user's'</span>
                 </p>
               </Card>
-              <Card className="p-2">
-                <p className="p-0 m-0">
+              <Card className="p-2 m-1">
+                <p className="p-0 m-0 organization-footer-text">
                   <FontAwesomeIcon
                     icon="clipboard"
                     size="1x"
-                    className="p-0 m-0"
+                    className=" m-0"
                   />
-                  <span className="ml-2 organization-footer-text">
-                    {organization.projectCount}
+                  <span className="ml-2">
+                    {organization.projectCount} project's'
                   </span>
                 </p>
               </Card>

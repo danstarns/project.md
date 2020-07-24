@@ -14,11 +14,39 @@
 }
 
 .project-list-item {
-    cursor: pointer;
     font-size: 0.8rem;
 }
 
-.project-list-item:hover {
-    cursor: pointer;
-    border-color: #007BFF;
+.project-logo {
+    min-height: 200px;
+    max-height: 200px;
+    min-width: 200px;
+    max-width: 200px;
+}
+
+.project-logo-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    min-width: 200px;
+    max-height: 200px;
+    max-width: 200px;
+}
+
+.project-footer-text {
+    font-weight: bold;
+    text-align: center;
+}
+
+.project-organization-logo {
+    min-height: 25px;
+    max-height: 25px;
+    min-width: 25px;
+    max-width: 25px;
+    border-radius: 12px;
+}
+
+.project-blockquote-text {
+    font-size: 0.8rem !important;
 }

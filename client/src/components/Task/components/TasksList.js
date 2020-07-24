@@ -1,19 +1,21 @@
 import React from "react";
-import { Row, Col, Card, Button } from "react-bootstrap";
+import { Row, Col, Card, Alert, Button } from "react-bootstrap";
 import moment from "moment";
-import { TitleBanner } from "../../Common/index.js";
 import "../task.css";
 
 function TaskList({ tasks, history }) {
-  if (!tasks.length) {
-    return <TitleBanner heading="No tasks found" type="warning" noStyle />;
-  }
-
   return (
-    <Row>
+    <Row className="m-0 p-0">
+      {!tasks.length && (
+        <Col className="m-0 p-2">
+          <Alert variant="warning" className="m-0 p-2">
+            No tasks found
+          </Alert>
+        </Col>
+      )}
       {tasks.map(task => (
-        <Col xs={12} s={4} lg={4} key={task.name}>
-          <Card className="w-100 mb-4 task-list-item">
+        <Col xs={12} s={4} lg={4} key={task.name} className="p-2">
+          <Card className="w-100 h-100 task-list-item">
             <Card.Header>
               <Card.Title>{task.name}</Card.Title>
             </Card.Header>

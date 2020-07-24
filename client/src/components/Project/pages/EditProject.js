@@ -15,6 +15,7 @@ const PROJECT_QUERY = gql`
       markdown
       private
       due
+      logo
     }
   }
 `;
@@ -27,6 +28,7 @@ const EDIT_PROJECT_MUTATION = gql`
     $private: Boolean!
     $markdown: String!
     $due: String!
+    $logo: Upload
   ) {
     editProject(
       input: {
@@ -36,16 +38,10 @@ const EDIT_PROJECT_MUTATION = gql`
         private: $private
         markdown: $markdown
         due: $due
+        logo: $logo
       }
     ) {
-      error {
-        message
-      }
-      data {
-        project {
-          _id
-        }
-      }
+      _id
     }
   }
 `;
@@ -74,10 +70,6 @@ function EditProject({ match, history }) {
 
         if (errors && errors.length) {
           throw new Error(errors[0].message);
-        }
-
-        if (!data.project) {
-          throw new Error(`Project not found`);
         }
 
         setProject(data.project);
@@ -113,12 +105,8 @@ function EditProject({ match, history }) {
         throw new Error(errors[0].message);
       }
 
-      if (data.editProject.error) {
-        throw new Error(data.editProject.error.message);
-      }
-
       setTimeout(() => {
-        history.push(`/project/${data.editProject.data.project._id}`);
+        history.push(`/project/${data.editProject._id}`);
       }, 500);
     } catch (e) {
       setError(e.message);

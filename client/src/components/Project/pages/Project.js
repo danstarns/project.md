@@ -1,26 +1,12 @@
-import React, { useContext, useState, useEffect, useCallback } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import gql from "graphql-tag";
-import { Col, Row, Button, Card, Tab, Tabs } from "react-bootstrap";
-import { GraphQL, AuthContext } from "../../../contexts/index.js";
+import { Col, Row, Card, Tab, Tabs, Dropdown } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
+import { GraphQL } from "../../../contexts/index.js";
 import { Markdown } from "../../Markdown/index.js";
-import {
-  ErrorBanner,
-  LoadingBanner,
-  StatusDropdown,
-  StatusProgressBar
-} from "../../Common/index.js";
+import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
 import { TasksList, TasksFilter } from "../../Task/index.js";
-
-const UPDATE_PROJECT_STATUS_MUTATION = gql`
-  mutation updateProjectStatus($id: ID!, $status: StatusEnum!) {
-    updateProjectStatus(input: { id: $id, status: $status }) {
-      error {
-        message
-      }
-      status
-    }
-  }
-`;
 
 const PROJECT_QUERY = gql`
   query project(
@@ -36,7 +22,14 @@ const PROJECT_QUERY = gql`
       name
       tagline
       markdown
-      status
+      logo
+      isUserAdmin
+      userCanChat
+      organization {
+        _id
+        logo
+        name
+      }
       tasks(
         input: {
           page: $page
@@ -62,7 +55,6 @@ const PROJECT_QUERY = gql`
 
 function Project({ match, history }) {
   const { client } = useContext(GraphQL.Context);
-  const { isLoggedIn } = useContext(AuthContext.Context);
   const [project, setProject] = useState();
   const [error, setError] = useState();
   const [tasksFilter, setTasksFilter] = useState({
@@ -75,8 +67,7 @@ function Project({ match, history }) {
   const [tasks, setTasks] = useState([]);
   const [hasNextTasks, setHasNextTasks] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [status, setStatus] = useState("InProgress");
-  const [key, setKey] = useState("tasks");
+  const [key, setKey] = useState("markdown");
 
   useEffect(() => {
     (async () => {
@@ -108,7 +99,6 @@ function Project({ match, history }) {
           setTasks(data.project.tasks.data.tasks);
           setHasNextTasks(data.project.tasks.hasNextPage);
           setProject(data.project);
-          setStatus(data.project.status);
           setLoading(false);
         }, 500);
       } catch (e) {
@@ -117,29 +107,6 @@ function Project({ match, history }) {
       }
     })();
   }, [tasksFilter]);
-
-  const updateStatus = useCallback(async s => {
-    setStatus(s);
-
-    try {
-      const { data } = await client.mutate({
-        mutation: UPDATE_PROJECT_STATUS_MUTATION,
-        variables: {
-          id: match.params.id,
-          status: s
-        },
-        fetchPolicy: "no-cache"
-      });
-
-      if (data.error) {
-        throw new Error(data.error.message);
-      }
-
-      setStatus(data.updateProjectStatus.status);
-    } catch (e) {
-      setError(e.message);
-    }
-  }, []);
 
   if (loading) {
     return <LoadingBanner />;
@@ -151,53 +118,119 @@ function Project({ match, history }) {
 
   return (
     <div className="pb-3">
-      <Row className="mb-3">
-        <Col>
-          <h1 className="mt-3 mb-0">Project: {project.name}</h1>
-          <p className="ml-1 mt-0 font-italic">{project.tagline}</p>
-          <Card className="p-3 mt-3">
-            {isLoggedIn && (
-              <div className="d-inline">
-                <Button
-                  className="mr-3"
-                  onClick={() =>
-                    history.push(`/project/edit/${match.params.id}`)
-                  }
-                >
-                  Edit
-                </Button>
-                <StatusDropdown
-                  onSelect={updateStatus}
-                  status={status}
-                  title="Select Status"
-                />
+      <div className="d-flex justify-content-center align-items-center flex-column">
+        <h1 className="mt-3 mb-0 text-center">{project.name}</h1>
+        <p className="ml-1 mt-0 font-italic text-center">{project.tagline}</p>
+        <Card className="p-3 d-flex justify-content-between align-items-center">
+          <Card className="project-logo">
+            {project.logo ? (
+              <img
+                className="project-logo"
+                src={project.logo}
+                alt="Profile Pic"
+              />
+            ) : (
+              <div className="project-logo-icon">
+                <FontAwesomeIcon icon="clipboard" size="6x" />
               </div>
             )}
-            <div className={isLoggedIn ? "mt-3" : ""}>
-              <StatusProgressBar status={status} />
-            </div>
           </Card>
-        </Col>
-      </Row>
-
-      <Tabs activeKey={key} onSelect={k => setKey(k)} className="mt-3">
-        <Tab eventKey="tasks" title="Tasks">
-          <Card className="p-3 mt-3">
-            <Row>
-              <Col sm={12} md={12} lg={2}>
-                {isLoggedIn && (
-                  <Button
-                    className="mt-3 mb-3 w-100"
+          <div className="d-flex justify-content-between align-items-center pt-2">
+            {project.isUserAdmin && (
+              <Dropdown className="m-1">
+                <Dropdown.Toggle
+                  variant="outline-secondary"
+                  id="dropdown-basic"
+                >
+                  <FontAwesomeIcon
+                    icon="user-shield"
+                    size="1x"
+                    className="mr-2"
+                  />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item
                     onClick={() =>
                       history.push(`/task/create/${match.params.id}`)
                     }
                   >
                     Create Task
-                  </Button>
-                )}
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() =>
+                      history.push(`/project/edit/${match.params.id}`)
+                    }
+                  >
+                    Edit
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            )}
+            {project.userCanChat && (
+              <Dropdown className="m-1">
+                <Dropdown.Toggle variant="outline-info" id="dropdown-basic">
+                  <FontAwesomeIcon icon="cog" size="1x" className="mr-2" />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    onClick={() =>
+                      history.push(`/project/edit/${match.params.id}`)
+                    }
+                  >
+                    Leave
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            )}
+          </div>
+          {project.organization && (
+            <div className="d-flex mt-2">
+              {project.organization.logo ? (
+                <img
+                  className="project-organization-logo"
+                  src={project.organization.logo}
+                  alt="Logo"
+                />
+              ) : (
+                <div className="project-organization-logo d-flex justify-content-center align-items-center">
+                  <FontAwesomeIcon icon="clipboard" size="2x" />
+                </div>
+              )}
+              <Link to={`/organization/${project.organization._id}`}>
+                {project.organization.name}
+              </Link>
+            </div>
+          )}
+        </Card>
+      </div>
+      <Tabs activeKey={key} onSelect={k => setKey(k)} className="mt-3">
+        <Tab
+          eventKey="markdown"
+          title={
+            <FontAwesomeIcon
+              icon={["fab", "markdown"]}
+              size="2x"
+              color="black"
+            />
+          }
+          unmountOnExit
+        >
+          <Card className="p-3 mt-3">
+            <Markdown markdown={project.markdown} />
+          </Card>
+        </Tab>
+        <Tab
+          eventKey="tasks"
+          title={<FontAwesomeIcon icon="sticky-note" size="2x" color="black" />}
+        >
+          <Card className="p-2 mt-3">
+            <Row className="m-0">
+              <Col className="m-0 p-2">
                 <TasksFilter onChange={setTasksFilter} />
               </Col>
-              <Col sm={12} md={12} lg={10} className="mt-3">
+            </Row>
+            <Row className="m-0 mb-2">
+              <Col className="m-0 p-0">
                 <TasksList
                   tasks={tasks}
                   history={history}
@@ -208,10 +241,6 @@ function Project({ match, history }) {
           </Card>
         </Tab>
       </Tabs>
-
-      <section className="mt-3">
-        <Markdown markdown={project.markdown} />
-      </section>
     </div>
   );
 }

@@ -12,6 +12,7 @@ const CREATE_PROJECT_MUTATION = gql`
     $due: String!
     $markdown: String!
     $organization: ID
+    $logo: Upload
   ) {
     createProject(
       input: {
@@ -21,14 +22,10 @@ const CREATE_PROJECT_MUTATION = gql`
         due: $due
         markdown: $markdown
         organization: $organization
+        logo: $logo
       }
     ) {
-      error {
-        message
-      }
-      project {
-        _id
-      }
+      _id
     }
   }
 `;
@@ -50,7 +47,8 @@ function CreateProject({ history, match }) {
         private: Boolean(project.private),
         markdown: project.markdown,
         due: project.due.toISOString(),
-        organization: match.params.organization
+        organization: match.params.organization,
+        ...(project.logo ? { logo: project.logo } : {})
       };
 
       const response = await client.mutate({
@@ -59,14 +57,12 @@ function CreateProject({ history, match }) {
         fetchPolicy: "no-cache"
       });
 
-      const { data: { createProject = {} } = {} } = response;
-
-      if (createProject.error) {
-        throw new Error(createProject.error.message);
+      if (response.errors) {
+        throw new Error(response.errors[0].message);
       }
 
       setTimeout(() => {
-        history.push(`/project/${createProject.project._id}`);
+        history.push(`/project/${response.data.createProject._id}`);
       }, 500);
     } catch (e) {
       setError(e.message);

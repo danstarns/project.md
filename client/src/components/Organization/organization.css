@@ -16,13 +16,7 @@
 }
 
 .organization-list-item {
-    cursor: pointer;
     font-size: 0.8rem;
-}
-
-.organization-list-item:hover {
-    cursor: pointer;
-    border-color: #007BFF;
 }
 
 .organization-logo {

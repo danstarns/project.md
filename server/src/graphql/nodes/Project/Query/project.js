@@ -4,7 +4,7 @@ async function project(root, { id }, ctx) {
     const foundProject = await Project.findById(id);
 
     if (!foundProject) {
-        return null;
+        throw new Error("project not found");
     }
 
     if (foundProject.private) {

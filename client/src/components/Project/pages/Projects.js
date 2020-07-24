@@ -25,6 +25,14 @@ const USER_PROJECTS_QUERY = gql`
           tagline
           due
           private
+          logo
+          organization {
+            _id
+            logo
+            name
+          }
+          userCount
+          taskCount
         }
       }
     }
@@ -49,6 +57,14 @@ const PUBLIC_PROJECTS_QUERY = gql`
           tagline
           due
           private
+          logo
+          organization {
+            _id
+            logo
+            name
+          }
+          userCount
+          taskCount
         }
       }
     }

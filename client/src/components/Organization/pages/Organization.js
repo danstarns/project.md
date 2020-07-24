@@ -69,6 +69,8 @@ const ORGANIZATION_QUERY = gql`
           tagline
           due
           private
+          userCount
+          taskCount
         }
       }
     }

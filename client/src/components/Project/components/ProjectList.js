@@ -1,10 +1,11 @@
+/* eslint-disable react/no-unescaped-entities */
 import React from "react";
 import { Row, Col, Card, Alert } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import moment from "moment";
 import "../project.css";
+import { Link } from "react-router-dom";
 
-function ProjectList({ projects, history }) {
+function ProjectList({ projects }) {
   return (
     <Row className="m-0 p-0">
       {!projects.length && (
@@ -16,28 +17,49 @@ function ProjectList({ projects, history }) {
       )}
       {projects.map(project => (
         <Col xs={12} s={4} lg={4} key={project.name} className="p-2">
-          <Card
-            className="w-100 h-100 project-list-item"
-            onClick={() => history.push(`/project/${project._id}`)}
-          >
+          <Card className="w-100 h-100 project-list-item">
             <Card.Header>
               <div className="d-flex">
-                <Card.Title>{project.name}</Card.Title>
+                <Card.Title className="m-0 p-0">
+                  <Link to={`/project/${project._id}`}>{project.name}</Link>
+                </Card.Title>
                 {project.private ? (
                   <FontAwesomeIcon icon="lock" className="ml-auto" />
                 ) : (
                   <FontAwesomeIcon icon="lock-open" className="ml-auto" />
                 )}
               </div>
-              <p className="font-italic">{project.tagline.substr(0, 60)}</p>
+              <p className="m-0 mt-1 project-blockquote-text font-italic">
+                {project.tagline.substr(0, 60)}
+              </p>
             </Card.Header>
-            <Card.Body>
-              <Card.Text>
-                {project.due && (
-                  <p>Due: {moment(new Date(project.due)).calendar()}</p>
-                )}
-              </Card.Text>
+            <Card.Body className="d-flex justify-content-center align-items-center">
+              {project.logo ? (
+                <img className="project-logo" src={project.logo} alt="Logo" />
+              ) : (
+                <div className="project-logo d-flex justify-content-center align-items-center">
+                  <FontAwesomeIcon icon="clipboard" size="7x" />
+                </div>
+              )}
             </Card.Body>
+            <Card.Footer className="d-flex flex-row justify-content-center align-items-center">
+              <Card className="p-2 m-1">
+                <p className="p-0 m-0 project-footer-text">
+                  <FontAwesomeIcon icon="user" size="1x" className="m-0" />
+                  <span className="ml-2">{project.userCount} user's'</span>
+                </p>
+              </Card>
+              <Card className="p-2 m-1">
+                <p className="p-0 m-0 project-footer-text">
+                  <FontAwesomeIcon
+                    icon="sticky-note"
+                    size="1x"
+                    className="m-0"
+                  />
+                  <span className="ml-2">{project.taskCount} task's'</span>
+                </p>
+              </Card>
+            </Card.Footer>
           </Card>
         </Col>
       ))}

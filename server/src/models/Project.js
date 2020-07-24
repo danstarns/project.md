@@ -17,11 +17,17 @@ const Project = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Organization"
         },
-        status: {
-            type: String,
-            enum: ["Todo", "InProgress", "Done"],
-            default: "Todo"
-        }
+        logo: {
+            etag: String,
+            fileName: String,
+            bucket: String
+        },
+        users: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User"
+            }
+        ]
     },
     { timestamps: true }
 );

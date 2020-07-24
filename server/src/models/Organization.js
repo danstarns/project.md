@@ -10,18 +10,24 @@ const Organization = new mongoose.Schema(
             required: true,
             ref: "User"
         },
-        admins: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "User"
-            }
-        ],
-        users: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "User"
-            }
-        ],
+        admins: {
+            type: [
+                {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "User"
+                }
+            ],
+            default: []
+        },
+        users: {
+            type: [
+                {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "User"
+                }
+            ],
+            default: []
+        },
         private: { type: Boolean, required: true },
         markdown: { type: String, required: true },
         logo: {

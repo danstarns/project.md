@@ -5,12 +5,17 @@ type Project {
     creator: User!
     private: Boolean!
     due: GraphQLDateTime!
+    users: [User]!
     markdown: String!
     createdAt: GraphQLDateTime!
     updatedAt: GraphQLDateTime! 
     tasks(input: ProjectTasksInput): ProjectTasksResponse!
-    organization: Organization # todo field
-    status: StatusEnum!
+    organization: Organization
+    isUserAdmin: Boolean!
+    userCanChat: Boolean!
+    logo: String
+    taskCount: Int!
+    userCount: Int!
 }
 
 # PROJECT.TASKS
@@ -41,11 +46,7 @@ input CreateProjectInput {
     due: String!
     markdown: String!
     organization: ID
-}
-
-type CreateProjectResponse {
-    project: Project
-    error: Error
+    logo: Upload
 }
 
 # EDIT PROJECT 
@@ -57,15 +58,7 @@ input EditProjectInput {
     private: Boolean!
     due: String!
     markdown: String!
-}
-
-type EditProjectData {
-    project: Project
-}
-
-type EditProjectResponse {
-    data: EditProjectData
-    error: Error
+    logo: Upload
 }
 
 # USER PROJECTS
@@ -86,25 +79,13 @@ input UserProjectsInput {
     search: String
 }
 
-# UPDATE PROJECT STATUS
-input UpdateProjectStatusInput {
-    id: ID!
-    status: StatusEnum!
-}
-
-type UpdateProjectStatusResponse {
-    error: Error
-    status: StatusEnum
-}
-
 type Query {
-    project(id: ID!): Project
+    project(id: ID!): Project!
     userProjects(input: UserProjectsInput!): UserProjectsResponse! @Auth(input: {required: true})
     publicProjects(input: UserProjectsInput!): UserProjectsResponse!
 }
 
 type Mutation {
-    createProject(input: CreateProjectInput!): CreateProjectResponse! @Auth(input: {required: true})
-    editProject(input: EditProjectInput!): EditProjectResponse! @Auth(input: {required: true})
-    updateProjectStatus(input: UpdateProjectStatusInput!): UpdateProjectStatusResponse!
+    createProject(input: CreateProjectInput!): Project! @Auth(input: {required: true})
+    editProject(input: EditProjectInput!): Project! @Auth(input: {required: true})
 }
