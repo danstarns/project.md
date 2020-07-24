@@ -69,3 +69,15 @@ $ docker run -d --publish 6379:6379 --name project-md-redis redis
 ```
 $ docker run -d --publish 9000:9000 --name project-md-minio -e MINIO_ACCESS_KEY=accesskey -e MINIO_SECRET_KEY=secretkey minio/minio server /data
 ```
+
+# Screenshots
+> Demo coming soon, style is work in progress 🏗
+
+## Organization
+![organization page](./assets/organization-sneek.png)
+
+## Project
+![project page](./assets/project-sneek.png)
+
+## Profile
+![profile page](./assets/profile-sneek.png)
