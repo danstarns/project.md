@@ -25,7 +25,11 @@ import {
   faCommentDots,
   faUserShield,
   faCog,
-  faStickyNote
+  faStickyNote,
+  faFolder,
+  faFolderOpen,
+  faFilePdf,
+  faFileExport
 } from "@fortawesome/free-solid-svg-icons";
 import { faMarkdown } from "@fortawesome/free-brands-svg-icons";
 
@@ -57,5 +61,9 @@ export default [
   faUserShield,
   faCog,
   faMarkdown,
-  faStickyNote
+  faStickyNote,
+  faFolder,
+  faFolderOpen,
+  faFilePdf,
+  faFileExport
 ];

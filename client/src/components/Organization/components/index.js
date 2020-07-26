@@ -4,6 +4,7 @@ import OrganizationsFilter from "./OrganizationsFilter.js";
 import InviteUserModal from "./InviteUserModal.js";
 import OrganizationChat from "./OrganizationChat.js";
 import AssignAdminModal from "./AssignAdminModal.js";
+import OrganizationDocuments from "./OrganizationDocuments.js";
 
 export {
   OrganizationForm,
@@ -11,5 +12,6 @@ export {
   OrganizationsFilter,
   InviteUserModal,
   OrganizationChat,
-  AssignAdminModal
+  AssignAdminModal,
+  OrganizationDocuments
 };

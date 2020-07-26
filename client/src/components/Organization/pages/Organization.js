@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import gql from "graphql-tag";
 import { Col, Row, Card, Tab, Tabs, Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,7 +9,8 @@ import { ProjectList, ProjectFilter } from "../../Project/index.js";
 import {
   InviteUserModal,
   OrganizationChat,
-  AssignAdminModal
+  AssignAdminModal,
+  OrganizationDocuments
 } from "../components/index.js";
 import { UserListCards } from "../../User/index";
 
@@ -77,7 +78,9 @@ const ORGANIZATION_QUERY = gql`
   }
 `;
 
-function Organization({ match, history }) {
+function Organization({ match, history, location }) {
+  const params = new URLSearchParams(location.search);
+
   const { client } = useContext(GraphQL.Context);
   const { isLoggedIn } = useContext(AuthContext.Context);
   const { addToast } = useContext(ToastContext.Context);
@@ -95,7 +98,19 @@ function Organization({ match, history }) {
   const [loading, setLoading] = useState(true);
   const [isInviteUserModal, setIsInviteUserModal] = useState(false);
   const [isAssignAdminModal, setIsAssignAdminModal] = useState(false);
-  const [key, setKey] = useState("markdown");
+  const [key, setKey] = useState(params.get("tab") || "markdown");
+  const lastKey = useRef(key);
+
+  useEffect(() => {
+    const param = params.get("tab");
+    if (param) {
+      if (param !== lastKey.current) {
+        setKey(param);
+
+        lastKey.current = param;
+      }
+    }
+  });
 
   useEffect(() => {
     const subscription = client
@@ -157,6 +172,13 @@ function Organization({ match, history }) {
       setLoading(false);
     })();
   }, [projectFilter]);
+
+  useEffect(() => {
+    history.push({
+      pathname: window.location.pathname,
+      search: `?${new URLSearchParams({ tab: key }).toString()}`
+    });
+  }, [key]);
 
   if (error) {
     return <ErrorBanner error={error} />;
@@ -253,12 +275,7 @@ function Organization({ match, history }) {
           </div>
         </Card>
       </div>
-      <Tabs
-        activeKey={key}
-        onSelect={k => setKey(k)}
-        className="mt-3"
-        unmountOnExit
-      >
+      <Tabs activeKey={key} onSelect={setKey} className="mt-3" unmountOnExit>
         <Tab
           eventKey="markdown"
           title={
@@ -315,6 +332,26 @@ function Organization({ match, history }) {
         >
           <Card className="p-0 mt-3">
             <OrganizationChat organization={organization} />
+          </Card>
+        </Tab>
+        <Tab
+          eventKey="documents"
+          title={
+            <>
+              {key === "documents" ? (
+                <FontAwesomeIcon icon="folder-open" size="2x" color="black" />
+              ) : (
+                <FontAwesomeIcon icon="folder" size="2x" color="black" />
+              )}
+            </>
+          }
+        >
+          <Card className="p-3 mt-3">
+            <OrganizationDocuments
+              organization={organization}
+              history={history}
+              location={location}
+            />
           </Card>
         </Tab>
       </Tabs>

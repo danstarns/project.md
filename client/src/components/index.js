@@ -10,6 +10,7 @@ import Notification from "./Notification";
 import NotFound from "./NotFound.js";
 import User from "./User/index.js";
 import Toasts from "./Toast/index.js";
+import Document from "./Document/index.js";
 
 export {
   Home,
@@ -23,5 +24,6 @@ export {
   Notification,
   NotFound,
   User,
-  Toasts
+  Toasts,
+  Document
 };

@@ -15,7 +15,8 @@ import {
   Notification,
   NotFound,
   User,
-  Toasts
+  Toasts, 
+  Document
 } from "./components/index.js";
 import { AuthContext, GraphQL, ToastContext, NotificationContext } from "./contexts/index.js";
 import icons from "./icons";
@@ -58,6 +59,9 @@ function App() {
                 <Route exact path="/organizations" component={Organization.Organizations} />
                 <Route exact path="/organization/:id" component={Organization.Organization} />
                 <Routes.Protected exact path="/organization/edit/:id" component={Organization.EditOrganization} />
+
+                <Routes.Protected path="/document/create/:type/:id" component={Document.CreateDocument} />
+                <Routes.Protected path="/document/edit/:id" component={Document.EditDocument} />
 
                 <Route component={NotFound} />
               </Switch>

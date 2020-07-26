@@ -19,11 +19,14 @@ async function renderer(job) {
                 "--disable-setuid-sandbox",
                 "--disable-gpu",
                 "--disable-web-security",
+                "--window-size=2480,3508",
                 "--disable-dev-shm-usage"
             ]
         });
 
         const page = await browser.newPage();
+        await page._client.send("Emulation.clearDeviceMetricsOverride");
+
         const html = generateHTML(document);
 
         await page.setContent(html, {
@@ -33,7 +36,7 @@ async function renderer(job) {
         const bucket = `document-${document._id.toString()}`;
         const fileName = `${document._id.toString()}.pdf`;
 
-        const buffer = await page.pdf({ format: "A4" });
+        const buffer = await page.pdf();
         const etag = await storage.client.putObject(bucket, fileName, buffer);
 
         const [url] = await Promise.all([
@@ -60,8 +63,6 @@ async function renderer(job) {
             "EX",
             constants.IMAGE_URL_EXPIRE_SECONDS - 100
         );
-
-        await redis.pubsub.emit(`document:render:${document._id.toString()}`);
 
         await job.moveToCompleted();
         await job.remove();

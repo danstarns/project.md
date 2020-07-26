@@ -56,7 +56,8 @@ async function editDocument(root, { input }, ctx) {
         {
             $set: {
                 name,
-                markdown
+                markdown,
+                rendered: null
             }
         },
         { new: true }

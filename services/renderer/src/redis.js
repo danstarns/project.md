@@ -1,6 +1,5 @@
 const Redis = require("ioredis");
 const Queue = require("bull");
-const redisPubSub = require("ioredis-eventemitter");
 const { REDIS_URI } = require("./config.js");
 const debug = require("./debug.js")("Redis: ");
 
@@ -27,38 +26,24 @@ function createClient(db) {
 }
 
 const dbs = {
-    imageUrls: new Redis(REDIS_URI, { keyPrefix: "image-urls", db: 0 })
+    imageUrls: new Redis(REDIS_URI, {
+        keyPrefix: "image-urls",
+        db: 0,
+        lazyConnect: true
+    })
 };
 
 const queues = {
     renderer: new Queue("renderer", { createClient: createClient(1) })
 };
 
-const pubsubConnections = {
-    pub: new Redis(REDIS_URI, {
-        keyPrefix: "pub",
-        db: 2,
-        lazyConnect: true
-    }),
-    sub: new Redis(REDIS_URI, {
-        keyPrefix: "sub",
-        db: 2,
-        lazyConnect: true
-    })
-};
-
-const pubsub = redisPubSub({
-    pub: pubsubConnections.pub,
-    sub: pubsubConnections.sub
-});
-
 async function connect() {
     debug(`Connecting to Redis: '${REDIS_URI}'`);
 
     /* Deliberate connect to 1 and assume the others ok, will change if I use other Redis DB's */
-    await pubsubConnections.sub.connect();
+    await dbs.imageUrls.connect();
 
     debug("Connected");
 }
 
-module.exports = { connect, dbs, queues, pubsub };
+module.exports = { connect, dbs, queues };

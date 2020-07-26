@@ -26,8 +26,6 @@ input EditDocumentInput {
     id: ID!
     name: String!
     markdown: String!
-    type: DocumentTypeEnum!
-    subject: ID!
 }
 
 type Query {
@@ -37,9 +35,6 @@ type Query {
 
 type Mutation {
     createDocument(input: CreateDocumentInput!): Document! @Auth(input: {required: true})
-    editDocument(input: CreateDocumentInput!): Document! @Auth(input: {required: true})
-}
-
-type Subscription {
-    documentRender(id: ID!): Boolean! @Auth(input: {required: true})
+    editDocument(input: EditDocumentInput!): Document! @Auth(input: {required: true})
+    deleteDocument(id: ID!): Boolean! @Auth(input: {required: true})
 }
