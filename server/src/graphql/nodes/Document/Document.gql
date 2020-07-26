@@ -1,0 +1,45 @@
+type Document {
+    _id: ID!
+    name: String!
+    markdown: String!
+    url: String
+    type: DocumentTypeEnum!
+}
+
+enum DocumentTypeEnum {
+    organization
+}
+
+input DocumentsInput {
+    type: DocumentTypeEnum!
+    subject: ID!
+}
+
+input CreateDocumentInput {
+    name: String!
+    markdown: String!
+    type: DocumentTypeEnum!
+    subject: ID!
+}
+
+input EditDocumentInput {
+    id: ID!
+    name: String!
+    markdown: String!
+    type: DocumentTypeEnum!
+    subject: ID!
+}
+
+type Query {
+    document(id: ID!): Document!
+    documents(input: DocumentsInput!): [Document]!
+}
+
+type Mutation {
+    createDocument(input: CreateDocumentInput!): Document! @Auth(input: {required: true})
+    editDocument(input: CreateDocumentInput!): Document! @Auth(input: {required: true})
+}
+
+type Subscription {
+    documentRender(id: ID!): Boolean! @Auth(input: {required: true})
+}

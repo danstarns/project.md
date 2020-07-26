@@ -12,7 +12,7 @@ const {
 
 let transporter;
 
-async function process(/** @type {import("bull").Job} */ job) {
+async function process(job) {
     debug("Sending Email");
 
     await transporter.sendMail({
@@ -23,8 +23,8 @@ async function process(/** @type {import("bull").Job} */ job) {
         text: job.data.html.replace(/(<([^>]+)>)/g, "")
     });
 
+    await job.moveToCompleted();
     await job.remove();
-
     debug("Email sent");
 }
 

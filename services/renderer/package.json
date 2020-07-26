@@ -1,0 +1,33 @@
+{
+  "name": "renderer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "cross-env node -r dotenv/config ./src/index.js",
+    "dev": "cross-env nodemon --enable-source-maps -r dotenv/config ./src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "bull": "^3.16.0",
+    "debug": "^4.1.1",
+    "dotenv": "^8.2.0",
+    "ioredis": "^4.17.3",
+    "ioredis-eventemitter": "^1.0.1",
+    "minio": "^7.0.16",
+    "mongoose": "^5.9.25",
+    "puppeteer": "^5.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "nodemon": "^2.0.4",
+    "prettier": "^1.19.1",
+    "prettier-eslint": "^9.0.2"
+  }
+}
