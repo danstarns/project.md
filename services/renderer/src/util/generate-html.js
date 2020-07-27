@@ -24,7 +24,11 @@ function generateHtml(document) {
                         margin-top: 0.1rem;
                         margin-bottom: 0.1rem;
                     }
-            
+
+                    #content > p > img {
+                        max-width: 100% !important;
+                    }
+                      
                     pre {
                         border: 1px solid #ccc;
                         overflow: hidden;
