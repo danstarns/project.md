@@ -5,7 +5,6 @@
 
 📝 Exemplary markdown inspired project management built with; React, Node, GraphQL, MongoDB, Redis & Minio/S3.
 
-# About
 Tired of complicated project management systems? What something that speaks to the Markdown 🐱‍👤 inside of you? Project.md is designed with simplicity at its heart, letting you manage projects & present your ideas with pure Markdown. No longer shall you recursively search nested 'sub tasks' to oblivion.
 
 # Tech Stack
@@ -16,6 +15,9 @@ Tired of complicated project management systems? What something that speaks to t
     * Redis
 3. Frontend
     * React.JS
+
+# Contributing 
+All contribution's welcome 🍺 Make a PR or issue & let's take it from there. 
 
 # Getting Started
 > **Environment variables** copy `./.env.example` => `./.env` You may need to adjust variables to suit your setup.
