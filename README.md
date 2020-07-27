@@ -1,6 +1,8 @@
 # Project.md
 > Work in progress 👷‍♂️
 
+![banner](./assets/banner.png)
+
 📝 Exemplary markdown inspired project management built with; React, Node, GraphQL, MongoDB, Redis & Minio/S3.
 
 # About
