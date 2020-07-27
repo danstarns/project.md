@@ -84,6 +84,15 @@ $ docker run -d --publish 9000:9000 --name project-md-minio -e MINIO_ACCESS_KEY=
 ## Documents
 ![documents](./assets/documents.sneek.png)
 
+## Create Document
+![create Document](./assets/create-document.sneek.png)
+
+## Document Export
+### PDF
+![PDF export](./assets/pdf-export.gif)
+### Markdown
+![Markdown export](./assets/markdown-export.gif)
+
 ## Project
 ![project page](./assets/project-sneek.png)
 
