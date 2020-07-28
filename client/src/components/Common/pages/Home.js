@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Row } from "react-bootstrap";
-import { Markdown } from "./Markdown/index.js";
+import { Markdown } from "../../Markdown/index.js";
 
 const markdown = `
 # Project.md

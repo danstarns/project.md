@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Navbar, Nav, NavDropdown, Card } from "react-bootstrap";
-import { useQuery } from "@apollo/react-hooks";
 import { Link, useHistory } from "react-router-dom";
 import gql from "graphql-tag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,8 +8,8 @@ import {
   GraphQL,
   ToastContext,
   NotificationContext
-} from "../contexts/index.js";
-import "../index.css";
+} from "../../../contexts/index.js";
+import "../common.css";
 
 const ME_QUERY = gql`
   {

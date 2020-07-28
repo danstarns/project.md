@@ -1,22 +1,3 @@
-.home-link-card {
-    height: 100px;
-}
-
-.home-link-icon-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    padding: 10px;
-}
-
-.home-link-card-text {
-    font-size: 1.3rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .navbar-profile {
     max-width: 25px;
     max-height: 25px;

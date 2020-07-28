@@ -3,11 +3,13 @@ import LoadingBanner from "./LoadingBanner.js";
 import TitleBanner from "./TitleBanner.js";
 import StatusDropdown from "./StatusDropdown.js";
 import StatusProgressBar from "./StatusProgressBar.js";
+import NavBar from "./NavBar.js";
 
 export {
   ErrorBanner,
   LoadingBanner,
   TitleBanner,
   StatusDropdown,
-  StatusProgressBar
+  StatusProgressBar,
+  NavBar
 };

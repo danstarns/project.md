@@ -2,26 +2,18 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Container } from "react-bootstrap";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  Home,
-  NavBar,
-  Dashboard,
-  Auth,
-  Task,
-  Project,
-  Organization,
-  Routes,
-  Notification,
-  NotFound,
-  User,
-  Toasts, 
-  Document
-} from "./components/index.js";
-import { AuthContext, GraphQL, ToastContext, NotificationContext } from "./contexts/index.js";
-import icons from "./icons";
-
-library.add(...icons);
+import { NavBar } from "./Common/index.js";
+import Auth from "./Auth/index.js";
+import Task from "./Task/index.js";
+import Project from "./Project/index.js";
+import Organization from "./Organization/index.js";
+import * as Routes from "./Routes/index.js";
+import Notification from "./Notification";
+import User from "./User/index.js";
+import Toasts from "./Toast/index.js";
+import Document from "./Document/index.js";
+import Common from "./Common/index.js";
+import { AuthContext, GraphQL, ToastContext, NotificationContext } from "../contexts/index.js";
 
 function App() {
   return (
@@ -34,8 +26,8 @@ function App() {
             <Toasts />
             <Container>
               <Switch>
-                <Route exact path="/" component={Home} />
-                <Route exact path="/dashboard" component={Dashboard} />
+                <Route exact path="/" component={Common.Home} />
+                <Route exact path="/dashboard" component={Common.Dashboard} />
 
                 <Route exact path="/login" component={Auth.Login} />
                 <Route exact path="/signup" component={Auth.SignUp} />
@@ -63,7 +55,7 @@ function App() {
                 <Routes.Protected path="/document/create/:type/:id" component={Document.CreateDocument} />
                 <Routes.Protected path="/document/edit/:id" component={Document.EditDocument} />
 
-                <Route component={NotFound} />
+                <Route component={Common.NotFound} />
               </Switch>
             </Container>
           </Router>
