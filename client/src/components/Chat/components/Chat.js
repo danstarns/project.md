@@ -129,7 +129,6 @@ function Chat(props) {
             )}
           </>
         )}
-
         <div className="chat-box-bottom">
           <div id="end-of-chat" ref={chat} />
         </div>

@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import React, { useState, useContext, useCallback } from "react";
 import { Modal, Button, Alert, Spinner } from "react-bootstrap";
 import gql from "graphql-tag";

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect, useCallback } from "react";
 import gql from "graphql-tag";
 import { Card } from "react-bootstrap";
-import { ErrorBanner, LoadingBanner } from "../../Common/index.js";
+import { LoadingBanner } from "../../Common/index.js";
 import { DocumentForm } from "../components/index.js";
 import { GraphQL } from "../../../contexts/index.js";
 
