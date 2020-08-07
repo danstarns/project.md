@@ -4,6 +4,7 @@ import TitleBanner from "./TitleBanner.js";
 import StatusDropdown from "./StatusDropdown.js";
 import StatusProgressBar from "./StatusProgressBar.js";
 import NavBar from "./NavBar.js";
+import NavSearch from "./NavSearch.js";
 
 export {
   ErrorBanner,
@@ -11,5 +12,6 @@ export {
   TitleBanner,
   StatusDropdown,
   StatusProgressBar,
-  NavBar
+  NavBar,
+  NavSearch
 };

@@ -29,7 +29,9 @@ import {
   faFolder,
   faFolderOpen,
   faFilePdf,
-  faFileExport
+  faFileExport,
+  faUserPlus,
+  faSignInAlt
 } from "@fortawesome/free-solid-svg-icons";
 import { faMarkdown } from "@fortawesome/free-brands-svg-icons";
 
@@ -65,5 +67,7 @@ export default [
   faFolder,
   faFolderOpen,
   faFilePdf,
-  faFileExport
+  faFileExport,
+  faUserPlus,
+  faSignInAlt
 ];

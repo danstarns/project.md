@@ -36,6 +36,28 @@
     color: red;
 }
 
+.navbar-login-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 25px;
+    min-width: 25px;
+    max-height: 25px;
+    max-width: 25px;
+    color: green;
+}
+
+.navbar-signup-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 25px;
+    min-width: 25px;
+    max-height: 25px;
+    max-width: 25px;
+    color: #00ACEA
+}
+
 .navbar-no-decoration {
     text-decoration: none !important;
 }

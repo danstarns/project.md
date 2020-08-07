@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Navbar, Nav, NavDropdown, Card } from "react-bootstrap";
+import { Navbar, Nav, NavDropdown, Card, Container } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import gql from "graphql-tag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,6 +10,7 @@ import {
   NotificationContext
 } from "../../../contexts/index.js";
 import "../common.css";
+import NavSearch from "./NavSearch.js";
 
 const ME_QUERY = gql`
   {
@@ -41,6 +42,7 @@ function LoggedIn() {
   const { addToast } = useContext(ToastContext.Context);
   const [profile, setProfile] = useState({});
   const [error, setError] = useState(false);
+  const [navModalOpen, setNavModalOpen] = useState(true);
 
   useEffect(() => {
     const subscription = client
@@ -93,7 +95,7 @@ function LoggedIn() {
             className="navbar-item"
             onSelect={() => history.push("/dashboard")}
           >
-            Dashboard
+            My Dashboard
           </NavDropdown.Item>
           <NavDropdown.Item
             as="span"
@@ -111,6 +113,9 @@ function LoggedIn() {
           </NavDropdown.Item>
         </NavDropdown>
       </Nav>
+      <Container>
+        <NavSearch show={navModalOpen} onHide={() => setNavModalOpen(false)} />
+      </Container>
       <Nav className="d-flex flex-row">
         <Link to="/notifications" className="navbar-no-decoration">
           <Card className="p-1 m-1">
@@ -156,21 +161,53 @@ function LoggedIn() {
 }
 
 function LoggedOut() {
+  const history = useHistory();
+  const [navModalOpen, setNavModalOpen] = useState(true);
+
   return (
-    <Nav>
-      <Nav.Link as="span">
-        <Link to="/login">Login</Link>
-      </Nav.Link>
-      <Nav.Link as="span">
-        <Link to="/signup">SignUp</Link>
-      </Nav.Link>
-      <Nav.Link as="span">
-        <Link to="/organizations">Organizations</Link>
-      </Nav.Link>
-      <Nav.Link as="span">
-        <Link to="/projects">Projects</Link>
-      </Nav.Link>
-    </Nav>
+    <>
+      <Nav className="mr-auto navbar-item">
+        <NavDropdown title="Dashboard" id="collasible-nav-dropdown" bg="light">
+          <NavDropdown.Item
+            as="span"
+            className="navbar-item"
+            onSelect={() => history.push("/projects")}
+          >
+            Projects
+          </NavDropdown.Item>
+          <NavDropdown.Item
+            as="span"
+            className="navbar-item"
+            onSelect={() => history.push("/organizations")}
+          >
+            Organizations
+          </NavDropdown.Item>
+        </NavDropdown>
+      </Nav>
+      <Container>
+        <NavSearch show={navModalOpen} onHide={() => setNavModalOpen(false)} />
+      </Container>
+      <Nav className="d-flex flex-row">
+        <Link to="/login">
+          <Card className="p-1 m-1">
+            <Nav.Item as="span">
+              <span className="navbar-login-icon">
+                <FontAwesomeIcon icon="sign-in-alt" size="1x" />
+              </span>
+            </Nav.Item>
+          </Card>
+        </Link>
+        <Link to="/signup">
+          <Card className="p-1 m-1">
+            <Nav.Item as="span">
+              <span className="navbar-signup-icon">
+                <FontAwesomeIcon icon="user-plus" size="1x" />
+              </span>
+            </Nav.Item>
+          </Card>
+        </Link>
+      </Nav>
+    </>
   );
 }
 
