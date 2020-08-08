@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Navbar, Nav, NavDropdown, Card, Container } from "react-bootstrap";
+import { Navbar, Nav, NavDropdown, Card } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import gql from "graphql-tag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -42,7 +42,7 @@ function LoggedIn() {
   const { addToast } = useContext(ToastContext.Context);
   const [profile, setProfile] = useState({});
   const [error, setError] = useState(false);
-  const [navModalOpen, setNavModalOpen] = useState(true);
+  const [navModalOpen, setNavModalOpen] = useState(false);
 
   useEffect(() => {
     const subscription = client
@@ -113,9 +113,13 @@ function LoggedIn() {
           </NavDropdown.Item>
         </NavDropdown>
       </Nav>
-      <Container>
-        <NavSearch show={navModalOpen} onHide={() => setNavModalOpen(false)} />
-      </Container>
+      <div className="m-0 mx-2 w-100 p-0">
+        <NavSearch
+          show={navModalOpen}
+          onHide={() => setNavModalOpen(false)}
+          onOpen={() => setNavModalOpen(true)}
+        />
+      </div>
       <Nav className="d-flex flex-row">
         <Link to="/notifications" className="navbar-no-decoration">
           <Card className="p-1 m-1">
@@ -162,7 +166,7 @@ function LoggedIn() {
 
 function LoggedOut() {
   const history = useHistory();
-  const [navModalOpen, setNavModalOpen] = useState(true);
+  const [navModalOpen, setNavModalOpen] = useState(false);
 
   return (
     <>
@@ -184,9 +188,13 @@ function LoggedOut() {
           </NavDropdown.Item>
         </NavDropdown>
       </Nav>
-      <Container>
-        <NavSearch show={navModalOpen} onHide={() => setNavModalOpen(false)} />
-      </Container>
+      <div className="m-0 mx-2 w-100 p-0">
+        <NavSearch
+          show={navModalOpen}
+          onHide={() => setNavModalOpen(false)}
+          onOpen={() => setNavModalOpen(true)}
+        />
+      </div>
       <Nav className="d-flex flex-row">
         <Link to="/login">
           <Card className="p-1 m-1">
