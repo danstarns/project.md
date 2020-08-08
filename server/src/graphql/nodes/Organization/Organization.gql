@@ -95,6 +95,7 @@ type Query {
     organization(id: ID!, key: ID): Organization
     userOrganizations(input: OgranizationsInput!): OgranizationsResponse! @Auth(input: {required: true})
     publicOrganizations(input: OgranizationsInput!): OgranizationsResponse!
+    organizations(input: OgranizationsInput!): OgranizationsResponse!
 }
 
 type Mutation {
