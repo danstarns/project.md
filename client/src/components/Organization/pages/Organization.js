@@ -171,7 +171,7 @@ function Organization({ match, history, location }) {
 
       setLoading(false);
     })();
-  }, [projectFilter]);
+  }, [projectFilter, match.params.id]);
 
   useEffect(() => {
     history.push({
