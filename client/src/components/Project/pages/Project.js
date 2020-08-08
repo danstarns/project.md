@@ -95,18 +95,16 @@ function Project({ match, history }) {
           history.push("/");
         }
 
-        setTimeout(() => {
-          setTasks(data.project.tasks.data.tasks);
-          setHasNextTasks(data.project.tasks.hasNextPage);
-          setProject(data.project);
-          setLoading(false);
-        }, 500);
+        setTasks(data.project.tasks.data.tasks);
+        setHasNextTasks(data.project.tasks.hasNextPage);
+        setProject(data.project);
       } catch (e) {
         setError(e.message);
-        setLoading(false);
       }
+
+      setLoading(false);
     })();
-  }, [tasksFilter]);
+  }, [tasksFilter, match.params.id]);
 
   if (loading) {
     return <LoadingBanner />;
