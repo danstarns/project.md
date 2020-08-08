@@ -5,27 +5,27 @@ async function organizations(
     { input: { page, limit, sort, search } },
     ctx
 ) {
-    const regexMatch = { $regex: new RegExp(search), $options: ["i", "g"] };
-
     const query = {
-        private: false,
-        $and: [
-            ...(search
-                ? [{ $or: [{ name: regexMatch }, { tagline: regexMatch }] }]
-                : [])
-        ]
+        private: false
     };
+
+    if (search) {
+        const regexMatch = { $regex: new RegExp(search), $options: ["i", "g"] };
+        query.$or = [{ name: regexMatch }, { tagline: regexMatch }];
+    }
 
     if (ctx.user) {
         delete query.private;
 
-        query.$and.push({
-            $or: [
-                { creator: ctx.user },
-                { admins: ctx.user },
-                { users: ctx.user }
-            ]
-        });
+        query.$and = [
+            {
+                $or: [
+                    { creator: ctx.user },
+                    { admins: ctx.user },
+                    { users: ctx.user }
+                ]
+            }
+        ];
     }
 
     const { docs, hasNextPage } = await Organization.paginate(query, {

@@ -1,16 +1,14 @@
 const { Project, Organization } = require("../../../../models/index.js");
 
 async function projects(root, { input: { page, limit, sort, search } }, ctx) {
-    const regexMatch = { $regex: new RegExp(search), $options: ["i", "g"] };
-
     const query = {
-        private: false,
-        $and: [
-            ...(search
-                ? [{ $or: [{ name: regexMatch }, { tagline: regexMatch }] }]
-                : [])
-        ]
+        private: false
     };
+
+    if (search) {
+        const regexMatch = { $regex: new RegExp(search), $options: ["i", "g"] };
+        query.$or = [{ name: regexMatch }, { tagline: regexMatch }];
+    }
 
     if (ctx.user) {
         const adminOfOrgs = await Organization.find({
@@ -23,13 +21,15 @@ async function projects(root, { input: { page, limit, sort, search } }, ctx) {
 
         delete query.private;
 
-        query.$and.push({
-            $or: [
-                { creator: ctx.user },
-                { users: ctx.user },
-                { organization: { $in: adminOfOrgs.map((x) => x._id) } }
-            ]
-        });
+        query.$and = [
+            {
+                $or: [
+                    { creator: ctx.user },
+                    { users: ctx.user },
+                    { organization: { $in: adminOfOrgs.map((x) => x._id) } }
+                ]
+            }
+        ];
     }
 
     const { docs, hasNextPage } = await Project.paginate(query, {
@@ -40,9 +40,7 @@ async function projects(root, { input: { page, limit, sort, search } }, ctx) {
 
     return {
         hasNextPage,
-        data: {
-            projects: docs
-        }
+        projects: docs
     };
 }
 
