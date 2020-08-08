@@ -83,6 +83,7 @@ type Query {
     project(id: ID!): Project!
     userProjects(input: UserProjectsInput!): UserProjectsResponse! @Auth(input: {required: true})
     publicProjects(input: UserProjectsInput!): UserProjectsResponse!
+    projects(input: UserProjectsInput!): UserProjectsResponse!
 }
 
 type Mutation {
