@@ -7,8 +7,8 @@ async function projects(root, { input: { page, limit, sort, search } }, ctx) {
         private: false,
         $and: [
             ...(search
-                ? { $or: [{ name: regexMatch }, { tagline: regexMatch }] }
-                : {})
+                ? [{ $or: [{ name: regexMatch }, { tagline: regexMatch }] }]
+                : [])
         ]
     };
 
