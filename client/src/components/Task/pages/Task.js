@@ -43,7 +43,7 @@ function Task({ match, history }) {
         setLoading(false);
       }, 500);
     })();
-  }, []);
+  }, [match.params.id]);
 
   if (error) {
     return <ErrorBanner error={error} />;

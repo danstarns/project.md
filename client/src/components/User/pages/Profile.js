@@ -71,7 +71,7 @@ function Profile({ match, history }) {
 
       setLoading(false);
     })();
-  }, []);
+  }, [match.params.id]);
 
   if (error) {
     return <ErrorBanner error={error} />;
