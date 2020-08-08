@@ -84,8 +84,11 @@ $ docker run -d --publish 9000:9000 --name project-md-minio -e MINIO_ACCESS_KEY=
 # Screenshots
 > Demo coming soon, style is work in progress 🏗
 
+## Global Search
+![Global Search](./assets/global-search.gif)
+
 ## Documents
-![documents](./assets/documents.sneek.png)
+![Documents](./assets/documents.sneek.png)
 
 ## Create Document
 ![create Document](./assets/create-document.sneek.png)
@@ -97,7 +100,7 @@ $ docker run -d --publish 9000:9000 --name project-md-minio -e MINIO_ACCESS_KEY=
 ![Markdown export](./assets/markdown-export.gif)
 
 ## Project
-![project page](./assets/project-sneek.png)
+![Project Page](./assets/project-sneek.png)
 
 ## Profile
-![profile page](./assets/profile-sneek.png)
+![Profile Page](./assets/profile-sneek.png)
