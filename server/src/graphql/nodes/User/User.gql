@@ -62,6 +62,17 @@ input EditProfileInput {
     profilePic: Upload
 }
 
+input UsersInput {
+    page: Int!
+    limit: Int!
+    search: String
+}
+
+type UsersResponse {
+    hasNextPage: Boolean!
+    users: [User]!
+}
+
 type Mutation {
     signUp(input: SignUpInput): SignUpResponse!
     signIn(input: SignInInput): SignInResponse!
@@ -73,6 +84,7 @@ type Mutation {
 type Query {
     me: User! @Auth(input: {required: true, populate: true})
     user(id: ID!): User
+    users(input: UsersInput): UsersResponse!
 }
 
 type Subscription {
