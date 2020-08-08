@@ -8,6 +8,7 @@ async function organizations(
     const regexMatch = { $regex: new RegExp(search), $options: ["i", "g"] };
 
     const query = {
+        private: false,
         $and: [
             ...(search
                 ? [{ $or: [{ name: regexMatch }, { tagline: regexMatch }] }]
@@ -16,6 +17,8 @@ async function organizations(
     };
 
     if (ctx.user) {
+        delete query.private;
+
         query.$and.push({
             $or: [
                 { creator: ctx.user },
