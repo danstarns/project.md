@@ -1,29 +1,11 @@
-const {
-    MONGODB_URI,
-    REDIS_URI,
-    NODE_ENV,
-    S3_URL,
-    S3_PORT,
-    S3_USE_SSL,
-    S3_ACCESS_KEY,
-    S3_SECRET_KEY
-} = process.env;
+const path = require("path");
+const fs = require("fs");
+const envGQL = require("env.gql");
 
-const config = {
-    MONGODB_URI,
-    REDIS_URI,
-    NODE_ENV,
-    S3_URL,
-    S3_PORT: Number(S3_PORT),
-    S3_USE_SSL: JSON.parse(S3_USE_SSL),
-    S3_ACCESS_KEY,
-    S3_SECRET_KEY
-};
+const typeDefs = fs.readFileSync(path.join(__dirname, "../.env.gql"), "utf-8");
 
-Object.entries(config).forEach(([key, value]) => {
-    if (!value && value !== false) {
-        throw new Error(`process.env.${key} required`);
-    }
+const config = envGQL({
+    typeDefs
 });
 
 module.exports = config;
