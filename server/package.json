@@ -37,7 +37,7 @@
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
     "env.gql": "^1.0.0",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "graphql": "^15.3.0",
     "graphql-constraint-directive": "^2.0.3",
     "graphql-iso-date": "^3.6.1",
